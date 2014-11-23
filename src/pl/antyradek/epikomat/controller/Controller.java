@@ -1,6 +1,7 @@
 package pl.antyradek.epikomat.controller;
 
 import pl.antyradek.epikomat.debug.*;
+import pl.antyradek.epikomat.view.*;
 
 /**
  * Główny kontroler całego programu. Ma najszerszą wiedzę, ale sam mało robi
@@ -11,7 +12,14 @@ import pl.antyradek.epikomat.debug.*;
  */
 public class Controller
 {
-
+	View view;
+	
+	public Controller()
+	{
+		view = new View();
+		
+	}
+	
 	/**
 	 * Główne wystartowanie aplikacji
 	 * 
@@ -20,6 +28,8 @@ public class Controller
 	public static void main(String[] args)
 	{
 		Debug.log("Witamy wszystkich");
+		Controller controller = new Controller();
+		
 
 	}
 
