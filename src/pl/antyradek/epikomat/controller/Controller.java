@@ -1,6 +1,7 @@
 package pl.antyradek.epikomat.controller;
 
 import pl.antyradek.epikomat.debug.*;
+import pl.antyradek.epikomat.resources.Resources;
 import pl.antyradek.epikomat.view.*;
 
 /**
@@ -17,6 +18,11 @@ public class Controller
 	public Controller()
 	{
 		view = new View();
+		if(!Resources.isGood())
+		{
+			Debug.logErr("Błąd zasobów!");
+			System.exit(-1);
+		}
 		
 	}
 	

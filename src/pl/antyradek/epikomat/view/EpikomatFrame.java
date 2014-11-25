@@ -5,6 +5,9 @@ import java.io.InvalidClassException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import pl.antyradek.epikomat.resources.Resource;
+import pl.antyradek.epikomat.resources.Resources;
+
 /**
  * Główna ramka, komunikuje się bezpośrednio z View.
  * @author arq
@@ -20,7 +23,7 @@ class EpikomatFrame extends JFrame
 
 	public EpikomatFrame()
 	{
-		super("Witaj Ramko!");
+		super(Resources.getString(Resource.WINDOW_TITLE));
 		JLabel label = new JLabel("Zawartość");
 		getContentPane().add(label);
 		pack();
