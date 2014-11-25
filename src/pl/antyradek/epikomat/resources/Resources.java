@@ -1,8 +1,9 @@
 package pl.antyradek.epikomat.resources;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 
 import pl.antyradek.epikomat.debug.Debug;
@@ -27,7 +28,7 @@ public final class Resources
 	/**
 	 * Nazwa pliku zawierającego wszystkie dane
 	 */
-	private static final String resourceBundleFilename = "resources_pl"; //FIXME: Zmienić na wiele języków
+	private static final String resourceBundleFilename = "res/resources_pl"; //FIXME: Zmienić na wiele języków
 	
 	/**
 	 * Gdy inicjalizajca zasobów się nie powiodła, zwracamy to
@@ -39,17 +40,31 @@ public final class Resources
 	 */
 	static
 	{
+		Resource testedResource = null; //zasób w trakcie testowania
 		try
 		{
-			//czytanie pliku
-			bundle = new PropertyResourceBundle(new FileInputStream(getResourcesFilePath()));
+			//czytanie pliku 
+			//UWAGA!!! FileInputStream nie wie, jak sukcesywnie UTF-8. Ten wie, tego lubimy.
+			bundle = new PropertyResourceBundle(new FileReader(getResourcesFilePath()));
+			for(Resource resource : Resource.values())
+			{
+				testedResource = resource;
+				bundle.getString(resource.getKey());
+			}
 			successful = true;
 		} catch (IOException e)
 		{
+			//błąd czytania pliku
 			successful = false;
 			bundle = null;
 			Debug.logErr("Nie znaleziono zasobów!");
+		} catch (MissingResourceException e)
+		{
+			//brak niektórych wartości
+			successful = false;
+			Debug.logErr("Zasoby są błędne! Brak klucza: " + testedResource.getKey());
 		}
+		
 		
 	}
 	
@@ -81,6 +96,7 @@ public final class Resources
 		//FIXME: Dlaczego plik musi być w takim miejscu? Chcę, aby był obok tej klasy i kopiował się przy kompilacji
 	    ClassLoader classLoader = Resources.class.getClassLoader();
 	    File classpathRoot = new File(classLoader.getResource(resourceBundleFilename).getPath());
+	    Debug.log(classpathRoot.getPath());
 	    return classpathRoot.getPath();
 	}
 }

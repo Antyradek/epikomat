@@ -13,6 +13,9 @@ import pl.antyradek.epikomat.view.*;
  */
 public class Controller
 {
+	/**
+	 * Zarządzanie widokiem
+	 */
 	View view;
 	
 	public Controller()
@@ -33,7 +36,6 @@ public class Controller
 	 */
 	public static void main(String[] args)
 	{
-		Debug.log("Witamy wszystkich");
 		Controller controller = new Controller();
 		
 

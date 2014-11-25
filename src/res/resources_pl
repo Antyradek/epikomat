@@ -1,0 +1,8 @@
+#Plik zasobów dla Epikomatu
+WindowTitle = Epikomat
+
+HelpMenuTitle = Pomoc
+HelpMenuItemText = Pomoc
+HelpText = Przykro nam, ta aplikacja nie została stworzona z myślą o użytkownikach potrzebujących pomocy.
+AuthorsMenuItemText = Autor
+AuthorsText = Stworzone przez ARQ, lub Antyradka (Radosław Świątkiewicz) na PROZ na PW. Hurra JA! 
