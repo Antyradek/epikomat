@@ -1,27 +1,32 @@
 package pl.antyradek.epikomat.debug;
+
 /**
  * Klasa służąca głowne do wypisywania informacji do logu (do terminala)
+ * 
  * @author Radosław Świątkiewicz
  *
  */
-public class Debug 
+public class Debug
 {
 	/**
 	 * Wypisuje tekst do terminala
+	 * 
 	 * @param message
 	 */
-	public static void log(String message)
+	public static void log(Object obj)
 	{
-		System.out.println(message);
+		System.out.println(obj);
 	}
-	
+
 	/**
 	 * Wypisuje tekst do terminala, ale na czerwono!
-	 * @param message
+	 * 
+	 * @param obj
+	 *            Na nim wywołany zosanie toString();
 	 */
-	public static void logErr(String message)
+	public static void logErr(Object obj)
 	{
-		//ANSI escape codes
-		System.out.println("\033[31m" + message + "\033[0m");
+		// ANSI escape codes
+		System.out.println("\033[31m" + obj.toString() + "\033[0m");
 	}
 }

@@ -1,8 +1,14 @@
 package pl.antyradek.epikomat.controller;
 
-import pl.antyradek.epikomat.debug.*;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import pl.antyradek.epikomat.debug.Debug;
+import pl.antyradek.epikomat.model.Model;
 import pl.antyradek.epikomat.resources.Resources;
-import pl.antyradek.epikomat.view.*;
+import pl.antyradek.epikomat.view.View;
 
 /**
  * Główny kontroler całego programu. Ma najszerszą wiedzę, ale sam mało robi
@@ -16,19 +22,44 @@ public class Controller
 	/**
 	 * Zarządzanie widokiem
 	 */
-	View view;
-	
+	private final View view;
+
+	/**
+	 * Kolejka od widoku. Widok wkłada, my wyciągamy.
+	 */
+	private final BlockingQueue<AppAction> queue;
+
+	/**
+	 * Mapa strategii, czyli mapa Akcji (V lub M) na działanie
+	 */
+	private final AbstractMap<Class<? extends AppAction>, Strategy> strategyMap;
+
+	/**
+	 * Główny model aplikacji, on rozdziela się na gry.
+	 */
+	private final Model model;
+
+	/**
+	 * Czy aplikacja jeszcze żyje?
+	 */
+	private boolean alive;
+
 	public Controller()
 	{
-		view = new View();
-		if(!Resources.isGood())
+		alive = true;
+		queue = new LinkedBlockingQueue<>();
+		view = new View(queue);
+		model = new Model();
+		strategyMap = new HashMap<Class<? extends AppAction>, Strategy>();
+		addStategies();
+		if (!Resources.isGood())
 		{
 			Debug.logErr("Błąd zasobów!");
 			System.exit(-1);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Główne wystartowanie aplikacji
 	 * 
@@ -37,8 +68,43 @@ public class Controller
 	public static void main(String[] args)
 	{
 		Controller controller = new Controller();
-		
+		while (controller.alive)
+		{
+			controller.runOnce();
+		}
+	}
 
+	/**
+	 * Działaj, wykonuj pojedyńczą iterację przez życie
+	 */
+	private void runOnce()
+	{
+		try
+		{
+			AppAction appAction = queue.take();
+			strategyMap.get(appAction.getClass()).doWithAppAction(appAction);
+		} catch (InterruptedException e)
+		{
+			Debug.logErr("Błąd odebrania elementu przez aplikację! Zabij mnie!");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Dodaj wszystkie potrzebne strategie do mapy
+	 */
+	private void addStategies()
+	{
+		strategyMap.put(AppCloseAction.class, new AppCloseStrategy(this));
+	}
+
+	/**
+	 * Wyłącza aplikację
+	 */
+	public void stopRunning()
+	{
+		alive = false;
+		view.dispose();
 	}
 
 }

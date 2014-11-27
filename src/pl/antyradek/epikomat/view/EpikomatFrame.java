@@ -16,41 +16,53 @@ import pl.antyradek.epikomat.resources.Resources;
 
 /**
  * Główna ramka, komunikuje się bezpośrednio z View.
+ * 
  * @author arq
  *
  */
 class EpikomatFrame extends JFrame
 {
 	/**
-	 * To zabezpiecza przed odwołaniami do różnych klas, czy jakoś tak.
-	 * Żeby nie rzucał {@link InvalidClassException}.
+	 * To zabezpiecza przed odwołaniami do różnych klas, czy jakoś tak. Żeby nie
+	 * rzucał {@link InvalidClassException}.
 	 */
 	private static final long serialVersionUID = 777L;
 
-	public EpikomatFrame()
+	/**
+	 * Główna klasa widoku
+	 */
+	private final View view;
+
+	public EpikomatFrame(View view)
 	{
 		super(Resources.getString(Resource.WINDOW_TITLE));
+		this.view = view;
+
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
 		JLabel label = new JLabel("Zawartość");
-		
 		buildMenuBar();
-		
+
 		getContentPane().add(label);
+
 		pack();
-		setSize(512, 512);
+		setSize(512, 256);
 		setVisible(true);
 	}
-	
+
 	/**
 	 * Zbuduj całe menu i dodaj
 	 */
 	private void buildMenuBar()
 	{
 		JMenuBar menuBar = new JMenuBar();
-		JMenu helpMenu = new JMenu(Resources.getString(Resource.HELP_MENU_TITLE));
-		
-		//przycisk pomocy
-		JMenuItem helpMenuItem = new JMenuItem(Resources.getString(Resource.HELP_MENU_ITEM_TEXT));
-		//dodaj akcję pkazania pomocy
+		JMenu helpMenu = new JMenu(
+				Resources.getString(Resource.HELP_MENU_TITLE));
+
+		// przycisk pomocy
+		JMenuItem helpMenuItem = new JMenuItem(
+				Resources.getString(Resource.HELP_MENU_ITEM_TEXT));
+		// dodaj akcję pkazania pomocy
 		helpMenuItem.addActionListener(new ActionListener()
 		{
 			@Override
@@ -60,41 +72,45 @@ class EpikomatFrame extends JFrame
 			}
 		});
 		helpMenu.add(helpMenuItem);
-		
-		//przycisk autorów
-		JMenuItem authorsMenuItem = new JMenuItem(Resources.getString(Resource.AUTHORS_MENU_ITEM_TEXT));
+
+		// przycisk autorów
+		JMenuItem authorsMenuItem = new JMenuItem(
+				Resources.getString(Resource.AUTHORS_MENU_ITEM_TEXT));
 		authorsMenuItem.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				showAuthors();		
+				showAuthors();
 			}
 		});
 		helpMenu.add(authorsMenuItem);
-		
+
 		menuBar.add(helpMenu);
-		///
+		// /
 		setJMenuBar(menuBar);
 	}
-	
+
 	/**
 	 * Pokaż pomoc
 	 */
 	private void showHelp()
 	{
-		//Nazwa na belce okna jest taka sama, jak przycisk menu
-		JOptionPane.showMessageDialog(this, Resources.getString(Resource.HELP_TEXT), Resources.getString(Resource.HELP_MENU_ITEM_TEXT), JOptionPane.INFORMATION_MESSAGE);
+		// Nazwa na belce okna jest taka sama, jak przycisk menu
+		JOptionPane.showMessageDialog(this,
+				Resources.getString(Resource.HELP_TEXT),
+				Resources.getString(Resource.HELP_MENU_ITEM_TEXT),
+				JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+
 	/**
 	 * Pokaż informację o autorze (zostawiłem liczbę mnogą na przyszłość :) )
 	 */
 	private void showAuthors()
 	{
-		JOptionPane.showMessageDialog(this, Resources.getString(Resource.AUTHORS_TEXT), Resources.getString(Resource.AUTHORS_MENU_ITEM_TEXT), JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(this,
+				Resources.getString(Resource.AUTHORS_TEXT),
+				Resources.getString(Resource.AUTHORS_MENU_ITEM_TEXT),
+				JOptionPane.PLAIN_MESSAGE);
 	}
 }
-
-
-
