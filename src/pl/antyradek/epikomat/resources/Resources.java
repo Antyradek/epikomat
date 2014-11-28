@@ -1,12 +1,9 @@
 package pl.antyradek.epikomat.resources;
 
 import java.awt.Image;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
 import java.util.MissingResourceException;
-import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 
@@ -25,15 +22,11 @@ public final class Resources
 	 * Czy całe urządzenie działa?
 	 */
 	private static boolean successful;
-	/**
-	 * Bundle obsługujący wszystko
-	 */
-	private static PropertyResourceBundle bundle;
 
 	/**
 	 * Nazwa pliku zawierającego wszystkie dane
 	 */
-	private static final String resourceBundleFilename = "res/resources_pl";
+	private static final String resourceBundleFilename = "res/GUI";
 	// FIXME: Na wiele języków
 
 	/**
@@ -52,46 +45,52 @@ public final class Resources
 	private static final String defaultStringWhenUnsuccessful = "RESOURCES_ERROR!";
 
 	/**
+	 * Cały zasób
+	 */
+	private static ResourceBundle bundle;
+
+	/**
 	 * Czytanie z pliku zasobów
 	 */
 	static
 	{
-		Resource testedResource = null; // zasób w trakcie testowania
 		successful = true;
 		try
 		{
-			// czytanie pliku
-			// UWAGA!!! FileInputStream nie wie, jak sukcesywnie UTF-8. Ten wie,
-			// tego lubimy.
-			bundle = new PropertyResourceBundle(new FileReader(
-					getResourcesFilePath()));
+			// ikona
+			ClassLoader classLoader = Resources.class.getClassLoader();
+			URL imgURL;
+			imgURL = classLoader.getResource(iconFilename);
+			if (imgURL == null)
+			{
+				Debug.logErr("Brak ikony!");
+				throw new MissingResourceException("Błąd szukania ikony",
+						Resources.class.toString(), iconFilename);
+			}
+			ImageIcon imageIcon = new ImageIcon(imgURL);
+			icon = imageIcon.getImage();
+			if (icon == null)
+			{
+				Debug.logErr("Nie znaleziono ikony!");
+				successful = false;
+			}
+
+			bundle = ResourceBundle.getBundle(resourceBundleFilename);
 			for (Resource resource : Resource.values())
 			{
-				testedResource = resource;
-				bundle.getString(resource.getKey());
+				if (!bundle.containsKey(resource.getKey()))
+				{
+					// błąd, brak zdefiniowanego klucza!
+					successful = false;
+					Debug.logErr("Błąd zasobów! Brak klucza "
+							+ resource.getKey());
+					throw new MissingResourceException("Błąd szukania klucza",
+							Resources.class.toString(), resource.getKey());
+				}
 			}
-		} catch (IOException e)
-		{
-			// błąd czytania pliku
-			successful = false;
-			bundle = null;
-			Debug.logErr("Nie znaleziono zasobów!");
+			Debug.logSuccess("Zasoby są poprawne");
 		} catch (MissingResourceException e)
 		{
-			// brak niektórych wartości
-			successful = false;
-			Debug.logErr("Zasoby są błędne! Brak klucza: "
-					+ testedResource.getKey());
-		}
-
-		// czytanie ikony
-		ClassLoader classLoader = Resources.class.getClassLoader();
-		URL imgURL;
-		imgURL = (classLoader.getResource(iconFilename));
-		icon = new ImageIcon(imgURL).getImage();
-		if (icon == null)
-		{
-			Debug.logErr("Nie znaleziono ikony!");
 			successful = false;
 		}
 
@@ -130,20 +129,5 @@ public final class Resources
 	{
 		// FIXME: Jeśli nie znalazł. zwraca domyślną
 		return icon;
-	}
-
-	/**
-	 * Znajdź plik zasobów relatywnie do uruchomionego programu
-	 * 
-	 * @return Bezwzględna ścieżka do pliku zasobów
-	 */
-	private static String getResourcesFilePath()
-	{
-		// FIXME: Dlaczego plik musi być w takim miejscu? Chcę, aby był obok tej
-		// klasy i kopiował się przy kompilacji
-		ClassLoader classLoader = Resources.class.getClassLoader();
-		File classpathRoot = new File(classLoader.getResource(
-				resourceBundleFilename).getPath());
-		return classpathRoot.getPath();
 	}
 }

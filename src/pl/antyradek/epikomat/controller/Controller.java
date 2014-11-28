@@ -52,11 +52,6 @@ public class Controller
 		model = new Model();
 		strategyMap = new HashMap<Class<? extends AppAction>, Strategy>();
 		addStategies();
-		if (!Resources.isGood())
-		{
-			Debug.logErr("Błąd zasobów!");
-			System.exit(-1);
-		}
 
 	}
 
@@ -67,6 +62,11 @@ public class Controller
 	 */
 	public static void main(String[] args)
 	{
+		if (!Resources.isGood())
+		{
+			Debug.logErr("Błąd zasobów!");
+			System.exit(-1);
+		}
 		Controller controller = new Controller();
 		while (controller.alive)
 		{
