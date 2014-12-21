@@ -1,8 +1,13 @@
 package pl.antyradek.epikomat.resources;
 
 import java.awt.Image;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
@@ -24,7 +29,7 @@ public final class Resources
 	private static boolean successful;
 
 	/**
-	 * Nazwa pliku zawierającego wszystkie dane
+	 * Nazwa pliku zawierającego wszystkie dane, bez rozszerzenia .properties
 	 */
 	private static final String resourceBundleFilename = "res/GUI";
 	// FIXME: Na wiele języków
@@ -75,7 +80,11 @@ public final class Resources
 				successful = false;
 			}
 
-			bundle = ResourceBundle.getBundle(resourceBundleFilename);
+			// Chciałem automagicznie, ale ktoś nie potrafi napisać narzędzi
+			// obsługujących UTF-8, taka firma na "O"
+			bundle = new PropertyResourceBundle(new FileReader(
+					getResourcesFilePath()));
+			// bundle = ResourceBundle.getBundle(resourceBundleFilename);
 			for (Resource resource : Resource.values())
 			{
 				if (!bundle.containsKey(resource.getKey()))
@@ -91,6 +100,14 @@ public final class Resources
 			Debug.logSuccess("Zasoby są poprawne");
 		} catch (MissingResourceException e)
 		{
+			successful = false;
+		} catch (FileNotFoundException e)
+		{
+			Debug.logErr("Plik zasobów nie znaleziony!");
+			successful = false;
+		} catch (IOException e)
+		{
+			Debug.logErr("Błąd Wejścia-Wyjścia przy czytaniu zasobów!");
 			successful = false;
 		}
 
@@ -129,5 +146,20 @@ public final class Resources
 	{
 		// FIXME: Jeśli nie znalazł. zwraca domyślną
 		return icon;
+	}
+
+	/**
+	 * Znajdź plik zasobów relatywnie do uruchomionego programu. To ręczne
+	 * podejście potrzebne jest, aby zamiast domyślnego czytnika użyć Reader,
+	 * który obsługuje UTF-8.
+	 * 
+	 * @return Bezwzględna ścieżka do pliku zasobów
+	 */
+	private static String getResourcesFilePath()
+	{
+		ClassLoader classLoader = Resources.class.getClassLoader();
+		File classpathRoot = new File(classLoader.getResource(
+				resourceBundleFilename + ".properties").getPath());
+		return classpathRoot.getPath();
 	}
 }

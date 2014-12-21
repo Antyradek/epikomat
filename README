@@ -1,14 +1,31 @@
 Epikomat
 Epicki Automat Epickości (w epice i epickiej Javie)
 
-Czyli gra tekstowa z interfejsem graficznym, napisana w Javie
-Widzisz i posiadasz przedmioty, manipulując nimi na różne sposoby rozwiązujesz zagadki
-Zobaczymy, co z tego będzie...
+Czyli gra tekstowa z interfejsem graficznym, w Javie
+Na pewno znasz gry tekstowe, gdzie sterowanie odbywa się za pomocą komend? Tutaj nic się nie zmienia,
+poza faktem, że zamiast tego naciskasz guziki.
 
+To daje możliwości dowolnych komend (wpisz kod) i zupełnie inną grę, gdyż dostępne akcje są wyświetlone
+od razu.
 
 Projekt na Programowanie Zdarzeniowe w Politechnice Warszawskiej
 (nie, kod nie będzie po angielsku - żyjemy w Polsce)
 
-Będziesz musiał zrobić skrót do pliku zasobów do bin/
+Kompilacja i uruchamianie:
+ściągnij i rozpakuj projekt
+$ ant
+$ cd bin
+$ java pl.antyradek.epikomat.controller.Controller
+
+Wymaga java 1.8, ale jeśli zmienisz numerki w build.xml na 1.7, też powinno zadziałać.
+Nie działa w 1.6 i niżej. 
 
 Radosław Świątkiewicz
+(Antyradek)
+(ARQ)
+
+  _   ___  __
+ /_\ |  / //\\
+// \\||\\ \\/\\
+(nie mogłem się powstrzymać...)
+

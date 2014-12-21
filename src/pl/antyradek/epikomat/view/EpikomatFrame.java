@@ -1,15 +1,21 @@
 package pl.antyradek.epikomat.view;
 
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InvalidClassException;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import pl.antyradek.epikomat.resources.Resource;
 import pl.antyradek.epikomat.resources.Resources;
@@ -33,20 +39,76 @@ class EpikomatFrame extends JFrame
 	 */
 	private final View view;
 
+	/**
+	 * Pole tekstowe, gdzie wyświetla się główny tekst gry
+	 */
+	private final JTextArea logArea;
+
 	public EpikomatFrame(View view)
 	{
+		// stworzenie okna
 		super(Resources.getString(Resource.WINDOW_TITLE));
 		this.view = view;
-
+		// zamykaniem zajmujemy się w osobno poprzez wysłanie akcji do kolejki
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-		JLabel label = new JLabel("Zawartość");
+		// stworzenie logu w TextArea najlepiej się sprawuje w kwestii zawijania
+		// wierszy w tym przypadku
+		logArea = new JTextArea();
+		logArea.setLineWrap(true);
+		logArea.setWrapStyleWord(true); // zawijenie wierszy na słowach
+		logArea.setEditable(false);
+		JScrollPane logScrollPane = new JScrollPane(logArea,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		logArea.setText("<html><p>Zawartość Druga Trzecia Zawartość Druga Trzecia Zawartość Druga Trzecia Zawartość Druga Trzecia Zawartość Druga Trzecia Zawartość Druga Trzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia </p></html>");
+		// logArea.setText("Log");
+		// logArea.setVerticalAlignment(JLabel.NORTH);
+		// logArea.setPreferredSize(getPreferredSize());
+
+		// stworzenie inwentarzu
+		JComponent inventory = new JLabel("Ekwipunek");
+		inventory.setBackground(Color.ORANGE); // test na pokazanie
+
+		// stworzenie przedmiotów z pokoju
+		JComponent gameObjectsList = new JLabel("Przedmioty");
+		gameObjectsList.setBackground(Color.PINK);
+
+		// stworzenie menu
 		buildMenuBar();
 
-		getContentPane().add(label);
+		// ustawienie Layout Manager
+		getContentPane().setLayout(new GridBagLayout());
+		GridBagConstraints constaints = new GridBagConstraints();
+		// dodanie logu
+		constaints.weightx = 3;
+		constaints.weighty = 1;
+		constaints.fill = GridBagConstraints.BOTH;
+		constaints.gridwidth = 2;
+		constaints.gridx = 0;
+		constaints.gridy = 0;
+		getContentPane().add(logScrollPane, constaints);
+		// dodanie przedmiotów
+		constaints.fill = GridBagConstraints.BOTH;
+		constaints.gridwidth = 1;
+		constaints.weightx = 1;
+		constaints.weighty = 1;
+		constaints.gridx = 2;
+		constaints.gridy = 0;
+		getContentPane().add(gameObjectsList, constaints);
+		// dodanie ekwipunku
+		constaints.fill = GridBagConstraints.BOTH;
+		constaints.gridwidth = 1;
+		constaints.weightx = 1;
+		constaints.weighty = 1;
+		constaints.gridx = 3;
+		constaints.gridy = 0;
+		getContentPane().add(inventory, constaints);
 
 		pack();
-		setSize(512, 256);
+		// okno na pełnym ekranie
+		setExtendedState(MAXIMIZED_BOTH);
 		setVisible(true);
 	}
 
@@ -112,5 +174,25 @@ class EpikomatFrame extends JFrame
 				Resources.getString(Resource.AUTHORS_TEXT),
 				Resources.getString(Resource.AUTHORS_MENU_ITEM_TEXT),
 				JOptionPane.PLAIN_MESSAGE);
+	}
+
+	/**
+	 * Dodaj dane do logu
+	 * 
+	 * @param newLog
+	 */
+	public void appendLog(String appendText)
+	{
+		logArea.setText(logArea.getText() + "\n" + appendText);
+	}
+
+	/**
+	 * Ustaw log zupełnie na nowo usuwając poprzednią wartość
+	 * 
+	 * @param newtext
+	 */
+	public void setLog(String newtext)
+	{
+		logArea.setText(newtext);
 	}
 }

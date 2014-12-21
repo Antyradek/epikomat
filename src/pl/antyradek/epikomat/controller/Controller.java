@@ -53,6 +53,9 @@ public class Controller
 		strategyMap = new HashMap<Class<? extends AppAction>, Strategy>();
 		addStategies();
 
+		// startuj grę TODO ekran wybierania
+		model.startGame(0); // puki co
+		view.setState(model.getInitialState());
 	}
 
 	/**

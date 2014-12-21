@@ -10,6 +10,7 @@ import javax.swing.UIManager;
 import pl.antyradek.epikomat.controller.AppAction;
 import pl.antyradek.epikomat.controller.AppCloseAction;
 import pl.antyradek.epikomat.debug.Debug;
+import pl.antyradek.epikomat.gameobjects.Response;
 import pl.antyradek.epikomat.resources.Resources;
 
 /**
@@ -78,6 +79,16 @@ public class View
 	}
 
 	/**
+	 * Usaw nowy stan widoku
+	 * 
+	 * @param newState
+	 */
+	public void setState(Response newState)
+	{
+		addLog(newState.getLogAppend(), newState.getClearsLog());
+	}
+
+	/**
 	 * Zamknij okno. Ta matoda działa, gdy naciśniemy 'X'.
 	 */
 	private void closeWindow()
@@ -99,5 +110,33 @@ public class View
 	public void dispose()
 	{
 		frame.dispose();
+	}
+
+	/**
+	 * Dodaj dane do logu w bezpieczny wątkowo sposób
+	 * 
+	 * @param textToAppend
+	 *            Tekst do dodania
+	 * @param clear
+	 *            Czy usunąć cały log przedtem?
+	 */
+	private void addLog(String textToAppend, boolean clear)
+	{
+		SwingUtilities.invokeLater(new Runnable()
+		{
+
+			@Override
+			public void run()
+			{
+				if (clear)
+				{
+					frame.setLog(textToAppend);
+				} else
+				{
+					frame.appendLog(textToAppend);
+				}
+
+			}
+		});
 	}
 }
