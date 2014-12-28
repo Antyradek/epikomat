@@ -49,6 +49,16 @@ public class Room
 	}
 
 	/**
+	 * Usuń z listy ten przedmiot
+	 * 
+	 * @param gameObject
+	 */
+	public void remove(GameObject gameObject)
+	{
+		list.remove(gameObject);
+	}
+
+	/**
 	 * Zwraca wszystkie dodane przedmioty do tego pokoju
 	 * 
 	 * @return Tablica przedmiotów dodanych za pomocą add()

@@ -17,6 +17,11 @@ public abstract class GameObject
 	protected final Game game;
 
 	/**
+	 * Jeśli przedmiot jest niewidoczny, nie wyświetla się w liście przedmiotów
+	 */
+	protected boolean isVisible;
+
+	/**
 	 * Przedmiot będzie korzystał z tej gry do zasobów
 	 * 
 	 * @param game
@@ -25,6 +30,7 @@ public abstract class GameObject
 	public GameObject(Game game)
 	{
 		this.game = game;
+		isVisible = true;
 	}
 
 	/**
@@ -50,4 +56,14 @@ public abstract class GameObject
 	 * @return Dopisanie do logu
 	 */
 	public abstract Response executeAction(int actionIndex);
+
+	/**
+	 * Ustaw widoczność przedmiotu
+	 * 
+	 * @param visible
+	 */
+	public void setVisible(boolean visible)
+	{
+		isVisible = visible;
+	}
 }

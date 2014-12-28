@@ -1,5 +1,6 @@
 package pl.antyradek.epikomat.model;
 
+import pl.antyradek.epikomat.gameobjects.Painting;
 import pl.antyradek.epikomat.gameobjects.Response;
 import pl.antyradek.epikomat.gameobjects.WashingMachine;
 
@@ -29,6 +30,8 @@ public class WashingMachineAdventure extends Game
 		startingRoom = new Room(getResource("StartingRoomDescription"));
 		setCurrentRoom(startingRoom);
 		startingRoom.add(startingWM);
+		Painting painting = new Painting(this);
+		startingRoom.add(painting);
 	}
 
 	/**

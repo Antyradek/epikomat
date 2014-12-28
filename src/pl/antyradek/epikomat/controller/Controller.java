@@ -47,7 +47,7 @@ public class Controller
 	public Controller()
 	{
 		alive = true;
-		queue = new LinkedBlockingQueue<>();
+		queue = new LinkedBlockingQueue<AppAction>();
 		view = new View(queue);
 		model = new Model();
 		strategyMap = new HashMap<Class<? extends AppAction>, Strategy>();

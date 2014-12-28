@@ -1,12 +1,14 @@
 package pl.antyradek.epikomat.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InvalidClassException;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,7 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 
 import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.resources.Resource;
@@ -86,6 +87,8 @@ class EpikomatFrame extends JFrame
 
 		// stworzenie przedmiotów z pokoju
 		gameObjectsList = new JPanel();
+		gameObjectsList.setLayout(new BoxLayout(gameObjectsList,
+				BoxLayout.Y_AXIS));
 		resetGameObjectList();
 		JScrollPane gameObjectsListScrollPane = new JScrollPane(
 				gameObjectsList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -199,7 +202,7 @@ class EpikomatFrame extends JFrame
 	 */
 	public void appendLog(String appendText)
 	{
-		logArea.setText(logArea.getText() + "\n" + appendText);
+		logArea.setText(logArea.getText() + "\n\n" + appendText);
 	}
 
 	/**
@@ -223,7 +226,11 @@ class EpikomatFrame extends JFrame
 	public void addGameObject(String name, String[] actions)
 	{
 		JPanel newJpanel = new JPanel();
+		newJpanel.setLayout(new BoxLayout(newJpanel, BoxLayout.Y_AXIS));
+		newJpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JLabel nameLabel = new JLabel(name);
+		// nameLabel.setMaximumSize(newJpanel.getMaximumSize());
+		nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		newJpanel.add(nameLabel);
 		for (int actionIndex = 0; actionIndex < actions.length; actionIndex++)
 		{
@@ -239,19 +246,12 @@ class EpikomatFrame extends JFrame
 					int gameObjectIndex = actionButton.getGameObjectIndex();
 					int actionIndex = actionButton.getActionIndex();
 
-					SwingUtilities.invokeLater(new Runnable()
-					{
-
-						@Override
-						public void run()
-						{
-							// TODO tutaj się blokuje
-							view.sendActionToQueue(gameObjectIndex, actionIndex);
-						}
-					});
+					view.sendActionToQueue(gameObjectIndex, actionIndex);
 
 				}
 			});
+			// button.setMaximumSize(gameObjectsList.getSize());
+			button.setAlignmentX(Component.CENTER_ALIGNMENT);
 			newJpanel.add(button);
 		}
 
@@ -272,6 +272,8 @@ class EpikomatFrame extends JFrame
 	public void resetGameObjectList()
 	{
 		gameObjectsCount = 0;
-		gameObjectsList.removeAll();
+		// jeśli to jest, to blokuje się interfejs
+		// O wiele dziwniejsze jest to, że działa bez tego
+		// gameObjectsList.removeAll();
 	}
 }

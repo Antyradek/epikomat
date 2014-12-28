@@ -8,6 +8,7 @@ import pl.antyradek.epikomat.model.Game;
  * przechodzić między sobą. Takie rozwiązanie jest długie i nieelastyczne.
  * Pozwala jedynie na łatwą rozbudowę.
  * 
+ * 
  * @author arq
  *
  */
