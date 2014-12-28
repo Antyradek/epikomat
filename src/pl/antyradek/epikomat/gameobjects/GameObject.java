@@ -26,4 +26,28 @@ public abstract class GameObject
 	{
 		this.game = game;
 	}
+
+	/**
+	 * Zwraca nazwę przedmiotu, ta nazwa używana jest do wyświetlenia w GUI
+	 * 
+	 * @return Nazwa przedmotu
+	 */
+	public abstract String getGameObjectName();
+
+	/**
+	 * Zwraca nazwy akcji w kolejności. Jeśli ten indeks zostanie wysłany z
+	 * powrotem, wykonana zostanie określona akcja.
+	 * 
+	 * @return
+	 */
+	public abstract String[] getActionNames();
+
+	/**
+	 * Wykonuje akcję o indeksie nazwy pobranej z getActionNames()
+	 * 
+	 * @param actionIndex
+	 *            Numer w tablicy nazw
+	 * @return Dopisanie do logu
+	 */
+	public abstract Response executeAction(int actionIndex);
 }

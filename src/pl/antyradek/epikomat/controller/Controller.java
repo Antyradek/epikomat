@@ -99,6 +99,8 @@ public class Controller
 	private void addStategies()
 	{
 		strategyMap.put(AppCloseAction.class, new AppCloseStrategy(this));
+		strategyMap.put(ViewResponseAction.class,
+				new ViewResponseStrategy(this));
 	}
 
 	/**
@@ -108,6 +110,13 @@ public class Controller
 	{
 		alive = false;
 		view.dispose();
+	}
+
+	public void executeAction(ViewResponseAction action)
+	{
+		Debug.log("Wykonano akcję nr: " + action.getActionIndex()
+				+ " na przedmiocie nr: " + action.getGameObjectIndex());
+		view.setState(model.executeAction(action));
 	}
 
 }

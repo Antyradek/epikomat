@@ -1,5 +1,6 @@
 package pl.antyradek.epikomat.model;
 
+import pl.antyradek.epikomat.controller.ViewResponseAction;
 import pl.antyradek.epikomat.gameobjects.Response;
 
 /**
@@ -58,5 +59,16 @@ public class Model
 	public Response getInitialState()
 	{
 		return currentGame.getInitialState();
+	}
+
+	/**
+	 * Wykonaj akcję na działającej grze
+	 * 
+	 * @param action
+	 * @return
+	 */
+	public Response executeAction(ViewResponseAction action)
+	{
+		return currentGame.executeAction(action);
 	}
 }

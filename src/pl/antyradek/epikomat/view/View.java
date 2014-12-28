@@ -9,6 +9,7 @@ import javax.swing.UIManager;
 
 import pl.antyradek.epikomat.controller.AppAction;
 import pl.antyradek.epikomat.controller.AppCloseAction;
+import pl.antyradek.epikomat.controller.ViewResponseAction;
 import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.gameobjects.Response;
 import pl.antyradek.epikomat.resources.Resources;
@@ -41,7 +42,7 @@ public class View
 		} catch (Exception e)
 		{
 			// Domyślnie spada na Metal
-			Debug.logErr("Nie może ustawić odpowiedzniego LF dla systemu");
+			Debug.logErr("Nie może ustawić odpowiedzniego L&F dla systemu");
 		}
 		// zbuduj ramkę w bezpiecznym wątku
 		SwingUtilities.invokeLater(new Runnable()
@@ -52,11 +53,6 @@ public class View
 				buildFrame();
 			}
 		});
-		// dodaj akcję zamykania okna
-		/*
-		 * frame.addWindowListener(new WindowAdapter() { public void
-		 * windowClosing(WindowEvent e) { closeWindow(); } });
-		 */
 
 	}
 
@@ -86,10 +82,27 @@ public class View
 	public void setState(Response newState)
 	{
 		addLog(newState.getLogAppend(), newState.getClearsLog());
+		int gameObjectsCount = newState.getGameObjectsCount();
+
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				frame.resetGameObjectList();
+				for (int i = 0; i < gameObjectsCount; i++)
+				{
+					frame.addGameObject(newState.getNameOfGameObject(i),
+							newState.getActionsOfGameObject(i));
+				}
+			}
+		});
+		Debug.log("Polecenie wyświetlenia " + gameObjectsCount
+				+ " przedmiotów, ustawiono GUI");
 	}
 
 	/**
-	 * Zamknij okno. Ta matoda działa, gdy naciśniemy 'X'.
+	 * Zamknij okno. Ta metoda działa, gdy naciśniemy 'X'.
 	 */
 	private void closeWindow()
 	{
@@ -138,5 +151,26 @@ public class View
 
 			}
 		});
+	}
+
+	/**
+	 * Dodaj do kolejki informację o akcji
+	 * 
+	 * @param gameObjectIndex
+	 * @param actionIndex
+	 */
+	public void sendActionToQueue(int gameObjectIndex, int actionIndex)
+	{
+
+		try
+		{
+			queue.put(new ViewResponseAction(gameObjectIndex, actionIndex));
+		} catch (InterruptedException e)
+		{
+			Debug.logErr("Błąd wkładania akcji do kolejki. Wyobrażasz sobie dalszą grę, bo ja nie.");
+			e.printStackTrace();
+		}
+		Debug.log("Do kolejki wysłano akcję: " + gameObjectIndex + " "
+				+ actionIndex);
 	}
 }

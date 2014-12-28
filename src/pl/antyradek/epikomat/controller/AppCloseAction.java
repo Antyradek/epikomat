@@ -10,9 +10,4 @@ package pl.antyradek.epikomat.controller;
 public class AppCloseAction extends AppAction
 {
 
-	public AppCloseAction()
-	{
-		// TODO Auto-generated constructor stub
-	}
-
 }

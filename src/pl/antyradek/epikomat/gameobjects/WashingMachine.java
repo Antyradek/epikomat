@@ -181,4 +181,38 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 		}
 
 	}
+
+	@Override
+	public String getGameObjectName()
+	{
+		return game.getResource("WashingMachineName");
+	}
+
+	@Override
+	public String[] getActionNames()
+	{
+		String[] ret = new String[4];
+		ret[0] = game.getResource("WashingMachineActionNameOpen");
+		ret[1] = game.getResource("WashingMachineActionNameClose");
+		ret[2] = game.getResource("WashingMachineActionNameON");
+		ret[3] = game.getResource("WashingMachineActionNameOFF");
+		return ret;
+	}
+
+	@Override
+	public Response executeAction(int actionIndex)
+	{
+		switch (actionIndex)
+		{
+		case 0:
+			return open();
+		case 1:
+			return close();
+		case 2:
+			return turnON();
+		case 3:
+			return turnOFF();
+		}
+		return null;
+	}
 }

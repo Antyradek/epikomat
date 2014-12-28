@@ -14,9 +14,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
+import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.resources.Resource;
 import pl.antyradek.epikomat.resources.Resources;
 
@@ -44,6 +47,16 @@ class EpikomatFrame extends JFrame
 	 */
 	private final JTextArea logArea;
 
+	/**
+	 * Panel do wyświetlania przedmiotów w pokoju
+	 */
+	private JPanel gameObjectsList;
+
+	/**
+	 * Ilość przedmiotów wyświetlanych
+	 */
+	private int gameObjectsCount;
+
 	public EpikomatFrame(View view)
 	{
 		// stworzenie okna
@@ -67,13 +80,16 @@ class EpikomatFrame extends JFrame
 		// logArea.setVerticalAlignment(JLabel.NORTH);
 		// logArea.setPreferredSize(getPreferredSize());
 
-		// stworzenie inwentarzu
-		JComponent inventory = new JLabel("Ekwipunek");
+		// stworzenie ekwipunku
+		JComponent inventory = new JPanel();
 		inventory.setBackground(Color.ORANGE); // test na pokazanie
 
 		// stworzenie przedmiotów z pokoju
-		JComponent gameObjectsList = new JLabel("Przedmioty");
-		gameObjectsList.setBackground(Color.PINK);
+		gameObjectsList = new JPanel();
+		resetGameObjectList();
+		JScrollPane gameObjectsListScrollPane = new JScrollPane(
+				gameObjectsList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		// stworzenie menu
 		buildMenuBar();
@@ -96,7 +112,7 @@ class EpikomatFrame extends JFrame
 		constaints.weighty = 1;
 		constaints.gridx = 2;
 		constaints.gridy = 0;
-		getContentPane().add(gameObjectsList, constaints);
+		getContentPane().add(gameObjectsListScrollPane, constaints);
 		// dodanie ekwipunku
 		constaints.fill = GridBagConstraints.BOTH;
 		constaints.gridwidth = 1;
@@ -194,5 +210,68 @@ class EpikomatFrame extends JFrame
 	public void setLog(String newtext)
 	{
 		logArea.setText(newtext);
+	}
+
+	/**
+	 * Dodaj do panelu przedmiotów
+	 * 
+	 * @param name
+	 *            Przedmiot o tej nazwie
+	 * @param actions
+	 *            Z tymi akcjami
+	 */
+	public void addGameObject(String name, String[] actions)
+	{
+		JPanel newJpanel = new JPanel();
+		JLabel nameLabel = new JLabel(name);
+		newJpanel.add(nameLabel);
+		for (int actionIndex = 0; actionIndex < actions.length; actionIndex++)
+		{
+			ActionButton button = new ActionButton(actions[actionIndex],
+					gameObjectsCount, actionIndex);
+			button.addActionListener(new ActionListener()
+			{
+
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					ActionButton actionButton = (ActionButton) e.getSource();
+					int gameObjectIndex = actionButton.getGameObjectIndex();
+					int actionIndex = actionButton.getActionIndex();
+
+					SwingUtilities.invokeLater(new Runnable()
+					{
+
+						@Override
+						public void run()
+						{
+							// TODO tutaj się blokuje
+							view.sendActionToQueue(gameObjectIndex, actionIndex);
+						}
+					});
+
+				}
+			});
+			newJpanel.add(button);
+		}
+
+		gameObjectsList.add(newJpanel);
+		gameObjectsCount++;
+		// debug
+		String actionsCount = "";
+		for (String action : actions)
+		{
+			actionsCount += " \"" + action + "\"";
+		}
+		Debug.log("Wyświetlanie: \"" + name + "\" z akcjami: " + actionsCount);
+	}
+
+	/**
+	 * Wyczyść listę przedmiotów
+	 */
+	public void resetGameObjectList()
+	{
+		gameObjectsCount = 0;
+		gameObjectsList.removeAll();
 	}
 }

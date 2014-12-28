@@ -1,5 +1,8 @@
 package pl.antyradek.epikomat.gameobjects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Przedmiot generuje zwrot posiadający informacje do Modelu i jak ma się
  * zmienić Widok
@@ -20,6 +23,11 @@ public class Response
 	private boolean clearsLog;
 
 	/**
+	 * Tablica nazw przedmuotów do wyświetlenia
+	 */
+	private List<ResponseGameObject> gameObjects;
+
+	/**
 	 * Nic się nie zmieni w przedmiotach, jedynie zostanie coś dopisane do logu
 	 * 
 	 * @param logAppend
@@ -29,6 +37,53 @@ public class Response
 	{
 		this.logAppend = logAppend;
 		clearsLog = false;
+		gameObjects = new ArrayList<ResponseGameObject>();
+	}
+
+	/**
+	 * Dodaj przedmiot do listy wyświetlanych
+	 * 
+	 * @param name
+	 *            Nazwa przedmiotu
+	 * @param actions
+	 *            Nazwy akcji
+	 */
+	public void addGameObject(String name, String[] actions)
+	{
+		gameObjects.add(new ResponseGameObject(name, actions));
+	}
+
+	/**
+	 * Zwróć ilość przedmiotów do wyświetlenia
+	 * 
+	 * @return
+	 */
+	public int getGameObjectsCount()
+	{
+		return gameObjects.size();
+	}
+
+	/**
+	 * Zwróć tablicę akcji dla tego przedmiotu
+	 * 
+	 * @param index
+	 *            Indeks przedmiotu
+	 * @return Tablica akcji do wyświetlenia
+	 */
+	public String[] getActionsOfGameObject(int index)
+	{
+		return gameObjects.get(index).getActions();
+	}
+
+	/**
+	 * Zwróć nazwę tego przedmiotu
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public String getNameOfGameObject(int index)
+	{
+		return gameObjects.get(index).getName();
 	}
 
 	/**

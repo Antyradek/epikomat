@@ -27,6 +27,7 @@ public class WashingMachineAdventure extends Game
 	{
 		WashingMachine startingWM = new WashingMachine(this);
 		startingRoom = new Room(getResource("StartingRoomDescription"));
+		setCurrentRoom(startingRoom);
 		startingRoom.add(startingWM);
 	}
 
@@ -43,8 +44,11 @@ public class WashingMachineAdventure extends Game
 	@Override
 	public Response getInitialState()
 	{
+		// początkowy opis pokoju
 		Response initRes = new Response(startingRoom.getRoomDescription());
 		initRes.setClearsLog(true);
+		// przedmioty w pierwszym pokoju
+		initRes = startingRoom.addGameObjectsList(initRes);
 		return initRes;
 	}
 }

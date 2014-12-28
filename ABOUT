@@ -1,0 +1,7 @@
+Ten plik wyjaśnia działanie programu.
+
+Controller wyciąga odpowiednie polecenie z kolejki i albo wysyła do Modelu, albo sam wykonuje.
+Jeśli została wysłana do Modelu, model sprawdza, czego dotyczy i jeśli jest to wykonanie akcji, 
+wysyła do odpowiedniego GameObject, przełącza pokój itp.
+W odpowiedzi dostaje tekst do dopisania do logu.
+Następnie odświeża wszystkie przedmioty pytając się ich o akcje.

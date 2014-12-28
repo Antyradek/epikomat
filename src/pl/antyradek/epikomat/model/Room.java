@@ -3,7 +3,10 @@ package pl.antyradek.epikomat.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.antyradek.epikomat.controller.ViewResponseAction;
+import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.gameobjects.GameObject;
+import pl.antyradek.epikomat.gameobjects.Response;
 
 /**
  * Jeden pokój w którym znajdują się wszystkie przedmioty. Gracz przechodzi z
@@ -63,5 +66,40 @@ public class Room
 	public String getRoomDescription()
 	{
 		return roomDescription;
+	}
+
+	/**
+	 * Dodaje informacje o przedmiotach w pokoju
+	 * 
+	 * @param rawResponse
+	 * @return Zmieniona wartość
+	 */
+	public Response addGameObjectsList(Response rawResponse)
+	{
+		for (GameObject gameObject : list)
+		{
+			rawResponse.addGameObject(gameObject.getGameObjectName(),
+					gameObject.getActionNames());
+		}
+		return rawResponse;
+	}
+
+	/**
+	 * Wykonuje akcję na przedmiotach w pokoju
+	 * 
+	 * @param action
+	 * @return Dane o wykonaniu na przedmiocie
+	 */
+	public Response executeAction(ViewResponseAction action)
+	{
+		int gameObjectIndex = action.getGameObjectIndex();
+		int actionIndex = action.getActionIndex();
+		// przedmion na którym wykonano akcję
+		GameObject wantedGameObject = list.get(gameObjectIndex);
+		// znowu pobiera nazwy dla logu
+		String[] actionNames = wantedGameObject.getActionNames();
+		Debug.log("Wykonywanie akcji: " + actionNames[actionIndex] + " na "
+				+ wantedGameObject.getGameObjectName());
+		return wantedGameObject.executeAction(actionIndex);
 	}
 }

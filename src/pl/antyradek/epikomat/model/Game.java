@@ -1,5 +1,6 @@
 package pl.antyradek.epikomat.model;
 
+import pl.antyradek.epikomat.controller.ViewResponseAction;
 import pl.antyradek.epikomat.gameobjects.Response;
 import pl.antyradek.epikomat.resources.GameResources;
 
@@ -74,6 +75,22 @@ public abstract class Game
 	protected Room getCurrentRoom()
 	{
 		return currentRoom;
+	}
+
+	/**
+	 * Wykonuje akcję na obecnym pokoju
+	 * 
+	 * @param action
+	 * @return
+	 */
+	public Response executeAction(ViewResponseAction action)
+	{
+		// informacja od przedmiotu jest niepełna, nie posiada informacji o
+		// liślie przedmiotów w pokoju
+		Response gameObjectResponse = currentRoom.executeAction(action);
+		gameObjectResponse = currentRoom.addGameObjectsList(gameObjectResponse);
+
+		return gameObjectResponse;
 	}
 
 }
