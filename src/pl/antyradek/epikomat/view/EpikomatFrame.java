@@ -54,6 +54,11 @@ class EpikomatFrame extends JFrame
 	private JPanel gameObjectsList;
 
 	/**
+	 * Przewijanie
+	 */
+	private JScrollPane gameObjectsListScrollPane;
+
+	/**
 	 * Ilość przedmiotów wyświetlanych
 	 */
 	private int gameObjectsCount;
@@ -76,11 +81,6 @@ class EpikomatFrame extends JFrame
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-		logArea.setText("<html><p>Zawartość Druga Trzecia Zawartość Druga Trzecia Zawartość Druga Trzecia Zawartość Druga Trzecia Zawartość Druga Trzecia Zawartość Druga Trzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia ZawartośćDrugaTrzecia </p></html>");
-		// logArea.setText("Log");
-		// logArea.setVerticalAlignment(JLabel.NORTH);
-		// logArea.setPreferredSize(getPreferredSize());
-
 		// stworzenie ekwipunku
 		JComponent inventory = new JPanel();
 		inventory.setBackground(Color.ORANGE); // test na pokazanie
@@ -89,10 +89,10 @@ class EpikomatFrame extends JFrame
 		gameObjectsList = new JPanel();
 		gameObjectsList.setLayout(new BoxLayout(gameObjectsList,
 				BoxLayout.Y_AXIS));
-		resetGameObjectList();
-		JScrollPane gameObjectsListScrollPane = new JScrollPane(
-				gameObjectsList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		gameObjectsListScrollPane = new JScrollPane(gameObjectsList,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		resetGameObjectList();
 
 		// stworzenie menu
 		buildMenuBar();
@@ -275,5 +275,10 @@ class EpikomatFrame extends JFrame
 		// jeśli to jest, to blokuje się interfejs
 		// O wiele dziwniejsze jest to, że działa bez tego
 		// gameObjectsList.removeAll();
+		// gameObjectsList.validate();
+		gameObjectsList = new JPanel();
+		gameObjectsList.setLayout(new BoxLayout(gameObjectsList,
+				BoxLayout.Y_AXIS));
+		gameObjectsListScrollPane.setViewportView(gameObjectsList);
 	}
 }

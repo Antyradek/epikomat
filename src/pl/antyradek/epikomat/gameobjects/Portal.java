@@ -1,6 +1,7 @@
 package pl.antyradek.epikomat.gameobjects;
 
 import pl.antyradek.epikomat.model.Game;
+import pl.antyradek.epikomat.model.Room;
 
 /**
  * Portal w pralce do którego będzie można przejść (w przyszłości)
@@ -8,12 +9,24 @@ import pl.antyradek.epikomat.model.Game;
  * @author arq
  *
  */
-public class Portal extends GameObject implements Examinable
+public class Portal extends GameObject implements Examinable, Walkable
 {
+	/**
+	 * Inny pokój do którego mamy przejść
+	 */
+	Room otherRoom;
 
-	public Portal(Game game)
+	/**
+	 * Portal z przejściem do innego pokoju
+	 * 
+	 * @param game
+	 * @param otherRoom
+	 *            Pokój do którego przechodzimy
+	 */
+	public Portal(Game game, Room otherRoom)
 	{
 		super(game);
+		this.otherRoom = otherRoom;
 	}
 
 	@Override
@@ -25,24 +38,36 @@ public class Portal extends GameObject implements Examinable
 	@Override
 	public String[] getActionNames()
 	{
-		String[] ret = new String[1];
+		String[] ret = new String[2];
 		ret[0] = game.getResource("PortalActionNameExamine");
+		ret[1] = game.getResource("PortalActionNameWalk");
 		return ret;
 	}
 
 	@Override
 	public Response executeAction(int actionIndex)
 	{
-		if (actionIndex == 0)
+		switch (actionIndex)
+		{
+		case 0:
 			return examine();
-		else
-			return null;
+		case 1:
+			return walkThrough();
+		}
+		return null;
 	}
 
 	@Override
 	public Response examine()
 	{
 		return new Response(game.getResource("PortalDescription"));
+	}
+
+	@Override
+	public Response walkThrough()
+	{
+		game.setCurrentRoom(otherRoom);
+		return new Response(game.getResource("PortalWalk"));
 	}
 
 }

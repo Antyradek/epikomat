@@ -15,7 +15,7 @@ public class Response
 	/**
 	 * Dane do dopisania do logu
 	 */
-	private final String logAppend;
+	private String logAppend;
 
 	/**
 	 * Czy czyści log przed dodaniem nowego tekstu?
@@ -114,5 +114,15 @@ public class Response
 	public boolean getClearsLog()
 	{
 		return clearsLog;
+	}
+
+	/**
+	 * Dodaj kolejną linię do logu
+	 * 
+	 * @param log
+	 */
+	public void appendLog(String log)
+	{
+		logAppend += " " + log;
 	}
 }

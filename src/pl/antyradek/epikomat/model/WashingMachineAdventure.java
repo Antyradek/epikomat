@@ -1,6 +1,8 @@
 package pl.antyradek.epikomat.model;
 
+import pl.antyradek.epikomat.gameobjects.Clock;
 import pl.antyradek.epikomat.gameobjects.Painting;
+import pl.antyradek.epikomat.gameobjects.Portal;
 import pl.antyradek.epikomat.gameobjects.Response;
 import pl.antyradek.epikomat.gameobjects.WashingMachine;
 
@@ -18,6 +20,11 @@ public class WashingMachineAdventure extends Game
 	 */
 	private Room startingRoom;
 
+	/**
+	 * Pokój z zegarem
+	 */
+	private Room clockRoom;
+
 	public WashingMachineAdventure()
 	{
 		super("WashingMachineAdventure");
@@ -26,12 +33,22 @@ public class WashingMachineAdventure extends Game
 	@Override
 	protected void buildLevel()
 	{
-		WashingMachine startingWM = new WashingMachine(this);
 		startingRoom = new Room(getResource("StartingRoomDescription"));
-		setCurrentRoom(startingRoom);
-		startingRoom.add(startingWM);
+		clockRoom = new Room(getResource("ClockRoomDescription"));
+		// portal w pralce
+		Portal portal = new Portal(this, clockRoom);
+		// portal w zegarowym
+		Portal clockRoomPortal = new Portal(this, startingRoom);
+		WashingMachine startingWM = new WashingMachine(this, portal);
+		swapCurrentRoom(startingRoom);
 		Painting painting = new Painting(this);
+		Clock clock = new Clock(this);
+		// dodanie przedmiotów w liście
+		startingRoom.add(startingWM);
+		startingRoom.add(portal);
 		startingRoom.add(painting);
+		clockRoom.add(clockRoomPortal);
+		clockRoom.add(clock);
 	}
 
 	/**

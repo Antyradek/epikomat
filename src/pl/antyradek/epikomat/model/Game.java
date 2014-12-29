@@ -19,6 +19,11 @@ public abstract class Game
 	private final GameResources resources;
 
 	/**
+	 * Czy pokój został zmieniony i należy odświerzyć log?
+	 */
+	private boolean roomChanged;
+
+	/**
 	 * Zbuduj poziom
 	 */
 	protected abstract void buildLevel();
@@ -54,7 +59,7 @@ public abstract class Game
 	/**
 	 * Pokój w kturym gracz znajduje się obecnie
 	 */
-	Room currentRoom;
+	private Room currentRoom;
 
 	/**
 	 * Ustaw pokój
@@ -62,7 +67,21 @@ public abstract class Game
 	 * @param newRoom
 	 *            W tym pokoju będzie się teraz znajdował gracz
 	 */
-	protected void setCurrentRoom(Room newRoom)
+	public void setCurrentRoom(Room newRoom)
+	{
+		if (currentRoom != newRoom)
+		{
+			roomChanged = true;
+		}
+		currentRoom = newRoom;
+	}
+
+	/**
+	 * Zamienia pokoje nie informując nikogo o zmianie
+	 * 
+	 * @param newRoom
+	 */
+	public void swapCurrentRoom(Room newRoom)
 	{
 		currentRoom = newRoom;
 	}
@@ -89,6 +108,12 @@ public abstract class Game
 		// liślie przedmiotów w pokoju
 		Response gameObjectResponse = currentRoom.executeAction(action);
 		gameObjectResponse = currentRoom.addGameObjectsList(gameObjectResponse);
+		if (roomChanged)
+		{
+			roomChanged = false;
+			gameObjectResponse.setClearsLog(true);
+			gameObjectResponse.appendLog(currentRoom.getRoomDescription());
+		}
 
 		return gameObjectResponse;
 	}

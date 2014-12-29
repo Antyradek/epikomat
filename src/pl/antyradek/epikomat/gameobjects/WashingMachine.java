@@ -21,12 +21,19 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 	private State state;
 
 	/**
-	 * Pralka jest zamknięta i wyłączona
+	 * Portal zostanie uruchomiony, gdy otworzyć pralkę
 	 */
-	public WashingMachine(Game game)
+	private GameObject portal;
+
+	/**
+	 * Pralka jest zamknięta i wyłączona. W środku pralki jest portal.
+	 */
+	public WashingMachine(Game game, GameObject portal)
 	{
 		super(game);
 		state = new OFF();
+		this.portal = portal;
+		portal.setVisible(false);
 	}
 
 	@Override
@@ -124,6 +131,7 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 		public Response open()
 		{
 			changeState(new Opened());
+			portal.setVisible(true);
 			return new Response(game.getResource("WashingMachineOFFOpen"));
 		}
 
@@ -166,6 +174,7 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 		public Response close()
 		{
 			changeState(new OFF());
+			portal.setVisible(false);
 			return new Response(game.getResource("WashingMachineOpenedClose"));
 		}
 

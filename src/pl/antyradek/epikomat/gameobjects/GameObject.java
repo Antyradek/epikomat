@@ -19,7 +19,7 @@ public abstract class GameObject
 	/**
 	 * Jeśli przedmiot jest niewidoczny, nie wyświetla się w liście przedmiotów
 	 */
-	protected boolean isVisible;
+	private boolean isVisible;
 
 	/**
 	 * Przedmiot będzie korzystał z tej gry do zasobów
@@ -65,5 +65,15 @@ public abstract class GameObject
 	public void setVisible(boolean visible)
 	{
 		isVisible = visible;
+	}
+
+	/**
+	 * Czy ten przedmiot jest widoczny?
+	 * 
+	 * @return
+	 */
+	public boolean isVisible()
+	{
+		return isVisible;
 	}
 }

@@ -23,6 +23,12 @@ public class Room
 	private List<GameObject> list;
 
 	/**
+	 * Lista przetrzymująca wszystkie aktywne (w czasie zapytania) przedmioty,
+	 * które zostały wyświetlone.
+	 */
+	private List<GameObject> activeList;
+
+	/**
 	 * Ogólny opis pokoju w którym znajduje się gracz
 	 */
 	private String roomDescription;
@@ -33,6 +39,7 @@ public class Room
 	public Room(String roomDescription)
 	{
 		list = new ArrayList<GameObject>();
+		activeList = new ArrayList<GameObject>();
 		this.roomDescription = roomDescription;
 	}
 
@@ -86,16 +93,23 @@ public class Room
 	 */
 	public Response addGameObjectsList(Response rawResponse)
 	{
+		activeList.clear();
 		for (GameObject gameObject : list)
 		{
-			rawResponse.addGameObject(gameObject.getGameObjectName(),
-					gameObject.getActionNames());
+			if (gameObject.isVisible())
+			{
+				activeList.add(gameObject);
+				rawResponse.addGameObject(gameObject.getGameObjectName(),
+						gameObject.getActionNames());
+			}
+
 		}
 		return rawResponse;
 	}
 
 	/**
-	 * Wykonuje akcję na przedmiotach w pokoju
+	 * Wykonuje akcję na przedmiotach w pokoju, które były aktywne w trakcie
+	 * odpytywania. Kolejność jest ważna.
 	 * 
 	 * @param action
 	 * @return Dane o wykonaniu na przedmiocie
@@ -105,7 +119,7 @@ public class Room
 		int gameObjectIndex = action.getGameObjectIndex();
 		int actionIndex = action.getActionIndex();
 		// przedmion na którym wykonano akcję
-		GameObject wantedGameObject = list.get(gameObjectIndex);
+		GameObject wantedGameObject = activeList.get(gameObjectIndex);
 		// znowu pobiera nazwy dla logu
 		String[] actionNames = wantedGameObject.getActionNames();
 		Debug.log("Wykonywanie akcji: " + actionNames[actionIndex] + " na "
