@@ -3,16 +3,17 @@ package pl.antyradek.epikomat.view;
 import javax.swing.JButton;
 
 /**
- * Przycisk akcji posiadający informację o indeksie akcji i indeksie przedmiotu
+ * Przycisk akcji posiadający informację o indeksie akcji i indeksie przedmiotu.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class ActionButton extends JButton
 {
 
 	/**
-	 * 
+	 * Zaspokojenie Eclipsa (i zdaje się bezpieczeństwo jednoznacznego
+	 * odwołania)
 	 */
 	private static final long serialVersionUID = 12345L;
 
@@ -32,7 +33,9 @@ public class ActionButton extends JButton
 	 * @param name
 	 *            O tej nazwie
 	 * @param gameObjectIndex
+	 *            O tym indeksie przedmiotu
 	 * @param actionIndex
+	 *            O tym indeksie akcji
 	 */
 	public ActionButton(String name, int gameObjectIndex, int actionIndex)
 	{
@@ -41,11 +44,21 @@ public class ActionButton extends JButton
 		this.actionIndex = actionIndex;
 	}
 
+	/**
+	 * Indeks przedmiotu, jednoznacznie określa przedmiot w modelu
+	 * 
+	 * @return Indeks przedmiotu
+	 */
 	public int getGameObjectIndex()
 	{
 		return gameObjectIndex;
 	}
 
+	/**
+	 * Indeks akcji na przedmiocie, jednoznacznie określa akcję
+	 * 
+	 * @return Indeks akcji
+	 */
 	public int getActionIndex()
 	{
 		return actionIndex;

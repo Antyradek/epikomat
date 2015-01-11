@@ -1,7 +1,19 @@
 Ten plik wyjaśnia działanie programu.
 
 Controller wyciąga odpowiednie polecenie z kolejki i albo wysyła do Modelu, albo sam wykonuje.
-Jeśli została wysłana do Modelu, model sprawdza, czego dotyczy i jeśli jest to wykonanie akcji, 
-wysyła do odpowiedniego GameObject, przełącza pokój itp.
-W odpowiedzi dostaje tekst do dopisania do logu.
-Następnie odświeża wszystkie przedmioty pytając się ich o akcje.
+Wykorzystuje mapę Strategii.
+
+Jeśli informacja została wysłana do Modelu, Model wysyła do odpowiedniego GameObject. GameObject 
+wykonuje akcję zmieniając swój i innych stan, następnie tworzy odpowiedź z tekstem, która jest 
+propagowana w górę do Kontrolera. Każda warstwa dopisuje coś i zmienia. Lista przedmiotów jest 
+zapamiętana przy przechodzeniu przez Pokój, zwracana jest tablica nazw, podanie indeksu z powrotem 
+wywołuje akcję na tym przedmiocie. Numery akcji zdefiniowane są w każdym przedmiocie, tak samo 
+zwraca nazwy i oczekuje indeksu tablicy. W efekcie Widok dostaje jedynie kilka tablic Łańcuchów 
+znaków. Zwraca jedynie dwie liczby - indeksy przedmiotu i akcji w tablicy.
+
+Widok pobiera dane i wykonuje metody na oknie w bezpieczny wątkowo sposób. Aplikacja komunikuje
+się z Widokiem, a nie z ramką. 
+
+Zasoby są posortowane w katalogach pokojów, a te w katalogu gry. Każdy przedmiot posiada jeden 
+plik o nazwie klasy i końcówce ".properties". Pliki są zakodowane w UTF-8, choćby nie wiem, jak
+bardzo Eclipse się na to buntował. 

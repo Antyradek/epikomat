@@ -3,7 +3,7 @@ package pl.antyradek.epikomat.gameobjects;
 /**
  * Może być wyłączony
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public interface TurnOFFable
@@ -11,7 +11,7 @@ public interface TurnOFFable
 	/**
 	 * Spróbuj wyłączyć
 	 * 
-	 * @return
+	 * @return Dopisanie do logu, i informacja o sukcesie
 	 */
 	public Response turnOFF();
 }

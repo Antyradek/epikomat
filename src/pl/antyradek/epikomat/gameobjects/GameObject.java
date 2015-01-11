@@ -1,20 +1,30 @@
 package pl.antyradek.epikomat.gameobjects;
 
-import pl.antyradek.epikomat.model.Game;
+import java.io.FileNotFoundException;
+
+import pl.antyradek.epikomat.debug.Debug;
+import pl.antyradek.epikomat.model.Room;
+import pl.antyradek.epikomat.resources.GameResources;
 
 /**
  * Baza dla każdego przedmiotu w grze, implementacja wewnętrzna przedmiotów jest
- * dowolna, co pozwala na zwiększoną funkcjonalność kosztem obszerności kodu.
+ * dowolna, co pozwala na zwiększoną funkcjonalność kosztem obszerności kodu
+ * niestey.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public abstract class GameObject
 {
 	/**
-	 * Gra, w jakiej występuje ten przedmiot
+	 * Pokój w którym znajduje się ten przedmiot
 	 */
-	protected final Game game;
+	private final Room room;
+
+	/**
+	 * Zasoby dla tego przedmiotu
+	 */
+	private final GameResources resources;
 
 	/**
 	 * Jeśli przedmiot jest niewidoczny, nie wyświetla się w liście przedmiotów
@@ -22,14 +32,29 @@ public abstract class GameObject
 	private boolean isVisible;
 
 	/**
-	 * Przedmiot będzie korzystał z tej gry do zasobów
+	 * Przedmiot wczyta odpowiednie zasoby. Domyślnie jest widoczny i pokaże się
+	 * na liście przedmiotow.
 	 * 
-	 * @param game
-	 *            Gra zawierająca ten przedmiot
+	 * @param room
+	 *            Katalog pokoju
+	 * @param name
+	 *            Plik zasobów dla tego przedmiotu
+	 * @throws FileNotFoundException
+	 *             Gdy nie uda się wczytać
 	 */
-	public GameObject(Game game)
+	public GameObject(Room room, String name) throws FileNotFoundException
 	{
-		this.game = game;
+		this.room = room;
+		resources = new GameResources(room.getGame().getGameName(),
+				room.getRoomName(), name);
+		if (resources.isGood())
+		{
+			Debug.logSuccess("Wczytano zasoby przedmiotu " + name);
+		} else
+		{
+			Debug.logErr("Błąd zasobów przedmiotu " + name);
+			throw new FileNotFoundException(name);
+		}
 		isVisible = true;
 	}
 
@@ -38,13 +63,16 @@ public abstract class GameObject
 	 * 
 	 * @return Nazwa przedmotu
 	 */
-	public abstract String getGameObjectName();
+	public String getGameObjectName()
+	{
+		return getResource("Name");
+	}
 
 	/**
 	 * Zwraca nazwy akcji w kolejności. Jeśli ten indeks zostanie wysłany z
 	 * powrotem, wykonana zostanie określona akcja.
 	 * 
-	 * @return
+	 * @return Tablica nazw akcji w przedmiocie
 	 */
 	public abstract String[] getActionNames();
 
@@ -53,14 +81,41 @@ public abstract class GameObject
 	 * 
 	 * @param actionIndex
 	 *            Numer w tablicy nazw
-	 * @return Dopisanie do logu
+	 * @return Dopisanie do logu, gdy wykonana została akcja, lub null, jeśli
+	 *         takiej akcji nie dało się wykonać
 	 */
 	public abstract Response executeAction(int actionIndex);
+
+	/**
+	 * Weź zasób dla przedmiotu o podanym kluczu.
+	 * 
+	 * @param key
+	 *            Klucz to tekstu w odpowiednim pliku
+	 * @return Dane po kluczu, lub odpowiednia informacja, jak podano w
+	 *         {@link GameResources}
+	 */
+	protected String getResource(String key)
+	{
+		return resources.getResource(key);
+	}
+
+	/**
+	 * Pokój tego przedmiotu, dla jakiego został stworzony, nie koniecznie w
+	 * jakim się znajduje.
+	 * 
+	 * @return Pokój dla którego został stworzony
+	 */
+	public Room getRoom()
+	{
+		return room;
+	}
 
 	/**
 	 * Ustaw widoczność przedmiotu
 	 * 
 	 * @param visible
+	 *            Widoczność ma być taka, jesli jest <code>false</code>,
+	 *            przedmiot się nie wyświetli na liście
 	 */
 	public void setVisible(boolean visible)
 	{
@@ -70,7 +125,7 @@ public abstract class GameObject
 	/**
 	 * Czy ten przedmiot jest widoczny?
 	 * 
-	 * @return
+	 * @return Widoczność przedmiotu
 	 */
 	public boolean isVisible()
 	{

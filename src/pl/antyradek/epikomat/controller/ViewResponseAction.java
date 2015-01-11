@@ -2,9 +2,10 @@ package pl.antyradek.epikomat.controller;
 
 /**
  * Rzecz do kolejki niosąca informację o indeksie przedmiotu, klikniętej akcji i
- * dodatkowych danych akcji (w przyszłości).
+ * dodatkowych danych akcji (w przyszłości). Najczęściej wsadzana dana do
+ * kolejki.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class ViewResponseAction extends AppAction
@@ -24,7 +25,7 @@ public class ViewResponseAction extends AppAction
 	 * @param gameObjectIndex
 	 *            Na tym przedmiocie
 	 * @param actionIndex
-	 *            Tą akcję
+	 *            Tą akcję z kolei
 	 */
 	public ViewResponseAction(int gameObjectIndex, int actionIndex)
 	{
@@ -35,7 +36,7 @@ public class ViewResponseAction extends AppAction
 	/**
 	 * Indeks przedmiotu na którym wykonano akcję
 	 * 
-	 * @return
+	 * @return Indeks z zachowaniem kolejności
 	 */
 	public int getGameObjectIndex()
 	{
@@ -45,7 +46,7 @@ public class ViewResponseAction extends AppAction
 	/**
 	 * Indeks wykonanej akcji
 	 * 
-	 * @return
+	 * @return Indeks z zachowaniem kolejności
 	 */
 	public int getActionIndex()
 	{

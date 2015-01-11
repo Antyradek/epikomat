@@ -1,46 +1,48 @@
 package pl.antyradek.epikomat.gameobjects;
 
-import pl.antyradek.epikomat.model.Game;
+import java.io.FileNotFoundException;
+
 import pl.antyradek.epikomat.model.Room;
 
 /**
- * Portal w pralce do którego będzie można przejść (w przyszłości)
+ * Portal w pralce do którego można wejść. Portal jest niaktywny, jeśli przalka
+ * jest zamknieta. Można z niego wyjść zawsze. Portal prowadzi de facto do
+ * pokoju, a nie do innego portala. To pozwala na skomplikowane akcje, ale
+ * trzeba pamiętać, żeby stworzyć dwa portale, jeśli ma być możliwe obustronne
+ * przejście.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class Portal extends GameObject implements Examinable, Walkable
 {
 	/**
-	 * Inny pokój do którego mamy przejść
+	 * Inny pokój do którego portal prowadzi
 	 */
 	Room otherRoom;
 
 	/**
 	 * Portal z przejściem do innego pokoju
 	 * 
-	 * @param game
+	 * @param room
+	 *            Pokój z portalem
 	 * @param otherRoom
-	 *            Pokój do którego przechodzimy
+	 *            Pokój do którego prowadzi portal
+	 * @throws FileNotFoundException
+	 *             Gdy zasoby zniknęły w portalu
 	 */
-	public Portal(Game game, Room otherRoom)
+	public Portal(Room room, Room otherRoom) throws FileNotFoundException
 	{
-		super(game);
+		super(room, "Portal");
 		this.otherRoom = otherRoom;
-	}
-
-	@Override
-	public String getGameObjectName()
-	{
-		return game.getResource("PortalName");
 	}
 
 	@Override
 	public String[] getActionNames()
 	{
 		String[] ret = new String[2];
-		ret[0] = game.getResource("PortalActionNameExamine");
-		ret[1] = game.getResource("PortalActionNameWalk");
+		ret[0] = getResource("ActionNameExamine");
+		ret[1] = getResource("ActionNameWalk");
 		return ret;
 	}
 
@@ -60,14 +62,14 @@ public class Portal extends GameObject implements Examinable, Walkable
 	@Override
 	public Response examine()
 	{
-		return new Response(game.getResource("PortalDescription"));
+		return new Response(getResource("Description"));
 	}
 
 	@Override
 	public Response walkThrough()
 	{
-		game.setCurrentRoom(otherRoom);
-		return new Response(game.getResource("PortalWalk"));
+		getRoom().getGame().setCurrentRoom(otherRoom);
+		return new Response(getResource("Walk"));
 	}
 
 }

@@ -3,7 +3,7 @@ package pl.antyradek.epikomat.gameobjects;
 /**
  * Ten przedmiot może być otwarty
  * 
- * @author arq
+ * @author Radołsaw Świątkiewicz
  *
  */
 public interface Openable
@@ -11,7 +11,7 @@ public interface Openable
 	/**
 	 * Spróbuj otworzyć ten przedmiot
 	 * 
-	 * @return
+	 * @return Dopisanie do logu i informacja o sukcesie
 	 */
 	Response open();
 }

@@ -1,14 +1,20 @@
 package pl.antyradek.epikomat.controller;
 
 /**
- * Wyślij dane o klikniętej akcji do Modelu
+ * Wyślij dane o klikniętej akcji do Modelu.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class ViewResponseStrategy extends Strategy
 {
 
+	/**
+	 * Model tego Kontrolera użyjemy
+	 * 
+	 * @param controller
+	 *            Tego Kontrolera użyjemy
+	 */
 	public ViewResponseStrategy(Controller controller)
 	{
 		super(controller);

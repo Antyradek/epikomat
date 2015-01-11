@@ -3,7 +3,7 @@ package pl.antyradek.epikomat.gameobjects;
 /**
  * Przedmiot włączalny
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public interface TurnONable
@@ -11,7 +11,7 @@ public interface TurnONable
 	/**
 	 * Spróbuj włączyć
 	 * 
-	 * @return
+	 * @return Dopsanie do logu i informacja o sukcesie
 	 */
 	public Response turnON();
 }

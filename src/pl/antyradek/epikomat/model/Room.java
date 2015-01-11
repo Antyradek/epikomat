@@ -7,12 +7,13 @@ import pl.antyradek.epikomat.controller.ViewResponseAction;
 import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.gameobjects.GameObject;
 import pl.antyradek.epikomat.gameobjects.Response;
+import pl.antyradek.epikomat.resources.GameResources;
 
 /**
  * Jeden pokój w którym znajdują się wszystkie przedmioty. Gracz przechodzi z
  * pokoju do pokoju
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class Room
@@ -29,18 +30,62 @@ public class Room
 	private List<GameObject> activeList;
 
 	/**
-	 * Ogólny opis pokoju w którym znajduje się gracz
+	 * Zasoby pokoju, czyli jego opis
 	 */
-	private String roomDescription;
+	private final GameResources roomResources;
 
 	/**
-	 * Konstruuje pusty pokój
+	 * Gra w której pokój uczestniczy
 	 */
-	public Room(String roomDescription)
+	private final Game game;
+
+	/**
+	 * Nazwa pokoju (folder zasobów)
+	 */
+	private final String roomName;
+
+	/**
+	 * Pusty pokój
+	 * 
+	 * @param game
+	 *            W tej grze
+	 * @param roomName
+	 *            Z takim katalogiem zasobów
+	 */
+	public Room(Game game, String roomName)
 	{
 		list = new ArrayList<GameObject>();
 		activeList = new ArrayList<GameObject>();
-		this.roomDescription = roomDescription;
+		this.game = game;
+		this.roomName = roomName;
+		roomResources = new GameResources(game.getGameName(), roomName, "Room");
+		if (roomResources.isGood())
+		{
+			Debug.logSuccess("Zasoby dla pokoju: " + roomName + " wczytane");
+		} else
+		{
+			Debug.logErr("Zasoby dla pokoju " + roomName + " niewczytane!");
+		}
+	}
+
+	/**
+	 * Zwraca grę, w której pokój się znajduje
+	 * 
+	 * @return Gra w której użyto tego pokoju
+	 */
+	public Game getGame()
+	{
+		return game;
+	}
+
+	/**
+	 * Nzwa pokoju (katalog zasobów)
+	 * 
+	 * @return Katalog zasobów dla tego pokoju
+	 */
+	public String getRoomName()
+	{
+		return roomName;
 	}
 
 	/**
@@ -52,6 +97,14 @@ public class Room
 	 */
 	public void add(GameObject gameObject)
 	{
+		if (gameObject.getRoom() != this)
+		{
+			// nie koniecznie oznacza to błędy, tylko zasoby przedmiotu są gdzie
+			// indziej, niż występuje
+			Debug.logErr("UWAGA! Pokój stworzony na rzecz "
+					+ gameObject.getRoom().roomName
+					+ " dodany do innego pokoju " + roomName);
+		}
 		list.add(gameObject);
 	}
 
@@ -59,6 +112,7 @@ public class Room
 	 * Usuń z listy ten przedmiot
 	 * 
 	 * @param gameObject
+	 *            Przedmiot do usunięcia
 	 */
 	public void remove(GameObject gameObject)
 	{
@@ -76,19 +130,20 @@ public class Room
 	}
 
 	/**
-	 * Zwraca opis pokoju
+	 * Zwraca opis pokoju, znajduje się w pliku Room w każdym katalogu
 	 * 
-	 * @return
+	 * @return Opis pokoju
 	 */
 	public String getRoomDescription()
 	{
-		return roomDescription;
+		return roomResources.getResource("Description");
 	}
 
 	/**
 	 * Dodaje informacje o przedmiotach w pokoju
 	 * 
 	 * @param rawResponse
+	 *            Dane bez informacji o przedmiotach
 	 * @return Zmieniona wartość
 	 */
 	public Response addGameObjectsList(Response rawResponse)
@@ -112,6 +167,7 @@ public class Room
 	 * odpytywania. Kolejność jest ważna.
 	 * 
 	 * @param action
+	 *            Akcja wykonana na jakim pzedmiocie
 	 * @return Dane o wykonaniu na przedmiocie
 	 */
 	public Response executeAction(ViewResponseAction action)

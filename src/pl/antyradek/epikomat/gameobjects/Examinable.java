@@ -3,7 +3,7 @@ package pl.antyradek.epikomat.gameobjects;
 /**
  * Temu przedmiotowi można się przyjrzeć z bliska
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public interface Examinable
@@ -11,7 +11,7 @@ public interface Examinable
 	/**
 	 * Przyjrzyj się z bliska
 	 * 
-	 * @return
+	 * @return Dopisanie do logu z dokładnym opisem, zawsze powodzenie
 	 */
 	Response examine();
 }

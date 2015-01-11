@@ -1,9 +1,9 @@
 package pl.antyradek.epikomat.resources;
 
 /**
- * ID danych za których pomocą odwołujemy się do zasobów
+ * Enumerator wykorzystywany do pobierania zasobów GUI
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public enum Resource
@@ -21,6 +21,11 @@ public enum Resource
 	 */
 	private String key;
 
+	/**
+	 * Ustawia klucz zdefiniowany przy każdej wartości enumeratora
+	 * 
+	 * @param key
+	 */
 	private Resource(String key)
 	{
 		this.key = key;

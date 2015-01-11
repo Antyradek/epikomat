@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -12,9 +13,10 @@ import pl.antyradek.epikomat.debug.Debug;
 
 /**
  * Zasób dla tekstu gry. Ze względu na gigantyczną ilość kluczy i tekstu, nie
- * opłaca się stosować wyliczenia.
+ * opłaca się stosować wyliczenia, jak dla GUI. Ten zasób jest podawany dla
+ * każdego przedmiotu. Każdy może poprosić o dane dla siebie.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class GameResources
@@ -36,6 +38,9 @@ public class GameResources
 	 */
 	private final String defaultStringWhenUnsuccessful = "GAME_RESOURCES_ERROR!";
 
+	/**
+	 * Gdy nie może znaleźć klucza, zwraca to
+	 */
 	private final String defaultStringWhenMissingKey = "MISSING_KEY ";
 
 	/**
@@ -44,23 +49,30 @@ public class GameResources
 	private ResourceBundle bundle;
 
 	/**
-	 * Stwórz obiekt zasobów dla danej gry
+	 * Stwórz obiekt zasobów dla przedmiotu
 	 * 
-	 * @param bundleFilename
+	 * @param gameName
+	 *            Nazwa gry, a także folderu zasobów
+	 * @param roomName
+	 *            Nazwa pokoju, a także folderu zasobów
+	 * @param gameObjectName
+	 *            Nazwa Przedmiotu, a także pliku zasobów - bez rozszerzenia
+	 *            ".properties"
 	 */
-	public GameResources(String bundleFilename)
+	public GameResources(String gameName, String roomName, String gameObjectName)
 	{
-		resourceBundleFilename = "res/" + bundleFilename;
+		resourceBundleFilename = "res/GameData/" + gameName + "/" + roomName
+				+ "/" + gameObjectName + ".properties";
 		successful = true;
 		try
 		{
 			// UTF-8 Tego bardzo potrzebujemy
 			bundle = new PropertyResourceBundle(new FileReader(
 					getResourcesFilePath()));
-			Debug.log("Wczytano zasoby gry, ale mogą być braki kluczy!");
 		} catch (FileNotFoundException e)
 		{
-			Debug.logErr("Brak pliku zasobów " + getResourcesFilePath());
+			Debug.logErr("Brak pliku zasobów " + gameName + " " + roomName
+					+ " " + gameObjectName);
 			successful = false;
 		} catch (IOException e)
 		{
@@ -74,7 +86,8 @@ public class GameResources
 	 * Pobierz Zasób w formie String
 	 * 
 	 * @param resource
-	 * @return
+	 *            Klucz do zasobu
+	 * @return Odpowiadający tekst, lub informacja, że nie znaleziono
 	 */
 	public String getResource(String key)
 	{
@@ -96,7 +109,7 @@ public class GameResources
 	 * Czy cały system działa? To powinno być sprawdzone zanim rozpoczniemy
 	 * używać zasobów na poważnie.
 	 * 
-	 * @return
+	 * @return Czy wczytano plik zasobów
 	 */
 	public boolean isGood()
 	{
@@ -110,11 +123,15 @@ public class GameResources
 	 * 
 	 * @return Bezwzględna ścieżka do pliku zasobów
 	 */
-	private String getResourcesFilePath()
+	private String getResourcesFilePath() throws FileNotFoundException
 	{
 		ClassLoader classLoader = Resources.class.getClassLoader();
-		File classpathRoot = new File(classLoader.getResource(
-				resourceBundleFilename + ".properties").getPath());
+		URL url = classLoader.getResource(resourceBundleFilename);
+		if (url == null)
+		{
+			throw new FileNotFoundException();
+		}
+		File classpathRoot = new File(url.getPath());
 		return classpathRoot.getPath();
 	}
 

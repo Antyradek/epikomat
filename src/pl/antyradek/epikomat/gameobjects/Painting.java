@@ -1,32 +1,36 @@
 package pl.antyradek.epikomat.gameobjects;
 
-import pl.antyradek.epikomat.model.Game;
+import java.io.FileNotFoundException;
+
+import pl.antyradek.epikomat.model.Room;
 
 /**
- * Malowidło, któremu można się przyjrzeć
+ * Malowidło, któremu można się przyjrzeć. Uwaga na ramę.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class Painting extends GameObject implements Examinable
 {
 
-	public Painting(Game game)
+	/**
+	 * Malowidło obejrzenia
+	 * 
+	 * @param room
+	 *            Na rzecz tego pokoju
+	 * @throws FileNotFoundException
+	 *             Gdy brak zasobów
+	 */
+	public Painting(Room room) throws FileNotFoundException
 	{
-		super(game);
-	}
-
-	@Override
-	public String getGameObjectName()
-	{
-		return game.getResource("PaintingName");
+		super(room, "Painting");
 	}
 
 	@Override
 	public String[] getActionNames()
 	{
 		String[] ret = new String[1];
-		ret[0] = game.getResource("PaintingActionNameExamine");
+		ret[0] = getResource("ActionNameExamine");
 		return ret;
 	}
 
@@ -43,7 +47,7 @@ public class Painting extends GameObject implements Examinable
 	@Override
 	public Response examine()
 	{
-		return new Response(game.getResource("PaintingDescription"));
+		return new Response(getResource("Description"));
 	}
 
 }

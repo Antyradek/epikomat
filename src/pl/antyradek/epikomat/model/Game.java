@@ -1,58 +1,65 @@
 package pl.antyradek.epikomat.model;
 
 import pl.antyradek.epikomat.controller.ViewResponseAction;
+import pl.antyradek.epikomat.exceptions.GameStartException;
 import pl.antyradek.epikomat.gameobjects.Response;
-import pl.antyradek.epikomat.resources.GameResources;
 
 /**
  * Gra, inaczej poziom, rozgrywka. Osobna opowieść.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public abstract class Game
 {
 
 	/**
-	 * Zasoby teg gry
+	 * Nazwa gry, czyli katalog zasobów gry
 	 */
-	private final GameResources resources;
+	private final String gameName;
 
 	/**
-	 * Czy pokój został zmieniony i należy odświerzyć log?
+	 * Czy pokój został zmieniony i należy odświerzyć log? Trochę nieprzyjemna
+	 * metoda.
 	 */
 	private boolean roomChanged;
 
 	/**
 	 * Zbuduj poziom
+	 * 
+	 * @throws GameStartException
+	 *             Jeśli nie znaleziono choćby jednego zasobu
 	 */
-	protected abstract void buildLevel();
+	protected abstract void buildLevel() throws GameStartException;
 
 	/**
 	 * Stwórz wymaganą grę budując poziom
+	 * 
+	 * @param gameDirName
+	 *            Katalog zasobów dla tej gry
+	 * @throws GameStartException
+	 *             Gdy nie udało się uruchomić gry
 	 */
-	public Game(String resourceBundleFilename)
+	public Game(String gameDirName) throws GameStartException
 	{
-		resources = new GameResources(resourceBundleFilename);
+		this.gameName = gameDirName;
 		buildLevel();
 	}
 
 	/**
-	 * Tekst dla przedmiotu charakterystyczny dla tej gry
+	 * Zwraca nazwę folderu z zasobami gry
 	 * 
-	 * @param key
-	 *            Klucz do tekstu z pliku zasobów
-	 * @return Odpowiadająca mu wartość
+	 * @return Nazwa folderu w której są foldery pokoi
 	 */
-	public String getResource(String key)
+	public String getGameName()
 	{
-		return resources.getResource(key);
+		return gameName;
 	}
 
 	/**
 	 * Zwraca początkowy stan, czyli co wyświetlić na początku gry
 	 * 
-	 * @return Log i przedmioty na początek gry
+	 * @return Log i przedmioty na początek gry, czyści log
 	 */
 	public abstract Response getInitialState();
 
@@ -62,7 +69,7 @@ public abstract class Game
 	private Room currentRoom;
 
 	/**
-	 * Ustaw pokój
+	 * Ustaw pokój, zapamiętaj, że zmieniłeś
 	 * 
 	 * @param newRoom
 	 *            W tym pokoju będzie się teraz znajdował gracz
@@ -87,9 +94,9 @@ public abstract class Game
 	}
 
 	/**
-	 * Zwróć pokój w kturym znajduje się gracz
+	 * Zwróć pokój w którym znajduje się gracz
 	 * 
-	 * @return
+	 * @return Pokój w którym się znajdujemy
 	 */
 	protected Room getCurrentRoom()
 	{
@@ -97,16 +104,25 @@ public abstract class Game
 	}
 
 	/**
-	 * Wykonuje akcję na obecnym pokoju
+	 * Wykonuje akcję na obecnym pokoju. Zwracana informacja jest zmieniana,
+	 * jeśli zmieniono pokój, dopisywany jest opis pokoju. Ustawiane jest też
+	 * czyszcenie logu. To wygląda źle, ale zwalnia z odpowiedzialności każdy z
+	 * przedmiotów osobno do dopisywania opisu pokoju i ustawiania czyszczenia
+	 * logu.
 	 * 
 	 * @param action
-	 * @return
+	 *            Dane właściwie wygenerowane jescze w widkou zawierające indeks
+	 *            przedmotu i akcji
+	 * @return Gotowe dane zawierające informacje z przedmiotu i przedmioty z
+	 *         pokoju
 	 */
 	public Response executeAction(ViewResponseAction action)
 	{
 		// informacja od przedmiotu jest niepełna, nie posiada informacji o
-		// liślie przedmiotów w pokoju
+		// liście przedmiotów w pokoju
 		Response gameObjectResponse = currentRoom.executeAction(action);
+		// dopisanie listy przedmiotów, nie robi tego pokój, bo może się zmienić
+		// po akcji
 		gameObjectResponse = currentRoom.addGameObjectsList(gameObjectResponse);
 		if (roomChanged)
 		{

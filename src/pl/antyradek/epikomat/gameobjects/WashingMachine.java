@@ -1,15 +1,16 @@
 package pl.antyradek.epikomat.gameobjects;
 
+import java.io.FileNotFoundException;
+
 import pl.antyradek.epikomat.debug.Debug;
-import pl.antyradek.epikomat.model.Game;
+import pl.antyradek.epikomat.model.Room;
 
 /**
  * Pralka jest dobrym przykładem maszyny stanów. Różne stany mogą, lub nie mogą
  * przechodzić między sobą. Takie rozwiązanie jest długie i nieelastyczne.
- * Pozwala jedynie na łatwą rozbudowę.
+ * Pozwala jedynie na łatwą rozbudowę. Sam nie wiem, dlaczego pralka.
  * 
- * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class WashingMachine extends GameObject implements OpenCloseable,
@@ -21,16 +22,24 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 	private State state;
 
 	/**
-	 * Portal zostanie uruchomiony, gdy otworzyć pralkę
+	 * Portal zostanie uruchomiony, gdy otworzymy pralkę
 	 */
 	private GameObject portal;
 
 	/**
 	 * Pralka jest zamknięta i wyłączona. W środku pralki jest portal.
+	 * 
+	 * @param room
+	 *            Dla jakiego pokoju pralka?
+	 * @param portal
+	 *            Portal w pralce
+	 * @throws FileNotFoundException
+	 *             Zasoby zrzarł wybielacz
 	 */
-	public WashingMachine(Game game, GameObject portal)
+	public WashingMachine(Room room, GameObject portal)
+			throws FileNotFoundException
 	{
-		super(game);
+		super(room, "WashingMachine");
 		state = new OFF();
 		this.portal = portal;
 		portal.setVisible(false);
@@ -75,7 +84,7 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 	/**
 	 * Baza dla stanu pralki
 	 * 
-	 * @author arq
+	 * @author Radosław Świątkiewicz
 	 *
 	 */
 	private abstract class State implements OpenCloseable, TurnONOFFable
@@ -84,9 +93,9 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 	}
 
 	/**
-	 * Włączona pralka może być jedynie wyłączona
+	 * Włączona pralka może być jedynie wyłączona, Nie da się otworzyć.
 	 * 
-	 * @author arq
+	 * @author Radosław Świątkiewicz
 	 *
 	 */
 	private class ON extends State
@@ -95,26 +104,26 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 		@Override
 		public Response open()
 		{
-			return new Response(game.getResource("WashingMachineONOpen"));
+			return new Response(getResource("ONOpen"), false);
 		}
 
 		@Override
 		public Response close()
 		{
-			return new Response(game.getResource("WashingMachineONClose"));
+			return new Response(getResource("ONClose"), false);
 		}
 
 		@Override
 		public Response turnOFF()
 		{
 			changeState(new OFF());
-			return new Response(game.getResource("WashingMachineONOFF"));
+			return new Response(getResource("ONOFF"), true);
 		}
 
 		@Override
 		public Response turnON()
 		{
-			return new Response(game.getResource("WashingMachineONON"));
+			return new Response(getResource("ONON"), false);
 		}
 
 	}
@@ -122,7 +131,7 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 	/**
 	 * Wyłączona może być włączona, lub otwarta
 	 * 
-	 * @author arq
+	 * @author Radosław Świątkiewicz
 	 *
 	 */
 	private class OFF extends State
@@ -132,33 +141,33 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 		{
 			changeState(new Opened());
 			portal.setVisible(true);
-			return new Response(game.getResource("WashingMachineOFFOpen"));
+			return new Response(getResource("OFFOpen"), true);
 		}
 
 		@Override
 		public Response close()
 		{
-			return new Response(game.getResource("WashingMachineOFFClose"));
+			return new Response(getResource("OFFClose"), false);
 		}
 
 		@Override
 		public Response turnOFF()
 		{
-			return new Response(game.getResource("WashingMachineOFFOFF"));
+			return new Response(getResource("OFFOFF"), false);
 		}
 
 		@Override
 		public Response turnON()
 		{
 			changeState(new ON());
-			return new Response(game.getResource("WashingMachineOFFON"));
+			return new Response(getResource("OFFON"), false);
 		}
 	}
 
 	/**
 	 * Otwarta pralka nie może być włączona
 	 * 
-	 * @author arq
+	 * @author Radosław Świątkiewicz
 	 *
 	 */
 	private class Opened extends State
@@ -167,7 +176,7 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 		@Override
 		public Response open()
 		{
-			return new Response(game.getResource("WashingMachineOpenedOpen"));
+			return new Response(getResource("OpenedOpen"), false);
 		}
 
 		@Override
@@ -175,37 +184,31 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 		{
 			changeState(new OFF());
 			portal.setVisible(false);
-			return new Response(game.getResource("WashingMachineOpenedClose"));
+			return new Response(getResource("OpenedClose"), true);
 		}
 
 		@Override
 		public Response turnOFF()
 		{
-			return new Response(game.getResource("WashingMachineOpenedOFF"));
+			return new Response(getResource("OpenedOFF"), false);
 		}
 
 		@Override
 		public Response turnON()
 		{
-			return new Response(game.getResource("WashingMachineOpenedON"));
+			return new Response(getResource("OpenedON"), false);
 		}
 
-	}
-
-	@Override
-	public String getGameObjectName()
-	{
-		return game.getResource("WashingMachineName");
 	}
 
 	@Override
 	public String[] getActionNames()
 	{
 		String[] ret = new String[4];
-		ret[0] = game.getResource("WashingMachineActionNameOpen");
-		ret[1] = game.getResource("WashingMachineActionNameClose");
-		ret[2] = game.getResource("WashingMachineActionNameON");
-		ret[3] = game.getResource("WashingMachineActionNameOFF");
+		ret[0] = getResource("ActionNameOpen");
+		ret[1] = getResource("ActionNameClose");
+		ret[2] = getResource("ActionNameON");
+		ret[3] = getResource("ActionNameOFF");
 		return ret;
 	}
 

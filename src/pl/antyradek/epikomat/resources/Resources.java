@@ -15,21 +15,23 @@ import javax.swing.ImageIcon;
 import pl.antyradek.epikomat.debug.Debug;
 
 /**
- * Zasoby językowe, wszystkich tekstów i innych. Będą pobierane z pliku. Na
- * podobnej zasadzie działa Android.
+ * Zasoby językowe, wszystkich GUI. Będą pobierane z pliku. Na podobnej zasadzie
+ * działa Android. Wszystkie klucze są zdefiniowane w kodzie w {@link Resource}.
+ * Przed użyciem są sprawdzane.
  * 
- * @author arq
+ * @author Radosław Świątkiwicz
  *
  */
 public final class Resources
 {
 	/**
-	 * Czy całe urządzenie działa?
+	 * Czy zasoby są poprawne?
 	 */
 	private static boolean successful;
 
 	/**
-	 * Nazwa pliku zawierającego wszystkie dane, bez rozszerzenia .properties
+	 * Nazwa pliku zawierającego wszystkie dane, bez rozszerzenia .properties w
+	 * stosunku do root projektu (folder bin, lub src)
 	 */
 	private static final String resourceBundleFilename = "res/GUI";
 	// FIXME: Na wiele języków
@@ -40,7 +42,7 @@ public final class Resources
 	private static final String iconFilename = "res/icon.png";
 
 	/**
-	 * Ikona wczytana, lub nie, jeśli błąd
+	 * Wczytana ikona
 	 */
 	private static Image icon;
 
@@ -50,7 +52,7 @@ public final class Resources
 	private static final String defaultStringWhenUnsuccessful = "RESOURCES_ERROR!";
 
 	/**
-	 * Cały zasób
+	 * Cały zasób jako podstawowa implementacja od Javy
 	 */
 	private static ResourceBundle bundle;
 
@@ -81,10 +83,10 @@ public final class Resources
 			}
 
 			// Chciałem automagicznie, ale ktoś nie potrafi napisać narzędzi
-			// obsługujących UTF-8, taka firma na "O"
+			// obsługujących UTF-8. Taka jedna firma zaczynająca się na na "O"
 			bundle = new PropertyResourceBundle(new FileReader(
 					getResourcesFilePath()));
-			// bundle = ResourceBundle.getBundle(resourceBundleFilename);
+			// sprawdzanie kluczy.
 			for (Resource resource : Resource.values())
 			{
 				if (!bundle.containsKey(resource.getKey()))
@@ -100,6 +102,7 @@ public final class Resources
 			Debug.logSuccess("Zasoby są poprawne");
 		} catch (MissingResourceException e)
 		{
+			Debug.logErr("Błąd klucza!");
 			successful = false;
 		} catch (FileNotFoundException e)
 		{
@@ -114,10 +117,13 @@ public final class Resources
 	}
 
 	/**
-	 * Pobierz Resource w formie String
+	 * Pobierz Resource w formie tekstowej dając enumerator jako argument. Jeśli
+	 * zasoby są poprawne, to się zawsze uda.
 	 * 
 	 * @param resource
-	 * @return
+	 *            Enumerator zasobu o jaki prosimy
+	 * @return Tekst odpowiadający kluczowi odpowiadającemu podanemu
+	 *         enumeratorowi, lub tekst, że zasoby nie są poprawne.
 	 */
 	public static String getString(Resource resource)
 	{
@@ -130,7 +136,8 @@ public final class Resources
 	 * Czy cały system działa? To powinno być sprawdzone zanim rozpoczniemy
 	 * używać zasobów na poważnie.
 	 * 
-	 * @return
+	 * @return Informacja, czy zasoby są poprawne i można użyć każdego
+	 *         enumeratora
 	 */
 	public static boolean isGood()
 	{
@@ -140,7 +147,7 @@ public final class Resources
 	/**
 	 * Zwraca ikonkę aplikacji
 	 * 
-	 * @return
+	 * @return Ikona aplikacji, lub null, jeśli nie jest poprawnie
 	 */
 	public static Image getAppIcon()
 	{
@@ -153,7 +160,7 @@ public final class Resources
 	 * podejście potrzebne jest, aby zamiast domyślnego czytnika użyć Reader,
 	 * który obsługuje UTF-8.
 	 * 
-	 * @return Bezwzględna ścieżka do pliku zasobów
+	 * @return Bezwzględna ścieżka do pliku zasobów GUI.properties
 	 */
 	private static String getResourcesFilePath()
 	{

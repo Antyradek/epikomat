@@ -1,9 +1,10 @@
 package pl.antyradek.epikomat.controller;
 
 /**
- * Strategia aplikacji, czyli co ma robić
+ * Strategia aplikacji, czyli co ma robić w jakim momencie. Inaczej mówiąc,
+ * jakie metody na wywołać na Kontrolerze.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 abstract class Strategy
@@ -14,10 +15,12 @@ abstract class Strategy
 	protected final Controller controller;
 
 	/**
-	 * Strategia steruje wykonaniem w Kontrolerze
+	 * Strategia wykonuje coś na Kontrolerze. To coś jest zdefiniowane w
+	 * doWithAppAction()
 	 * 
 	 * @param controller
-	 *            Kontroler, który sterujemy
+	 *            Kontroler, którym sterujemy, na którym wywołujmy odpowiednie
+	 *            metody.
 	 */
 	public Strategy(Controller controller)
 	{

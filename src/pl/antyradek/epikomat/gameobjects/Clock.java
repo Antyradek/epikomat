@@ -1,11 +1,14 @@
 package pl.antyradek.epikomat.gameobjects;
 
-import pl.antyradek.epikomat.model.Game;
+import java.io.FileNotFoundException;
+
+import pl.antyradek.epikomat.model.Room;
 
 /**
- * Zegar z kukułką. Prezentuje zabawy z wywoływaniem na czas.
+ * Zegar z kukułką. Miał domyślnie wywoływać na czas, ale zabrakło czasu.
+ * Zamiast tego są javadoc nad każdą metodą... Początkowo nie działa.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class Clock extends GameObject implements Examinable
@@ -15,9 +18,17 @@ public class Clock extends GameObject implements Examinable
 	 */
 	private boolean isWorking;
 
-	public Clock(Game game)
+	/**
+	 * Zegar nienakręcony
+	 * 
+	 * @param room
+	 *            Katalog zasobów
+	 * @throws FileNotFoundException
+	 *             Gdy nie wczytano zasobów
+	 */
+	public Clock(Room room) throws FileNotFoundException
 	{
-		super(game);
+		super(room, "Clock");
 		isWorking = false;
 	}
 
@@ -26,24 +37,18 @@ public class Clock extends GameObject implements Examinable
 	{
 		if (isWorking)
 		{
-			return new Response(game.getResource("ClockONDescription"));
+			return new Response(getResource("ONDescription"));
 		} else
 		{
-			return new Response(game.getResource("ClockOFFDescription"));
+			return new Response(getResource("OFFDescription"));
 		}
-	}
-
-	@Override
-	public String getGameObjectName()
-	{
-		return game.getResource("ClockName");
 	}
 
 	@Override
 	public String[] getActionNames()
 	{
 		String[] ret = new String[1];
-		ret[0] = game.getResource("ClockActionNameExamine");
+		ret[0] = getResource("ActionNameExamine");
 		return ret;
 	}
 

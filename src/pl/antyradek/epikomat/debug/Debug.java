@@ -1,7 +1,8 @@
 package pl.antyradek.epikomat.debug;
 
 /**
- * Klasa służąca głowne do wypisywania informacji do logu (do terminala)
+ * Klasa służąca głowne do wypisywania informacji do logu (do terminala). Może
+ * być użyta do informowania o błędach, kolejnych akcjach i sukcesach.
  * 
  * @author Radosław Świątkiewicz
  *
@@ -9,9 +10,10 @@ package pl.antyradek.epikomat.debug;
 public class Debug
 {
 	/**
-	 * Wypisuje tekst do terminala
+	 * Wypisuje linię tekstu do terminala
 	 * 
-	 * @param message
+	 * @param obj
+	 *            Obiekt do wypisania, wywołuje jego metodę toString()
 	 */
 	public static void log(Object obj)
 	{
@@ -19,7 +21,7 @@ public class Debug
 	}
 
 	/**
-	 * Wypisuje tekst do terminala, ale na czerwono!
+	 * Wypisuje tekst do terminala, ale na czerwono używając ANSI ESCAPE CODES
 	 * 
 	 * @param obj
 	 *            Na nim wywołany zosanie toString();
@@ -31,7 +33,8 @@ public class Debug
 	}
 
 	/**
-	 * Wypisuje tekst do terminala na zielono. Oznacza udane akcje.
+	 * Wypisuje tekst do terminala na zielono. Oznacza udane akcje. używa ANSI
+	 * ESCAPE CODES
 	 * 
 	 * @param obj
 	 *            Na nim wywołuje toString()

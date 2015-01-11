@@ -3,7 +3,8 @@ Epicki Automat Epickości (w epice i epickiej Javie)
 
 Czyli gra tekstowa z interfejsem graficznym, w Javie
 Na pewno znasz gry tekstowe, gdzie sterowanie odbywa się za pomocą komend? Tutaj nic się nie zmienia,
-poza faktem, że zamiast tego naciskasz guziki.
+poza faktem, że zamiast tego naciskasz guziki. Nie jest to nakładka translatująca dla istniejących
+gier tekstowych, ale całkiem nowy byt. 
 
 To daje możliwości dowolnych komend (wpisz kod) i zupełnie inną grę, gdyż dostępne akcje są wyświetlone
 od razu.
@@ -16,6 +17,8 @@ Kompilacja i uruchamianie:
 $ ant
 $ cd bin
 $ java pl.antyradek.epikomat.controller.Controller
+Możesz też uruchomić skrypt w bashu (najlepiej go kliknij, jesli nie zapomniał,
+że ma być uruchamialny). Wywoływanie z JAR jakoś nie podoba się wczytywaczom zasobów.
 
 Wymaga java 1.8, ale jeśli zmienisz numerki w build.xml na 1.7, też powinno zadziałać.
 Nie działa w 1.6 i niżej. 

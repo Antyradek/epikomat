@@ -1,10 +1,10 @@
 package pl.antyradek.epikomat.gameobjects;
 
 /**
- * Element tablicy w {@link Response}, który tryma informację do wyświetlenia
+ * Element tablicy w {@link Response}, który trzyma informację do wyświetlenia
  * jednego przedmiotu i jego akcji.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class ResponseGameObject
@@ -20,12 +20,12 @@ public class ResponseGameObject
 	private final String[] actionsNames;
 
 	/**
-	 * Stwórz przechowywacz danych do wyświetlenia jednego przedmiotu
+	 * Przechowywacz danych do wyświetlenia jednego przedmiotu
 	 * 
 	 * @param name
 	 *            Nazwa przedmiotu
 	 * @param actions
-	 *            nazwy akcji na przedmiocie
+	 *            Nazwy akcji na przedmiocie
 	 */
 	public ResponseGameObject(String name, String[] actions)
 	{
@@ -33,11 +33,22 @@ public class ResponseGameObject
 		this.actionsNames = actions;
 	}
 
+	/**
+	 * Nazwa
+	 * 
+	 * @return Nazwa przedmiotu do wyświetlenia
+	 */
 	public String getName()
 	{
 		return name;
 	}
 
+	/**
+	 * Tablica akcji. Kolejność jednoznacznie definiuje akcję i indeks tej
+	 * tablicy jest używany do zwracania informacji, którą akcję wykonaliśmy.
+	 * 
+	 * @return Tablica nazw akcji, jakie może wykonywać ten przedmiot
+	 */
 	public String[] getActions()
 	{
 		return actionsNames;

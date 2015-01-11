@@ -3,9 +3,9 @@ package pl.antyradek.epikomat.controller;
 /**
  * Pozwala na przesyłanie informacji między Widokiem, a Kontrolerem poprzez
  * kolejkę. Są to dane o akcji użytkownika jak działanie w grze, lub akcje
- * związane z aplikacją, jak zamknięcie okna
+ * związane z aplikacją, jak zamknięcie okna.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public abstract class AppAction

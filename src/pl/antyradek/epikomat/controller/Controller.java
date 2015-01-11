@@ -6,13 +6,15 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import pl.antyradek.epikomat.debug.Debug;
+import pl.antyradek.epikomat.exceptions.GameStartException;
 import pl.antyradek.epikomat.model.Model;
 import pl.antyradek.epikomat.resources.Resources;
 import pl.antyradek.epikomat.view.View;
 
 /**
  * Główny kontroler całego programu. Ma najszerszą wiedzę, ale sam mało robi
- * poza przesyłaniem zapytań z prawa na lewo.
+ * poza przesyłaniem zapytań z prawa na lewo. Tą klasę wywołujemy dla startu
+ * programu.
  * 
  * @author Radosław Świątkiewicz
  *
@@ -20,7 +22,7 @@ import pl.antyradek.epikomat.view.View;
 public class Controller
 {
 	/**
-	 * Zarządzanie widokiem
+	 * Widok tworzący ramkę i uważający na wątki
 	 */
 	private final View view;
 
@@ -30,12 +32,12 @@ public class Controller
 	private final BlockingQueue<AppAction> queue;
 
 	/**
-	 * Mapa strategii, czyli mapa Akcji (V lub M) na działanie
+	 * Mapa strategii, czyli mapa Akcji z widoku na zespół funkcji dla tej akcji
 	 */
 	private final AbstractMap<Class<? extends AppAction>, Strategy> strategyMap;
 
 	/**
-	 * Główny model aplikacji, on rozdziela się na gry.
+	 * Główny model aplikacji, on uruchamia grę i ma informacje o wszystkim
 	 */
 	private final Model model;
 
@@ -44,6 +46,10 @@ public class Controller
 	 */
 	private boolean alive;
 
+	/**
+	 * Kontroler spróbuje się stworzyć, ale wyjdzie z aplikcjai, jeśli brak
+	 * zasobów w grze
+	 */
 	public Controller()
 	{
 		alive = true;
@@ -54,14 +60,29 @@ public class Controller
 		addStategies();
 
 		// startuj grę TODO ekran wybierania
-		model.startGame(0); // puki co
+		try
+		{
+			model.startGame(0); // puki co
+		} catch (GameStartException e)
+		{
+			Debug.logErr("Błąd wystartowania gry 0");
+			stopRunning();
+			System.exit(-2);
+		}
 		view.setState(model.getInitialState());
 	}
 
 	/**
-	 * Główne wystartowanie aplikacji
+	 * Główne wystartowanie aplikacji. Kody zakończenia:
+	 * <ul>
+	 * <li>0 Zamknięto poprawnie</li>
+	 * <li>-1 Zasoby GUI niepoprawne</li>
+	 * <li>-2 Zasoby gry niepoprawne</li>
+	 * </ul>
 	 * 
 	 * @param args
+	 *            To, co wpiszemy do terminala (na prawdę muszę pisać takie
+	 *            oczywistości?)
 	 */
 	public static void main(String[] args)
 	{
@@ -71,6 +92,7 @@ public class Controller
 			System.exit(-1);
 		}
 		Controller controller = new Controller();
+		// główna pętla aplikacji
 		while (controller.alive)
 		{
 			controller.runOnce();
@@ -78,7 +100,9 @@ public class Controller
 	}
 
 	/**
-	 * Działaj, wykonuj pojedyńczą iterację przez życie
+	 * Działaj, wykonuj pojedyńczą iterację przez życie. Pobranie z kolejki
+	 * danych, wykonanie na modelu (lub kontrolerze), wysłanie do widoku i
+	 * powtórz.
 	 */
 	private void runOnce()
 	{
@@ -104,7 +128,7 @@ public class Controller
 	}
 
 	/**
-	 * Wyłącza aplikację
+	 * Wyłącza aplikację i niszczy okno
 	 */
 	public void stopRunning()
 	{
@@ -112,6 +136,11 @@ public class Controller
 		view.dispose();
 	}
 
+	/**
+	 * Wywołuje akcję na modelu. Najczęstsza metoda.
+	 * 
+	 * @param action
+	 */
 	public void executeAction(ViewResponseAction action)
 	{
 		Debug.log("Wykonano akcję nr: " + action.getActionIndex()

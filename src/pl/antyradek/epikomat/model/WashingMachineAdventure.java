@@ -1,15 +1,24 @@
 package pl.antyradek.epikomat.model;
 
+import java.io.FileNotFoundException;
+
+import pl.antyradek.epikomat.debug.Debug;
+import pl.antyradek.epikomat.exceptions.GameStartException;
+import pl.antyradek.epikomat.gameobjects.Button;
 import pl.antyradek.epikomat.gameobjects.Clock;
+import pl.antyradek.epikomat.gameobjects.Mirror;
 import pl.antyradek.epikomat.gameobjects.Painting;
 import pl.antyradek.epikomat.gameobjects.Portal;
 import pl.antyradek.epikomat.gameobjects.Response;
 import pl.antyradek.epikomat.gameobjects.WashingMachine;
 
 /**
- * Niezwykła przygoda z udziałem różnego typu pralek
+ * Niezwykła przygoda z udziałem pralki. Prezentuje różne aspekty silnika. W
+ * pokoju jest przycisk, pralka i obraz. Przycik otwiera pralkę i psuje się, gdy
+ * tego nie może zrobić. Pralka zawiera w środku portal. Prowadzi do pokoju z
+ * lustrem i zegarem.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class WashingMachineAdventure extends Game
@@ -18,57 +27,69 @@ public class WashingMachineAdventure extends Game
 	/**
 	 * Pokój z którego startujemy (ten z pralką)
 	 */
-	private Room startingRoom;
+	private Room pillowRoom;
 
 	/**
 	 * Pokój z zegarem
 	 */
 	private Room clockRoom;
 
-	public WashingMachineAdventure()
+	/**
+	 * Cała gra
+	 * 
+	 * @throws GameStartException
+	 *             Gdy zasoby gdzieś wcięło
+	 */
+	public WashingMachineAdventure() throws GameStartException
 	{
 		super("WashingMachineAdventure");
 	}
 
 	@Override
-	protected void buildLevel()
+	protected void buildLevel() throws GameStartException
 	{
-		startingRoom = new Room(getResource("StartingRoomDescription"));
-		clockRoom = new Room(getResource("ClockRoomDescription"));
-		// portal w pralce
-		Portal portal = new Portal(this, clockRoom);
-		// portal w zegarowym
-		Portal clockRoomPortal = new Portal(this, startingRoom);
-		WashingMachine startingWM = new WashingMachine(this, portal);
-		swapCurrentRoom(startingRoom);
-		Painting painting = new Painting(this);
-		Clock clock = new Clock(this);
-		// dodanie przedmiotów w liście
-		startingRoom.add(startingWM);
-		startingRoom.add(portal);
-		startingRoom.add(painting);
-		clockRoom.add(clockRoomPortal);
-		clockRoom.add(clock);
-	}
-
-	/**
-	 * Zwraca nazwę tej gry
-	 * 
-	 * @return
-	 */
-	public static String getGameName()
-	{
-		return "Pralkowa przygoda";
+		try
+		{
+			// pokoje
+			pillowRoom = new Room(this, "PillowRoom");
+			clockRoom = new Room(this, "ClockRoom");
+			// ustaw pokój poduszkowy
+			swapCurrentRoom(pillowRoom);
+			// stwórz pzedmioty z poduszkowego
+			Portal portal = new Portal(pillowRoom, clockRoom);
+			WashingMachine startingWM = new WashingMachine(pillowRoom, portal);
+			Painting painting = new Painting(pillowRoom);
+			Button button = new Button(pillowRoom, startingWM);
+			// stwórz przedmioty z zegarowego
+			Portal clockRoomPortal = new Portal(clockRoom, pillowRoom);
+			Mirror mirror = new Mirror(clockRoom);
+			Clock clock = new Clock(clockRoom);
+			// mogło by się zdawać, że lepiej jeśli przedmiot sam się doda na
+			// listę pokoju, ale wtedy nie mamy pełnej kontroli nad kolejnością
+			pillowRoom.add(startingWM);
+			pillowRoom.add(portal);
+			pillowRoom.add(painting);
+			pillowRoom.add(button);
+			clockRoom.add(clockRoomPortal);
+			clockRoom.add(clock);
+			clockRoom.add(mirror);
+		} catch (FileNotFoundException e)
+		{
+			Debug.logErr("Błąd budowy poziomu - brakuje zasobów: "
+					+ e.getMessage());
+			throw new GameStartException("Błąd zasobu przedmiotu: "
+					+ e.getMessage());
+		}
 	}
 
 	@Override
 	public Response getInitialState()
 	{
 		// początkowy opis pokoju
-		Response initRes = new Response(startingRoom.getRoomDescription());
+		Response initRes = new Response(getCurrentRoom().getRoomDescription());
 		initRes.setClearsLog(true);
 		// przedmioty w pierwszym pokoju
-		initRes = startingRoom.addGameObjectsList(initRes);
+		initRes = getCurrentRoom().addGameObjectsList(initRes);
 		return initRes;
 	}
 }

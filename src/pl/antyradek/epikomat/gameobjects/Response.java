@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Przedmiot generuje zwrot posiadający informacje do Modelu i jak ma się
- * zmienić Widok
+ * Dane budowane w kilku miejscach i wysyłane do widoku. Przesyłanie propaguje
+ * przez warswy, każda dopisuje coś od siebie i przesyła dalej. Stworzenie w
+ * przedmiocie (przesłanie do innego przedmiotu, jeśli reagują ze sobą).
+ * Dpisanie listy przedmiotów w pokoju. Ustawienie w Grze. Wysłanie w Modelu.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class Response
@@ -23,30 +25,51 @@ public class Response
 	private boolean clearsLog;
 
 	/**
-	 * Tablica nazw przedmuotów do wyświetlenia
+	 * Czy ostatnio wykonana akcja się powiodła?
+	 */
+	private final boolean actionSuccessful;
+
+	/**
+	 * Tablica nazw przedmuotów do wyświetlenia w widoku
 	 */
 	private List<ResponseGameObject> gameObjects;
 
 	/**
-	 * Nic się nie zmieni w przedmiotach, jedynie zostanie coś dopisane do logu
+	 * Zostanie coś dopisane do logu. Brak informacji o przedmiotach w pokoju.
+	 * Akcja się udała.
 	 * 
 	 * @param logAppend
 	 *            Co dopisać do logu?
 	 */
 	public Response(String logAppend)
 	{
-		this.logAppend = logAppend;
-		clearsLog = false;
-		gameObjects = new ArrayList<ResponseGameObject>();
+		this(logAppend, true);
 	}
 
 	/**
-	 * Dodaj przedmiot do listy wyświetlanych
+	 * Zostanie coś dopisane do logu. Brak informacji o przedmiotach w pokoju.
+	 * 
+	 * @param logAppend
+	 *            Co dopisać do logu?
+	 * @param actionSuccessful
+	 *            Czy akcja się udała?
+	 */
+	public Response(String logAppend, boolean actionSuccessful)
+	{
+		this.logAppend = logAppend;
+		clearsLog = false;
+		gameObjects = new ArrayList<ResponseGameObject>();
+		this.actionSuccessful = actionSuccessful;
+	}
+
+	/**
+	 * Dodaj przedmiot do listy wyświetlanych. Kolejność jest ważna,
+	 * jednoznacznie identyfikuje przedmiot.
 	 * 
 	 * @param name
 	 *            Nazwa przedmiotu
 	 * @param actions
-	 *            Nazwy akcji
+	 *            Tablica nazw akcji dla tego przedmiotu
 	 */
 	public void addGameObject(String name, String[] actions)
 	{
@@ -56,11 +79,21 @@ public class Response
 	/**
 	 * Zwróć ilość przedmiotów do wyświetlenia
 	 * 
-	 * @return
+	 * @return Ilość przedmiotów do wyświetlenia
 	 */
 	public int getGameObjectsCount()
 	{
 		return gameObjects.size();
+	}
+
+	/**
+	 * Akcja się udała
+	 * 
+	 * @return Czy akcja na tym przedmiocie się udała?
+	 */
+	public boolean getActionSuccessfull()
+	{
+		return actionSuccessful;
 	}
 
 	/**
@@ -79,7 +112,8 @@ public class Response
 	 * Zwróć nazwę tego przedmiotu
 	 * 
 	 * @param index
-	 * @return
+	 *            Jednoznaczne określenie przedmiotu
+	 * @return Nazwa przedmiotu
 	 */
 	public String getNameOfGameObject(int index)
 	{
@@ -90,6 +124,8 @@ public class Response
 	 * Ustawia, czy nadpisać dane w logu. Domyślnie nie.
 	 * 
 	 * @param clearsLog
+	 *            Czy nadisać dane? (Czy wyczyścić pole tekstowe przed
+	 *            dopisaniem)
 	 */
 	public void setClearsLog(boolean clearsLog)
 	{
@@ -109,7 +145,7 @@ public class Response
 	/**
 	 * Czy ma czyścić log? Domyślnie nie.
 	 * 
-	 * @return
+	 * @return Czy czyści log
 	 */
 	public boolean getClearsLog()
 	{
@@ -117,9 +153,10 @@ public class Response
 	}
 
 	/**
-	 * Dodaj kolejną linię do logu
+	 * Dodaj kolejny tekst do logu, zostanie dopisany po spacji.
 	 * 
 	 * @param log
+	 *            Tekt do dopisania po spacji.
 	 */
 	public void appendLog(String log)
 	{

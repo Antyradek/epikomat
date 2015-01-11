@@ -15,9 +15,10 @@ import pl.antyradek.epikomat.gameobjects.Response;
 import pl.antyradek.epikomat.resources.Resources;
 
 /**
- * Całkowity Widok. Zawiera referencje do okna i innych widokowych badziewii.
+ * Całkowity Widok. Zawiera referencje do okna i innych widokowych badziewi. Tym
+ * komunikuje się aplikacja z oknem. Ten odpowiada za rozdzielenie wątków.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 public class View
@@ -32,6 +33,12 @@ public class View
 	 */
 	private final BlockingQueue<AppAction> queue;
 
+	/**
+	 * Widok
+	 * 
+	 * @param queue
+	 *            Kolejka do której wsadza dane
+	 */
 	public View(final BlockingQueue<AppAction> queue)
 	{
 		this.queue = queue;
@@ -53,11 +60,13 @@ public class View
 				buildFrame();
 			}
 		});
+		// mam nadzieję, że działa. u mnie na XFCE nie widać
 
 	}
 
 	/**
-	 * Stwórz nową ramkę, bezpiecznie w nowym wątku
+	 * Stwórz nową ramkę w tym samym wątku. Ta metoda powinna być wywołana przez
+	 * {@link SwingUtilities}.invokeLater()
 	 */
 	private void buildFrame()
 	{
@@ -78,6 +87,7 @@ public class View
 	 * Usaw nowy stan widoku
 	 * 
 	 * @param newState
+	 *            Zwrot Modelu z bezpiecznymi informacjami
 	 */
 	public void setState(Response newState)
 	{
@@ -122,7 +132,10 @@ public class View
 	 */
 	public void dispose()
 	{
-		frame.dispose();
+		if (frame != null)
+		{
+			frame.dispose();
+		}
 	}
 
 	/**
@@ -137,7 +150,6 @@ public class View
 	{
 		SwingUtilities.invokeLater(new Runnable()
 		{
-
 			@Override
 			public void run()
 			{
@@ -157,11 +169,12 @@ public class View
 	 * Dodaj do kolejki informację o akcji
 	 * 
 	 * @param gameObjectIndex
+	 *            Indeks przedmiotu
 	 * @param actionIndex
+	 *            Indeks akcji
 	 */
 	public void sendActionToQueue(int gameObjectIndex, int actionIndex)
 	{
-
 		try
 		{
 			queue.put(new ViewResponseAction(gameObjectIndex, actionIndex));

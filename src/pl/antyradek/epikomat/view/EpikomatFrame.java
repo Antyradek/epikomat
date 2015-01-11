@@ -1,6 +1,5 @@
 package pl.antyradek.epikomat.view;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.io.InvalidClassException;
 
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -20,14 +18,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.resources.Resource;
 import pl.antyradek.epikomat.resources.Resources;
 
 /**
  * Główna ramka, komunikuje się bezpośrednio z View.
  * 
- * @author arq
+ * @author Radosław Świątkiewicz
  *
  */
 class EpikomatFrame extends JFrame
@@ -44,7 +41,8 @@ class EpikomatFrame extends JFrame
 	private final View view;
 
 	/**
-	 * Pole tekstowe, gdzie wyświetla się główny tekst gry
+	 * Pole tekstowe, gdzie wyświetla się główny tekst gry (nazywany logiem, ale
+	 * prawdziwy log to terminal)
 	 */
 	private final JTextArea logArea;
 
@@ -54,7 +52,7 @@ class EpikomatFrame extends JFrame
 	private JPanel gameObjectsList;
 
 	/**
-	 * Przewijanie
+	 * Komponent przewijacza
 	 */
 	private JScrollPane gameObjectsListScrollPane;
 
@@ -63,6 +61,12 @@ class EpikomatFrame extends JFrame
 	 */
 	private int gameObjectsCount;
 
+	/**
+	 * Ramka aplikacji
+	 * 
+	 * @param view
+	 *            To jej interfejs, przez niego jest komunikacja z resztą
+	 */
 	public EpikomatFrame(View view)
 	{
 		// stworzenie okna
@@ -81,9 +85,11 @@ class EpikomatFrame extends JFrame
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-		// stworzenie ekwipunku
-		JComponent inventory = new JPanel();
-		inventory.setBackground(Color.ORANGE); // test na pokazanie
+		// stworzenie ekwipunku (potem będzie działać, na czas oddania projektu
+		// niech nie brzydzi okna)
+		//
+		// JComponent inventory = new JPanel();
+		// inventory.setBackground(Color.ORANGE); // test na pokazanie
 
 		// stworzenie przedmiotów z pokoju
 		gameObjectsList = new JPanel();
@@ -117,13 +123,13 @@ class EpikomatFrame extends JFrame
 		constaints.gridy = 0;
 		getContentPane().add(gameObjectsListScrollPane, constaints);
 		// dodanie ekwipunku
-		constaints.fill = GridBagConstraints.BOTH;
-		constaints.gridwidth = 1;
-		constaints.weightx = 1;
-		constaints.weighty = 1;
-		constaints.gridx = 3;
-		constaints.gridy = 0;
-		getContentPane().add(inventory, constaints);
+		// constaints.fill = GridBagConstraints.BOTH;
+		// constaints.gridwidth = 1;
+		// constaints.weightx = 1;
+		// constaints.weighty = 1;
+		// constaints.gridx = 3;
+		// constaints.gridy = 0;
+		// getContentPane().add(inventory, constaints);
 
 		pack();
 		// okno na pełnym ekranie
@@ -173,7 +179,8 @@ class EpikomatFrame extends JFrame
 	}
 
 	/**
-	 * Pokaż pomoc
+	 * Pokaż okno dialogowe pomocy. Nie ma sensu wysyłać tego do modelu. Nie
+	 * zmieni w żaden sposób stanu aplikacji.
 	 */
 	private void showHelp()
 	{
@@ -185,7 +192,7 @@ class EpikomatFrame extends JFrame
 	}
 
 	/**
-	 * Pokaż informację o autorze (zostawiłem liczbę mnogą na przyszłość :) )
+	 * Pokaż informację o autorze (zostawiłem liczbę mnogą na przyszłość... )
 	 */
 	private void showAuthors()
 	{
@@ -196,9 +203,10 @@ class EpikomatFrame extends JFrame
 	}
 
 	/**
-	 * Dodaj dane do logu
+	 * Dodaj dane do logu nie czyszcząc
 	 * 
-	 * @param newLog
+	 * @param appendText
+	 *            Tekst do dopisania
 	 */
 	public void appendLog(String appendText)
 	{
@@ -209,6 +217,7 @@ class EpikomatFrame extends JFrame
 	 * Ustaw log zupełnie na nowo usuwając poprzednią wartość
 	 * 
 	 * @param newtext
+	 *            Ustaw tekst, a nie dopisuj
 	 */
 	public void setLog(String newtext)
 	{
@@ -257,13 +266,6 @@ class EpikomatFrame extends JFrame
 
 		gameObjectsList.add(newJpanel);
 		gameObjectsCount++;
-		// debug
-		String actionsCount = "";
-		for (String action : actions)
-		{
-			actionsCount += " \"" + action + "\"";
-		}
-		Debug.log("Wyświetlanie: \"" + name + "\" z akcjami: " + actionsCount);
 	}
 
 	/**
@@ -276,6 +278,9 @@ class EpikomatFrame extends JFrame
 		// O wiele dziwniejsze jest to, że działa bez tego
 		// gameObjectsList.removeAll();
 		// gameObjectsList.validate();
+
+		// słyszałem, że w C# może wyciekać pamięć, ciekawe, czy pozbywa się
+		// starego.
 		gameObjectsList = new JPanel();
 		gameObjectsList.setLayout(new BoxLayout(gameObjectsList,
 				BoxLayout.Y_AXIS));
