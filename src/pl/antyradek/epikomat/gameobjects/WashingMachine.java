@@ -36,7 +36,7 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 	 * @throws FileNotFoundException
 	 *             Zasoby zrzarł wybielacz
 	 */
-	public WashingMachine(Room room, GameObject portal)
+	public WashingMachine(final Room room, final GameObject portal)
 			throws FileNotFoundException
 	{
 		super(room, "WashingMachine");
@@ -75,7 +75,7 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 	 * @param newState
 	 *            Na ten
 	 */
-	private void changeState(State newState)
+	private void changeState(final State newState)
 	{
 		Debug.log("Zmieniono stan Pralki na " + newState.getClass().toString());
 		this.state = newState;
@@ -213,7 +213,7 @@ public class WashingMachine extends GameObject implements OpenCloseable,
 	}
 
 	@Override
-	public Response executeAction(int actionIndex)
+	public Response executeAction(final int actionIndex)
 	{
 		switch (actionIndex)
 		{

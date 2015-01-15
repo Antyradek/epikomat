@@ -141,7 +141,7 @@ public class Controller
 	 * 
 	 * @param action
 	 */
-	public void executeAction(ViewResponseAction action)
+	public void executeAction(final ViewResponseAction action)
 	{
 		Debug.log("Wykonano akcję nr: " + action.getActionIndex()
 				+ " na przedmiocie nr: " + action.getGameObjectIndex());

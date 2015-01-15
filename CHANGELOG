@@ -3,4 +3,11 @@ ALPHA 1.0
 Aplikacja do wstępnego rozpatrzenia przez prowadzącego przedmiot. Podstawowa funkcjonalność:
 > Przechodzenie międzypokojowe.
 > Deaktywacja Przedmiotów
-> Akcje międzyprzedmiotowe 
+> Akcje międzyprzedmiotowe
+
+ALPHA 1.0.1
+2015-01-15
+Ze względu na implementację w Javie 1.7, invokeLater() nie może korzystać z niefinalnych zmiennych,
+argumentów i pól. Dziwne, w 1.8 ten problem nie występuje. Dodane zostały w każdym razie w tamtych 
+miejscach "final" i przy okazji w każdym argumencie gdzie indziej też. 
+Powinno się kompilować pod 1.7.  

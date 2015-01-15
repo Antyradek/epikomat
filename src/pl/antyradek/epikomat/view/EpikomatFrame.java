@@ -67,7 +67,7 @@ class EpikomatFrame extends JFrame
 	 * @param view
 	 *            To jej interfejs, przez niego jest komunikacja z resztą
 	 */
-	public EpikomatFrame(View view)
+	public EpikomatFrame(final View view)
 	{
 		// stworzenie okna
 		super(Resources.getString(Resource.WINDOW_TITLE));
@@ -208,7 +208,7 @@ class EpikomatFrame extends JFrame
 	 * @param appendText
 	 *            Tekst do dopisania
 	 */
-	public void appendLog(String appendText)
+	public void appendLog(final String appendText)
 	{
 		logArea.setText(logArea.getText() + "\n\n" + appendText);
 	}
@@ -219,7 +219,7 @@ class EpikomatFrame extends JFrame
 	 * @param newtext
 	 *            Ustaw tekst, a nie dopisuj
 	 */
-	public void setLog(String newtext)
+	public void setLog(final String newtext)
 	{
 		logArea.setText(newtext);
 	}
@@ -232,7 +232,7 @@ class EpikomatFrame extends JFrame
 	 * @param actions
 	 *            Z tymi akcjami
 	 */
-	public void addGameObject(String name, String[] actions)
+	public void addGameObject(final String name, final String[] actions)
 	{
 		JPanel newJpanel = new JPanel();
 		newJpanel.setLayout(new BoxLayout(newJpanel, BoxLayout.Y_AXIS));

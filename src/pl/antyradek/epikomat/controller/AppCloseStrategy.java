@@ -18,13 +18,13 @@ class AppCloseStrategy extends Strategy
 	 *            Na tym wywoła stopRunning(), jeśli tutaj wywołamy
 	 *            doWithAppAction()
 	 */
-	public AppCloseStrategy(Controller controller)
+	public AppCloseStrategy(final Controller controller)
 	{
 		super(controller);
 	}
 
 	@Override
-	public void doWithAppAction(AppAction appAction)
+	public void doWithAppAction(final AppAction appAction)
 	{
 		Debug.log("Strategia wyłączania aplikacji");
 		controller.stopRunning();

@@ -41,7 +41,7 @@ public class Response
 	 * @param logAppend
 	 *            Co dopisać do logu?
 	 */
-	public Response(String logAppend)
+	public Response(final String logAppend)
 	{
 		this(logAppend, true);
 	}
@@ -54,7 +54,7 @@ public class Response
 	 * @param actionSuccessful
 	 *            Czy akcja się udała?
 	 */
-	public Response(String logAppend, boolean actionSuccessful)
+	public Response(final String logAppend, final boolean actionSuccessful)
 	{
 		this.logAppend = logAppend;
 		clearsLog = false;
@@ -71,7 +71,7 @@ public class Response
 	 * @param actions
 	 *            Tablica nazw akcji dla tego przedmiotu
 	 */
-	public void addGameObject(String name, String[] actions)
+	public void addGameObject(final String name, final String[] actions)
 	{
 		gameObjects.add(new ResponseGameObject(name, actions));
 	}
@@ -103,7 +103,7 @@ public class Response
 	 *            Indeks przedmiotu
 	 * @return Tablica akcji do wyświetlenia
 	 */
-	public String[] getActionsOfGameObject(int index)
+	public String[] getActionsOfGameObject(final int index)
 	{
 		return gameObjects.get(index).getActions();
 	}
@@ -115,7 +115,7 @@ public class Response
 	 *            Jednoznaczne określenie przedmiotu
 	 * @return Nazwa przedmiotu
 	 */
-	public String getNameOfGameObject(int index)
+	public String getNameOfGameObject(final int index)
 	{
 		return gameObjects.get(index).getName();
 	}
@@ -127,7 +127,7 @@ public class Response
 	 *            Czy nadisać dane? (Czy wyczyścić pole tekstowe przed
 	 *            dopisaniem)
 	 */
-	public void setClearsLog(boolean clearsLog)
+	public void setClearsLog(final boolean clearsLog)
 	{
 		this.clearsLog = clearsLog;
 	}
@@ -158,7 +158,7 @@ public class Response
 	 * @param log
 	 *            Tekt do dopisania po spacji.
 	 */
-	public void appendLog(String log)
+	public void appendLog(final String log)
 	{
 		logAppend += " " + log;
 	}

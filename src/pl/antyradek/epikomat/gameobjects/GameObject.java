@@ -42,7 +42,8 @@ public abstract class GameObject
 	 * @throws FileNotFoundException
 	 *             Gdy nie uda się wczytać
 	 */
-	public GameObject(Room room, String name) throws FileNotFoundException
+	public GameObject(final Room room, final String name)
+			throws FileNotFoundException
 	{
 		this.room = room;
 		resources = new GameResources(room.getGame().getGameName(),
@@ -84,7 +85,7 @@ public abstract class GameObject
 	 * @return Dopisanie do logu, gdy wykonana została akcja, lub null, jeśli
 	 *         takiej akcji nie dało się wykonać
 	 */
-	public abstract Response executeAction(int actionIndex);
+	public abstract Response executeAction(final int actionIndex);
 
 	/**
 	 * Weź zasób dla przedmiotu o podanym kluczu.
@@ -94,7 +95,7 @@ public abstract class GameObject
 	 * @return Dane po kluczu, lub odpowiednia informacja, jak podano w
 	 *         {@link GameResources}
 	 */
-	protected String getResource(String key)
+	protected String getResource(final String key)
 	{
 		return resources.getResource(key);
 	}
@@ -117,7 +118,7 @@ public abstract class GameObject
 	 *            Widoczność ma być taka, jesli jest <code>false</code>,
 	 *            przedmiot się nie wyświetli na liście
 	 */
-	public void setVisible(boolean visible)
+	public void setVisible(final boolean visible)
 	{
 		isVisible = visible;
 	}

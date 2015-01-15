@@ -59,7 +59,8 @@ public class GameResources
 	 *            Nazwa Przedmiotu, a także pliku zasobów - bez rozszerzenia
 	 *            ".properties"
 	 */
-	public GameResources(String gameName, String roomName, String gameObjectName)
+	public GameResources(final String gameName, final String roomName,
+			final String gameObjectName)
 	{
 		resourceBundleFilename = "res/GameData/" + gameName + "/" + roomName
 				+ "/" + gameObjectName + ".properties";
@@ -89,7 +90,7 @@ public class GameResources
 	 *            Klucz do zasobu
 	 * @return Odpowiadający tekst, lub informacja, że nie znaleziono
 	 */
-	public String getResource(String key)
+	public String getResource(final String key)
 	{
 		if (!successful)
 			return defaultStringWhenUnsuccessful;

@@ -40,7 +40,7 @@ public abstract class Game
 	 * @throws GameStartException
 	 *             Gdy nie udało się uruchomić gry
 	 */
-	public Game(String gameDirName) throws GameStartException
+	public Game(final String gameDirName) throws GameStartException
 	{
 		this.gameName = gameDirName;
 		buildLevel();
@@ -74,7 +74,7 @@ public abstract class Game
 	 * @param newRoom
 	 *            W tym pokoju będzie się teraz znajdował gracz
 	 */
-	public void setCurrentRoom(Room newRoom)
+	public void setCurrentRoom(final Room newRoom)
 	{
 		if (currentRoom != newRoom)
 		{
@@ -88,7 +88,7 @@ public abstract class Game
 	 * 
 	 * @param newRoom
 	 */
-	public void swapCurrentRoom(Room newRoom)
+	public void swapCurrentRoom(final Room newRoom)
 	{
 		currentRoom = newRoom;
 	}
@@ -116,7 +116,7 @@ public abstract class Game
 	 * @return Gotowe dane zawierające informacje z przedmiotu i przedmioty z
 	 *         pokoju
 	 */
-	public Response executeAction(ViewResponseAction action)
+	public Response executeAction(final ViewResponseAction action)
 	{
 		// informacja od przedmiotu jest niepełna, nie posiada informacji o
 		// liście przedmiotów w pokoju

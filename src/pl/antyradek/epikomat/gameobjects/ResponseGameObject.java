@@ -27,7 +27,7 @@ public class ResponseGameObject
 	 * @param actions
 	 *            Nazwy akcji na przedmiocie
 	 */
-	public ResponseGameObject(String name, String[] actions)
+	public ResponseGameObject(final String name, final String[] actions)
 	{
 		this.name = name;
 		this.actionsNames = actions;

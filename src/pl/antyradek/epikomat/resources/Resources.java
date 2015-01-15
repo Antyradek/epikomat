@@ -125,7 +125,7 @@ public final class Resources
 	 * @return Tekst odpowiadający kluczowi odpowiadającemu podanemu
 	 *         enumeratorowi, lub tekst, że zasoby nie są poprawne.
 	 */
-	public static String getString(Resource resource)
+	public static String getString(final Resource resource)
 	{
 		if (!successful)
 			return defaultStringWhenUnsuccessful;

@@ -26,7 +26,7 @@ public class Clock extends GameObject implements Examinable
 	 * @throws FileNotFoundException
 	 *             Gdy nie wczytano zasobów
 	 */
-	public Clock(Room room) throws FileNotFoundException
+	public Clock(final Room room) throws FileNotFoundException
 	{
 		super(room, "Clock");
 		isWorking = false;
@@ -53,7 +53,7 @@ public class Clock extends GameObject implements Examinable
 	}
 
 	@Override
-	public Response executeAction(int actionIndex)
+	public Response executeAction(final int actionIndex)
 	{
 		switch (actionIndex)
 		{

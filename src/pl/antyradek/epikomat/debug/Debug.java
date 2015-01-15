@@ -15,7 +15,7 @@ public class Debug
 	 * @param obj
 	 *            Obiekt do wypisania, wywołuje jego metodę toString()
 	 */
-	public static void log(Object obj)
+	public static void log(final Object obj)
 	{
 		System.out.println(obj);
 	}
@@ -26,7 +26,7 @@ public class Debug
 	 * @param obj
 	 *            Na nim wywołany zosanie toString();
 	 */
-	public static void logErr(Object obj)
+	public static void logErr(final Object obj)
 	{
 		// ANSI escape codes
 		System.out.println("\033[31m" + obj.toString() + "\033[39m");
@@ -39,7 +39,7 @@ public class Debug
 	 * @param obj
 	 *            Na nim wywołuje toString()
 	 */
-	public static void logSuccess(Object obj)
+	public static void logSuccess(final Object obj)
 	{
 		System.out.println("\033[32m" + obj.toString() + "\033[39m");
 	}

@@ -89,10 +89,11 @@ public class View
 	 * @param newState
 	 *            Zwrot Modelu z bezpiecznymi informacjami
 	 */
-	public void setState(Response newState)
+	public void setState(final Response newState)
 	{
 		addLog(newState.getLogAppend(), newState.getClearsLog());
-		int gameObjectsCount = newState.getGameObjectsCount();
+		// to zabawne, że JDK 8 działa bez final, a JDK 7 już nie
+		final int gameObjectsCount = newState.getGameObjectsCount();
 
 		SwingUtilities.invokeLater(new Runnable()
 		{
@@ -146,7 +147,7 @@ public class View
 	 * @param clear
 	 *            Czy usunąć cały log przedtem?
 	 */
-	private void addLog(String textToAppend, boolean clear)
+	private void addLog(final String textToAppend, final boolean clear)
 	{
 		SwingUtilities.invokeLater(new Runnable()
 		{
@@ -173,7 +174,8 @@ public class View
 	 * @param actionIndex
 	 *            Indeks akcji
 	 */
-	public void sendActionToQueue(int gameObjectIndex, int actionIndex)
+	public void sendActionToQueue(final int gameObjectIndex,
+			final int actionIndex)
 	{
 		try
 		{

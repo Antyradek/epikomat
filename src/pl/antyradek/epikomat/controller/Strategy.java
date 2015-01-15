@@ -22,7 +22,7 @@ abstract class Strategy
 	 *            Kontroler, którym sterujemy, na którym wywołujmy odpowiednie
 	 *            metody.
 	 */
-	public Strategy(Controller controller)
+	public Strategy(final Controller controller)
 	{
 		this.controller = controller;
 	}
@@ -33,5 +33,5 @@ abstract class Strategy
 	 * @param appAction
 	 *            Informacje potrzebne do strategii
 	 */
-	abstract void doWithAppAction(AppAction appAction);
+	abstract void doWithAppAction(final AppAction appAction);
 }

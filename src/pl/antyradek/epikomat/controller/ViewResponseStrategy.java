@@ -15,13 +15,13 @@ public class ViewResponseStrategy extends Strategy
 	 * @param controller
 	 *            Tego Kontrolera użyjemy
 	 */
-	public ViewResponseStrategy(Controller controller)
+	public ViewResponseStrategy(final Controller controller)
 	{
 		super(controller);
 	}
 
 	@Override
-	void doWithAppAction(AppAction appAction)
+	void doWithAppAction(final AppAction appAction)
 	{
 		controller.executeAction((ViewResponseAction) appAction);
 	}

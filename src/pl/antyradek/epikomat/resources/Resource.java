@@ -26,7 +26,7 @@ public enum Resource
 	 * 
 	 * @param key
 	 */
-	private Resource(String key)
+	private Resource(final String key)
 	{
 		this.key = key;
 	}

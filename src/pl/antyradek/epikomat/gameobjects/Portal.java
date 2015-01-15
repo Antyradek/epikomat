@@ -31,7 +31,8 @@ public class Portal extends GameObject implements Examinable, Walkable
 	 * @throws FileNotFoundException
 	 *             Gdy zasoby zniknęły w portalu
 	 */
-	public Portal(Room room, Room otherRoom) throws FileNotFoundException
+	public Portal(final Room room, final Room otherRoom)
+			throws FileNotFoundException
 	{
 		super(room, "Portal");
 		this.otherRoom = otherRoom;
@@ -47,7 +48,7 @@ public class Portal extends GameObject implements Examinable, Walkable
 	}
 
 	@Override
-	public Response executeAction(int actionIndex)
+	public Response executeAction(final int actionIndex)
 	{
 		switch (actionIndex)
 		{

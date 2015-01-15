@@ -52,7 +52,7 @@ public class Room
 	 * @param roomName
 	 *            Z takim katalogiem zasobów
 	 */
-	public Room(Game game, String roomName)
+	public Room(final Game game, final String roomName)
 	{
 		list = new ArrayList<GameObject>();
 		activeList = new ArrayList<GameObject>();
@@ -95,7 +95,7 @@ public class Room
 	 * @param gameObject
 	 *            Przedmiot do dodania
 	 */
-	public void add(GameObject gameObject)
+	public void add(final GameObject gameObject)
 	{
 		if (gameObject.getRoom() != this)
 		{
@@ -114,7 +114,7 @@ public class Room
 	 * @param gameObject
 	 *            Przedmiot do usunięcia
 	 */
-	public void remove(GameObject gameObject)
+	public void remove(final GameObject gameObject)
 	{
 		list.remove(gameObject);
 	}
@@ -146,7 +146,7 @@ public class Room
 	 *            Dane bez informacji o przedmiotach
 	 * @return Zmieniona wartość
 	 */
-	public Response addGameObjectsList(Response rawResponse)
+	public Response addGameObjectsList(final Response rawResponse)
 	{
 		activeList.clear();
 		for (GameObject gameObject : list)
@@ -170,7 +170,7 @@ public class Room
 	 *            Akcja wykonana na jakim pzedmiocie
 	 * @return Dane o wykonaniu na przedmiocie
 	 */
-	public Response executeAction(ViewResponseAction action)
+	public Response executeAction(final ViewResponseAction action)
 	{
 		int gameObjectIndex = action.getGameObjectIndex();
 		int actionIndex = action.getActionIndex();

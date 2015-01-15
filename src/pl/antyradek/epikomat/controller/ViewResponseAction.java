@@ -27,7 +27,7 @@ public class ViewResponseAction extends AppAction
 	 * @param actionIndex
 	 *            Tą akcję z kolei
 	 */
-	public ViewResponseAction(int gameObjectIndex, int actionIndex)
+	public ViewResponseAction(final int gameObjectIndex, final int actionIndex)
 	{
 		this.gameObjectIndex = gameObjectIndex;
 		this.actionIndex = actionIndex;

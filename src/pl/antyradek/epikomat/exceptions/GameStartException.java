@@ -28,7 +28,7 @@ public class GameStartException extends Exception
 	 * @param message
 	 *            W postaci tej wiadomości
 	 */
-	public GameStartException(String message)
+	public GameStartException(final String message)
 	{
 		super(message);
 
@@ -40,7 +40,7 @@ public class GameStartException extends Exception
 	 * @param cause
 	 *            Powód rzucania wyjątku
 	 */
-	public GameStartException(Throwable cause)
+	public GameStartException(final Throwable cause)
 	{
 		super(cause);
 
@@ -54,7 +54,7 @@ public class GameStartException extends Exception
 	 * @param cause
 	 *            Powód wyrzucenia
 	 */
-	public GameStartException(String message, Throwable cause)
+	public GameStartException(final String message, final Throwable cause)
 	{
 		super(message, cause);
 
@@ -72,7 +72,7 @@ public class GameStartException extends Exception
 	 * @param writableStackTrace
 	 *            Wypisywalna lista wywołań
 	 */
-	public GameStartException(String message, Throwable cause,
+	public GameStartException(final String message, final Throwable cause,
 			boolean enableSuppression, boolean writableStackTrace)
 	{
 		super(message, cause, enableSuppression, writableStackTrace);

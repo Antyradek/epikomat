@@ -21,7 +21,7 @@ public class Mirror extends GameObject implements Examinable
 	 * @throws FileNotFoundException
 	 *             Gdy nie znaleziono zasobów
 	 */
-	public Mirror(Room room) throws FileNotFoundException
+	public Mirror(final Room room) throws FileNotFoundException
 	{
 		super(room, "Mirror");
 	}
@@ -41,7 +41,7 @@ public class Mirror extends GameObject implements Examinable
 	}
 
 	@Override
-	public Response executeAction(int actionIndex)
+	public Response executeAction(final int actionIndex)
 	{
 		switch (actionIndex)
 		{

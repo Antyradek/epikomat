@@ -1,7 +1,5 @@
 package pl.antyradek.epikomat.model;
 
-import java.io.File;
-
 import pl.antyradek.epikomat.controller.ViewResponseAction;
 import pl.antyradek.epikomat.exceptions.GameStartException;
 import pl.antyradek.epikomat.gameobjects.Response;
@@ -22,7 +20,7 @@ public class Model
 	/**
 	 * Foldery odpowiednich gier. Wywołanie odpowiedniego indeksu rozpoczyna grę
 	 */
-	private File[] gameDirs;
+	// private File[] gameDirs;
 
 	/**
 	 * Uruchom grę o numerze indeksu odpowiedniej nazwy z
@@ -34,7 +32,7 @@ public class Model
 	 * 
 	 * @param gameID
 	 */
-	public void startGame(int gameID) throws GameStartException
+	public void startGame(final int gameID) throws GameStartException
 	{
 		Game newGame = null;
 		switch (gameID)
@@ -103,7 +101,7 @@ public class Model
 	 *            przedmiotu
 	 * @return Odpowiedź na to wywołanie
 	 */
-	public Response executeAction(ViewResponseAction action)
+	public Response executeAction(final ViewResponseAction action)
 	{
 		return currentGame.executeAction(action);
 	}

@@ -21,7 +21,7 @@ public class Painting extends GameObject implements Examinable
 	 * @throws FileNotFoundException
 	 *             Gdy brak zasobów
 	 */
-	public Painting(Room room) throws FileNotFoundException
+	public Painting(final Room room) throws FileNotFoundException
 	{
 		super(room, "Painting");
 	}
@@ -35,7 +35,7 @@ public class Painting extends GameObject implements Examinable
 	}
 
 	@Override
-	public Response executeAction(int actionIndex)
+	public Response executeAction(final int actionIndex)
 	{
 		if (actionIndex == 0)
 		{

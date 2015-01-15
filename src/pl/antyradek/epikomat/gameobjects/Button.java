@@ -34,7 +34,7 @@ public class Button extends GameObject implements Pushable, Examinable
 	 * @throws FileNotFoundException
 	 *             Gdy nie wczytano zasobów
 	 */
-	public Button(Room room, WashingMachine washingMachine)
+	public Button(final Room room, final WashingMachine washingMachine)
 			throws FileNotFoundException
 	{
 		super(room, "Button");
@@ -78,7 +78,7 @@ public class Button extends GameObject implements Pushable, Examinable
 	}
 
 	@Override
-	public Response executeAction(int actionIndex)
+	public Response executeAction(final int actionIndex)
 	{
 		switch (actionIndex)
 		{

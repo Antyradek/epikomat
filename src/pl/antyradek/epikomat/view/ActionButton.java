@@ -37,7 +37,8 @@ public class ActionButton extends JButton
 	 * @param actionIndex
 	 *            O tym indeksie akcji
 	 */
-	public ActionButton(String name, int gameObjectIndex, int actionIndex)
+	public ActionButton(final String name, final int gameObjectIndex,
+			final int actionIndex)
 	{
 		super(name);
 		this.gameObjectIndex = gameObjectIndex;
