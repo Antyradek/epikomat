@@ -2,65 +2,36 @@ package pl.antyradek.epikomat.gameobjects;
 
 import java.io.FileNotFoundException;
 
+import pl.antyradek.epikomat.bus.Response;
 import pl.antyradek.epikomat.model.Room;
 
-/**
- * Zegar z kukułką. Miał domyślnie wywoływać na czas, ale zabrakło czasu.
- * Zamiast tego są javadoc nad każdą metodą... Początkowo nie działa.
+/** Zegar z kukułką. Miał domyślnie wywoływać na czas, ale zabrakło czasu. Zamiast tego są javadoc nad każdą metodą... Początkowo nie działa.
  * 
- * @author Radosław Świątkiewicz
- *
- */
-public class Clock extends GameObject implements Examinable
+ * @author Radosław Świątkiewicz */
+public class Clock extends GameObject
 {
-	/**
-	 * Czy zegar działa?
-	 */
+	/** Czy zegar działa? */
 	private boolean isWorking;
 
-	/**
-	 * Zegar nienakręcony
-	 * 
-	 * @param room
-	 *            Katalog zasobów
-	 * @throws FileNotFoundException
-	 *             Gdy nie wczytano zasobów
-	 */
+	/** Zegar nienakręcony
+	 * @param room Katalog zasobów
+	 * @throws FileNotFoundException Gdy nie wczytano zasobów */
 	public Clock(final Room room) throws FileNotFoundException
 	{
 		super(room, "Clock");
-		isWorking = false;
+		this.isWorking = false;
+		addAction(new ExamineAction());
 	}
 
 	@Override
 	public Response examine()
 	{
-		if (isWorking)
+		if(isWorking)
 		{
 			return new Response(getResource("ONDescription"));
-		} else
+		}else
 		{
 			return new Response(getResource("OFFDescription"));
 		}
 	}
-
-	@Override
-	public String[] getActionNames()
-	{
-		String[] ret = new String[1];
-		ret[0] = getResource("ActionNameExamine");
-		return ret;
-	}
-
-	@Override
-	public Response executeAction(final int actionIndex)
-	{
-		switch (actionIndex)
-		{
-		case 0:
-			return examine();
-		}
-		return null;
-	}
-
 }

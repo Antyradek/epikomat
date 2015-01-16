@@ -2,64 +2,51 @@ package pl.antyradek.epikomat.gameobjects;
 
 import java.io.FileNotFoundException;
 
+import pl.antyradek.epikomat.bus.Response;
 import pl.antyradek.epikomat.model.Room;
 
-/**
- * Guzik do otwierania pralki zdalnie. Jeśli pralka nie może być otwarta, guzik
- * ulega uszkodzeniu. Brak maszyny stanów, a prosta wartość bool. Nazwa
- * przedmiotu zmienia się ze stanem.
+/** Guzik do otwierania pralki zdalnie. Jeśli pralka nie może być otwarta, guzik ulega uszkodzeniu. Brak maszyny stanów, a prosta wartość bool. Nazwa przedmiotu zmienia się ze stanem.
  * 
- * @author Radosław Świątkiewicz
- *
- */
-public class Button extends GameObject implements Pushable, Examinable
+ * @author Radosław Świątkiewicz */
+public class Button extends GameObject
 {
-	/**
-	 * Pralka którą otwieramy
-	 */
-	private final WashingMachine washingMachine;
-
-	/**
-	 * Czy guzik pracuje, czy jeszcze się nie zepsuł
-	 */
+	/** Przedmiot do otwarcia */
+	private final GameObject gameObjectToOpen;
+	/** Czy guzik pracuje, czy jeszcze się nie zepsuł */
 	private boolean isWorking;
 
-	/**
-	 * Przycisk do naciskania
+	/** Przycisk do naciskania
 	 * 
-	 * @param room
-	 *            Katalog zasobów
-	 * @param washingMachine
-	 *            Pralka, która spróbuje być otwarta
-	 * @throws FileNotFoundException
-	 *             Gdy nie wczytano zasobów
-	 */
-	public Button(final Room room, final WashingMachine washingMachine)
-			throws FileNotFoundException
+	 * @param room Katalog zasobów
+	 * @param washingMachine Pralka, która spróbuje być otwarta
+	 * @throws FileNotFoundException Gdy nie wczytano zasobów */
+	public Button(final Room room, final GameObject gameObjectToOpen) throws FileNotFoundException
 	{
 		super(room, "Button");
-		this.washingMachine = washingMachine;
-		isWorking = true;
+		this.gameObjectToOpen = gameObjectToOpen;
+		this.isWorking = true;
+		addAction(new PushAction());
+		addAction(new ExamineAction());
 	}
 
 	@Override
 	public Response push()
 	{
-		if (isWorking)
+		if(isWorking)
 		{
-			Response ret = washingMachine.open();
-			if (ret.getActionSuccessfull())
+			Response ret = gameObjectToOpen.open();
+			if(ret.getActionSuccessfull())
 			{
 				// przycisk działa i właśnie otworzył pralkę
 				return new Response(getResource("WorkingPush"), true);
-			} else
+			}else
 			{
 				// przycisk działał do puki nie próbowałeś otworzyć nim pralki,
 				// teraz się zepsuł
 				isWorking = false;
 				return new Response(getResource("BreakingPush"), false);
 			}
-		} else
+		}else
 		{
 			// nawet, jeśli da się teraz otworzyć pralkę, to i tak guzik nie
 			// działa i kopie cię prądem
@@ -69,49 +56,25 @@ public class Button extends GameObject implements Pushable, Examinable
 	}
 
 	@Override
-	public String[] getActionNames()
-	{
-		String[] ret = new String[2];
-		ret[0] = getResource("ActionNameExamine");
-		ret[1] = getResource("ActionNamePush");
-		return ret;
-	}
-
-	@Override
-	public Response executeAction(final int actionIndex)
-	{
-		switch (actionIndex)
-		{
-		case 0:
-			return examine();
-		case 1:
-			return push();
-		}
-		return null;
-	}
-
-	@Override
 	public Response examine()
 	{
-		if (isWorking)
+		if(isWorking)
 		{
 			return new Response(getResource("DescriptionWorking"));
-		} else
+		}else
 		{
 			return new Response(getResource("DescriptionBroken"));
 		}
 	}
 
-	/**
-	 * Dla tego przedmiotu nazwa zmienia się ze stanem
-	 */
+	/** Dla tego przedmiotu nazwa zmienia się ze stanem */
 	@Override
-	public String getGameObjectName()
+	public String getName()
 	{
-		if (isWorking)
+		if(isWorking)
 		{
 			return getResource("WorkingName");
-		} else
+		}else
 		{
 			return getResource("BrokenName");
 		}

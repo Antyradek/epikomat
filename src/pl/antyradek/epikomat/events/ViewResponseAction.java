@@ -1,4 +1,4 @@
-package pl.antyradek.epikomat.controller;
+package pl.antyradek.epikomat.events;
 
 /**
  * Rzecz do kolejki niosąca informację o indeksie przedmiotu, klikniętej akcji i
@@ -8,7 +8,7 @@ package pl.antyradek.epikomat.controller;
  * @author Radosław Świątkiewicz
  *
  */
-public class ViewResponseAction extends AppAction
+public class ViewResponseAction extends ViewEvent
 {
 	/**
 	 * Indeks przedmiotu, którego akcja została wykonana

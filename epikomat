@@ -1,4 +1,4 @@
 #!/bin/bash
 #execute by clicking icon in your file manager, or in terminal, but remenber to be in script's directory
 cd bin
-java pl.antyradek.epikomat.controller.Controller 
+java pl.antyradek.epikomat.Epikomat

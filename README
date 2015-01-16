@@ -16,7 +16,7 @@ Kompilacja i uruchamianie:
 ściągnij i rozpakuj projekt
 $ ant
 $ cd bin
-$ java pl.antyradek.epikomat.controller.Controller
+$ java pl.antyradek.epikomat.Epikomat
 Możesz też uruchomić skrypt w bashu (najlepiej go kliknij, jesli nie zapomniał,
 że ma być uruchamialny). Wywoływanie z JAR jakoś nie podoba się wczytywaczom zasobów.
 

@@ -1,41 +1,30 @@
 package pl.antyradek.epikomat.model;
 
-import pl.antyradek.epikomat.controller.ViewResponseAction;
+import pl.antyradek.epikomat.events.ViewResponseAction;
 import pl.antyradek.epikomat.exceptions.GameStartException;
 import pl.antyradek.epikomat.gameobjects.Response;
 
-/**
- * Cała wspaniałość aplikacji Trzyma informację o grze
+/** Cała wspaniałość aplikacji Trzyma informację o grze
  * 
- * @author Radosław Świątkiewicz
- *
- */
+ * @author Radosław Świątkiewicz */
 public class Model
 {
-	/**
-	 * Obecnie grana gra
-	 */
+	/** Obecnie grana gra */
 	private Game currentGame;
 
-	/**
-	 * Foldery odpowiednich gier. Wywołanie odpowiedniego indeksu rozpoczyna grę
-	 */
+	/** Foldery odpowiednich gier. Wywołanie odpowiedniego indeksu rozpoczyna grę */
 	// private File[] gameDirs;
 
-	/**
-	 * Uruchom grę o numerze indeksu odpowiedniej nazwy z
-	 * getAvaliableGameNames()
+	/** Uruchom grę o numerze indeksu odpowiedniej nazwy z getAvaliableGameNames()
 	 * 
-	 * Takie rozwiązanie pozwala na uniknięcie tworzenia obiektów gier tylko po
-	 * to, żeby dostać ich nazwy. Wygląda źle, wiem. W przyszłości ma być
-	 * zmieniona na
+	 * Takie rozwiązanie pozwala na uniknięcie tworzenia obiektów gier tylko po to, żeby dostać ich nazwy. Wygląda źle, wiem. W przyszłości ma być zmieniona na
 	 * 
-	 * @param gameID
-	 */
+	 * @param gameID Indeks tablicy z grami
+	 * @throws GameStartException Gra nie może być wystartowana */
 	public void startGame(final int gameID) throws GameStartException
 	{
 		Game newGame = null;
-		switch (gameID)
+		switch(gameID)
 		{
 		case 0:
 			newGame = new WashingMachineAdventure();
@@ -45,12 +34,9 @@ public class Model
 
 	}
 
-	/**
-	 * Weź dostępne nazwy gier, aby uruchomić, startGame() z indeksem
-	 * odpowiedniej nazwy
+	/** Weź dostępne nazwy gier, aby uruchomić, startGame() z indeksem odpowiedniej nazwy
 	 * 
-	 * @return
-	 */
+	 * @return */
 	public String[] getAvaliableGameNames()
 	{
 		// Wypisywanie folderów nie ma sensu, gdyż i tak wszystko kończy się na
@@ -83,24 +69,18 @@ public class Model
 		return ret;
 	}
 
-	/**
-	 * Początkowy stan gry
+	/** Początkowy stan gry
 	 * 
-	 * @return Dane do wyświetlenia na samym początku gry
-	 */
+	 * @return Dane do wyświetlenia na samym początku gry */
 	public Response getInitialState()
 	{
 		return currentGame.getInitialState();
 	}
 
-	/**
-	 * Wykonaj akcję na działającej grze
+	/** Wykonaj akcję na działającej grze
 	 * 
-	 * @param action
-	 *            Akcja z Widoku niosą ca informację o indeksach akcji i
-	 *            przedmiotu
-	 * @return Odpowiedź na to wywołanie
-	 */
+	 * @param action Akcja z Widoku niosą ca informację o indeksach akcji i przedmiotu
+	 * @return Odpowiedź na to wywołanie */
 	public Response executeAction(final ViewResponseAction action)
 	{
 		return currentGame.executeAction(action);
