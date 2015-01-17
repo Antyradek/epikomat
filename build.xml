@@ -16,7 +16,6 @@
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
-                <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -49,7 +48,7 @@
         <antcall target="build"/>
     </target>
     <target name="Controller">
-        <java classname="pl.antyradek.epikomat.controller.Controller" failonerror="true" fork="yes">
+        <java classname="pl.antyradek.epikomat.Epikomat" failonerror="true" fork="yes">
             <classpath refid="Epikomat.classpath"/>
         </java>
     </target>

@@ -10,4 +10,11 @@ ALPHA 1.0.1
 Ze względu na implementację w Javie 1.7, invokeLater() nie może korzystać z niefinalnych zmiennych,
 argumentów i pól. Dziwne, w 1.8 ten problem nie występuje. Dodane zostały w każdym razie w tamtych 
 miejscach "final" i przy okazji w każdym argumencie gdzie indziej też. 
-Powinno się kompilować pod 1.7.  
+Powinno się kompilować pod 1.7.
+
+ALPHA 1.1
+2015-01-16
+Przerobiona komunikacja i dodane mapy zamiast indeksów tablic.
+Przekopiowano dużo kodu do GameObject, zatem dziedziczące dodają bardzo mało. 
+Zrezygnowano z interfejsów akcji, teraz GameObject wykonuje wszystko, co możliwe, a dziedziczące
+ustalają listę używanych.  

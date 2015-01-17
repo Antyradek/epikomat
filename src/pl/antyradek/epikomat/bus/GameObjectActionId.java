@@ -6,12 +6,16 @@ public class GameObjectActionId
 {
 	/** Nazwa akcji widziana przez użytkownika */
 	private final String name;
+	/** Id przedmiotu do której akcja należy */
+	private final GameObjectId gameObjectId;
 
 	/** Nowy informator o akcji przedmiotu
-	 * @param name Nazwa akcji */
-	public GameObjectActionId(final String name)
+	 * @param name Nazwa akcji
+	 * @param gameObjectId Id przedmiotu do którego akcja należy */
+	public GameObjectActionId(final String name, final GameObjectId gameObjectId)
 	{
 		this.name = name;
+		this.gameObjectId = gameObjectId;
 	}
 
 	/** Zwróć nazwę tej akcji
@@ -19,6 +23,13 @@ public class GameObjectActionId
 	public String getName()
 	{
 		return name;
+	}
+
+	/** Zwróć ID przedmiotu do którego należy ta akcja
+	 * @return Id przedmiotu */
+	public GameObjectId getGameObjectId()
+	{
+		return gameObjectId;
 	}
 
 }

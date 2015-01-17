@@ -9,7 +9,7 @@ import java.util.List;
 public class GameObjectId
 {
 	/** Nazwa przedmiotu, która będzie wyświetlona */
-	private final String name;
+	private String name;
 	/** Lista akcji do wykonania. Podajemy ten obiekt z powrotem, aby wykonać akcję. */
 	private final List<GameObjectActionId> actionIdList;
 
@@ -28,11 +28,18 @@ public class GameObjectId
 		return name;
 	}
 
+	/** Zaktualizuj nazwę przedmiotu. Ponieważ ten Id jest jedyny na przedmiot, potrzeba zaktualizować nazwę (a nie tworzyć nowy pzedmiot).
+	 * @param name Nowa nazwa do ustawienia */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
 	/** Zwraca tablicę ID akcji, które można wykonać na tym przedmiocie
 	 * @return Tablica akcji, które można wykonać na przedmiocie */
-	public GameObjectActionId[] getActionIds()
+	public List<GameObjectActionId> getActionIds()
 	{
-		return (GameObjectActionId[]) actionIdList.toArray();
+		return actionIdList;
 	}
 
 	/** Dodaj możiwą akcję do tego przedmiotu

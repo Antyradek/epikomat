@@ -5,10 +5,11 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import pl.antyradek.epikomat.bus.AvailableGameWashingMachineAdventure;
 import pl.antyradek.epikomat.debug.Debug;
-import pl.antyradek.epikomat.events.AppCloseAction;
+import pl.antyradek.epikomat.events.AppCloseEvent;
 import pl.antyradek.epikomat.events.ViewEvent;
-import pl.antyradek.epikomat.events.ViewResponseAction;
+import pl.antyradek.epikomat.events.ViewResponseEvent;
 import pl.antyradek.epikomat.exceptions.GameStartException;
 import pl.antyradek.epikomat.model.Model;
 import pl.antyradek.epikomat.view.View;
@@ -19,16 +20,12 @@ public class Controller
 {
 	/** Widok tworzący ramkę i uważający na wątki */
 	private final View view;
-
 	/** Kolejka od widoku. Widok wkłada, my wyciągamy. */
 	private final BlockingQueue<ViewEvent> queue;
-
 	/** Mapa strategii, czyli mapa Akcji z widoku na zespół funkcji dla tej akcji */
 	private final Map<Class<? extends ViewEvent>, Strategy> strategyMap;
-
 	/** Główny model aplikacji, on uruchamia grę i ma informacje o wszystkim */
 	private final Model model;
-
 	/** Czy aplikacja jeszcze żyje? */
 	private boolean alive;
 
@@ -45,7 +42,7 @@ public class Controller
 		// startuj grę TODO ekran wybierania
 		try
 		{
-			this.model.startGame(0); // puki co
+			this.model.startGame(new AvailableGameWashingMachineAdventure());
 		}catch(GameStartException e)
 		{
 			Debug.logErr("Błąd wystartowania gry 0");
@@ -81,8 +78,8 @@ public class Controller
 	/** Dodaj wszystkie potrzebne strategie do mapy */
 	private void addStategies()
 	{
-		strategyMap.put(AppCloseAction.class, new AppCloseStrategy(this));
-		strategyMap.put(ViewResponseAction.class, new ViewResponseStrategy(this));
+		strategyMap.put(AppCloseEvent.class, new AppCloseStrategy(this));
+		strategyMap.put(ViewResponseEvent.class, new ViewResponseStrategy(this));
 	}
 
 	/** Wyłącza aplikację i niszczy okno */
@@ -95,9 +92,8 @@ public class Controller
 	/** Wywołuje akcję na modelu. Najczęstsza metoda.
 	 * 
 	 * @param action */
-	private void executeAction(final ViewResponseAction action)
+	private void executeAction(final ViewResponseEvent action)
 	{
-		Debug.log("Wykonano akcję nr: " + action.getActionIndex() + " na przedmiocie nr: " + action.getGameObjectIndex());
 		view.setState(model.executeAction(action));
 	}
 
@@ -146,7 +142,6 @@ public class Controller
 	}
 
 	/** Wyślij dane o klikniętej akcji do Modelu.
-	 * 
 	 * @author Radosław Świątkiewicz */
 	private class ViewResponseStrategy extends Strategy
 	{
@@ -162,7 +157,7 @@ public class Controller
 		@Override
 		void doWithViewEvent(final ViewEvent appAction)
 		{
-			controller.executeAction((ViewResponseAction) appAction);
+			controller.executeAction((ViewResponseEvent) appAction);
 		}
 
 	}

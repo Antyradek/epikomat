@@ -4,7 +4,7 @@ import pl.antyradek.epikomat.controller.Controller;
 import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.resources.Resources;
 
-/** Początek wszystkiego Wspaniałość nad Wspaniałościami. Wywoływalna klasa budująca
+/** Początek wszystkiego Wspaniałość nad Wspaniałościami. Wywoływalna klasa budująca.
  * 
  * @author Radosław Świątkiewcz */
 public final class Epikomat

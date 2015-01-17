@@ -2,6 +2,7 @@ package pl.antyradek.epikomat.model;
 
 import java.io.FileNotFoundException;
 
+import pl.antyradek.epikomat.bus.Response;
 import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.exceptions.GameStartException;
 import pl.antyradek.epikomat.gameobjects.Button;
@@ -9,38 +10,24 @@ import pl.antyradek.epikomat.gameobjects.Clock;
 import pl.antyradek.epikomat.gameobjects.Mirror;
 import pl.antyradek.epikomat.gameobjects.Painting;
 import pl.antyradek.epikomat.gameobjects.Portal;
-import pl.antyradek.epikomat.gameobjects.Response;
 import pl.antyradek.epikomat.gameobjects.WashingMachine;
 
-/**
- * Niezwykła przygoda z udziałem pralki. Prezentuje różne aspekty silnika. W
- * pokoju jest przycisk, pralka i obraz. Przycik otwiera pralkę i psuje się, gdy
- * tego nie może zrobić. Pralka zawiera w środku portal. Prowadzi do pokoju z
- * lustrem i zegarem.
+/** Niezwykła przygoda z udziałem pralki. Prezentuje różne aspekty silnika. W pokoju jest przycisk, pralka i obraz. Przycik otwiera pralkę i psuje się, gdy tego nie może zrobić. Pralka zawiera w środku portal. Prowadzi do pokoju z lustrem i zegarem.
  * 
- * @author Radosław Świątkiewicz
- *
- */
-public class WashingMachineAdventure extends Game
+ * @author Radosław Świątkiewicz */
+class WashingMachineAdventure extends Game
 {
 
-	/**
-	 * Pokój z którego startujemy (ten z pralką)
-	 */
+	/** Pokój z którego startujemy (ten z pralką) */
 	private Room pillowRoom;
 
-	/**
-	 * Pokój z zegarem
-	 */
+	/** Pokój z zegarem */
 	private Room clockRoom;
 
-	/**
-	 * Cała gra
+	/** Cała gra
 	 * 
-	 * @throws GameStartException
-	 *             Gdy zasoby gdzieś wcięło
-	 */
-	public WashingMachineAdventure() throws GameStartException
+	 * @throws GameStartException Gdy zasoby gdzieś wcięło */
+	WashingMachineAdventure() throws GameStartException
 	{
 		super("WashingMachineAdventure");
 	}
@@ -73,12 +60,10 @@ public class WashingMachineAdventure extends Game
 			clockRoom.add(clockRoomPortal);
 			clockRoom.add(clock);
 			clockRoom.add(mirror);
-		} catch (FileNotFoundException e)
+		}catch(FileNotFoundException e)
 		{
-			Debug.logErr("Błąd budowy poziomu - brakuje zasobów: "
-					+ e.getMessage());
-			throw new GameStartException("Błąd zasobu przedmiotu: "
-					+ e.getMessage());
+			Debug.logErr("Błąd budowy poziomu - brakuje zasobów: " + e.getMessage());
+			throw new GameStartException("Błąd zasobu przedmiotu: " + e.getMessage());
 		}
 	}
 

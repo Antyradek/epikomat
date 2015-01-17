@@ -7,11 +7,13 @@ import java.util.concurrent.BlockingQueue;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import pl.antyradek.epikomat.bus.GameObjectActionId;
+import pl.antyradek.epikomat.bus.GameObjectId;
+import pl.antyradek.epikomat.bus.Response;
 import pl.antyradek.epikomat.debug.Debug;
-import pl.antyradek.epikomat.events.AppCloseAction;
+import pl.antyradek.epikomat.events.AppCloseEvent;
 import pl.antyradek.epikomat.events.ViewEvent;
-import pl.antyradek.epikomat.events.ViewResponseAction;
-import pl.antyradek.epikomat.gameobjects.Response;
+import pl.antyradek.epikomat.events.ViewResponseEvent;
 import pl.antyradek.epikomat.resources.Resources;
 
 /** Całkowity Widok. Zawiera referencje do okna i innych widokowych badziewi. Tym komunikuje się aplikacja z oknem. Ten odpowiada za rozdzielenie wątków.
@@ -21,7 +23,6 @@ public class View
 {
 	/** Ramka JFrame, czyli GUI */
 	private EpikomatFrame frame;
-
 	/** Kolejka do której wkładamy polecenia z widoku. Kontroler je odbiera. */
 	private final BlockingQueue<ViewEvent> queue;
 
@@ -80,13 +81,11 @@ public class View
 			public void run()
 			{
 				addLog(newState.getLogAppend(), newState.getClearsLog());
-				final int gameObjectsCount = newState.getGameObjectsCount();
 				frame.resetGameObjectList();
-				for(int i = 0; i < gameObjectsCount; i++)
+				for(GameObjectId gameObjectId : newState.getGameObjectsIds())
 				{
-					frame.addGameObject(newState.getNameOfGameObject(i), newState.getActionsOfGameObject(i));
+					frame.addGameObject(gameObjectId);
 				}
-				Debug.log("Polecenie wyświetlenia " + gameObjectsCount + " przedmiotów, ustawiono GUI");
 			}
 		});
 	}
@@ -97,7 +96,7 @@ public class View
 		Debug.log("Zamykamy okno");
 		try
 		{
-			queue.put(new AppCloseAction());
+			queue.put(new AppCloseEvent());
 		}catch(InterruptedException e)
 		{
 			Debug.logErr("Błąd wkładania polecenia zamknięcia do kolejki! Będziesz zdaje się musiał ukatrupić proces...");
@@ -139,18 +138,16 @@ public class View
 
 	/** Dodaj do kolejki informację o akcji
 	 * 
-	 * @param gameObjectIndex Indeks przedmiotu
-	 * @param actionIndex Indeks akcji */
-	public void sendActionToQueue(final int gameObjectIndex, final int actionIndex)
+	 * @param gameObjectActionId Id klikniętej akcji */
+	void sendActionToQueue(final GameObjectActionId gameObjectActionId)
 	{
 		try
 		{
-			queue.put(new ViewResponseAction(gameObjectIndex, actionIndex));
+			queue.put(new ViewResponseEvent(gameObjectActionId));
 		}catch(InterruptedException e)
 		{
 			Debug.logErr("Błąd wkładania akcji do kolejki. Wyobrażasz sobie dalszą grę, bo ja nie.");
 			e.printStackTrace();
 		}
-		Debug.log("Do kolejki wysłano akcję: " + gameObjectIndex + " " + actionIndex);
 	}
 }

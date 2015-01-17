@@ -1,6 +1,7 @@
 package pl.antyradek.epikomat.model;
 
-import pl.antyradek.epikomat.events.ViewResponseAction;
+import pl.antyradek.epikomat.bus.Response;
+import pl.antyradek.epikomat.events.ViewResponseEvent;
 import pl.antyradek.epikomat.exceptions.GameStartException;
 
 /** Gra, inaczej poziom, rozgrywka. Osobna opowieść.
@@ -22,7 +23,7 @@ public abstract class Game
 	 * 
 	 * @param gameDirName Katalog zasobów dla tej gry
 	 * @throws GameStartException Gdy nie udało się uruchomić gry */
-	public Game(final String gameDirName) throws GameStartException
+	Game(final String gameDirName) throws GameStartException
 	{
 		this.gameName = gameDirName;
 		buildLevel();
@@ -39,7 +40,7 @@ public abstract class Game
 	/** Zwraca początkowy stan, czyli co wyświetlić na początku gry
 	 * 
 	 * @return Log i przedmioty na początek gry, czyści log */
-	public abstract Response getInitialState();
+	abstract Response getInitialState();
 
 	/** Pokój w kturym gracz znajduje się obecnie */
 	private Room currentRoom;
@@ -59,7 +60,7 @@ public abstract class Game
 	/** Zamienia pokoje nie informując nikogo o zmianie
 	 * 
 	 * @param newRoom */
-	public void swapCurrentRoom(final Room newRoom)
+	void swapCurrentRoom(final Room newRoom)
 	{
 		currentRoom = newRoom;
 	}
@@ -76,13 +77,11 @@ public abstract class Game
 	 * 
 	 * @param action Dane właściwie wygenerowane jescze w widkou zawierające indeks przedmotu i akcji
 	 * @return Gotowe dane zawierające informacje z przedmiotu i przedmioty z pokoju */
-	public Response executeAction(final ViewResponseAction action)
+	Response executeAction(final ViewResponseEvent action)
 	{
-		// informacja od przedmiotu jest niepełna, nie posiada informacji o
-		// liście przedmiotów w pokoju
+		// informacja od przedmiotu jest niepełna, nie posiada informacji o liście przedmiotów w pokoju
 		Response gameObjectResponse = currentRoom.executeAction(action);
-		// dopisanie listy przedmiotów, nie robi tego pokój, bo może się zmienić
-		// po akcji
+		// dopisanie listy przedmiotów, nie robi tego pokój, bo może się zmienić po akcji
 		gameObjectResponse = currentRoom.addGameObjectsList(gameObjectResponse);
 		if(roomChanged)
 		{

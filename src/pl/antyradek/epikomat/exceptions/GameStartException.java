@@ -5,7 +5,6 @@ package pl.antyradek.epikomat.exceptions;
  * @author Radosław Świątkiewicz */
 public class GameStartException extends Exception
 {
-
 	/** Takie coś, żeby się nie zepsuło i żeby Eclipse się nie buntował */
 	private static final long serialVersionUID = -1607920420091161384L;
 

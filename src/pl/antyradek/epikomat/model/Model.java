@@ -1,8 +1,13 @@
 package pl.antyradek.epikomat.model;
 
-import pl.antyradek.epikomat.events.ViewResponseAction;
+import java.util.HashMap;
+import java.util.Map;
+
+import pl.antyradek.epikomat.bus.AvailableGame;
+import pl.antyradek.epikomat.bus.AvailableGameWashingMachineAdventure;
+import pl.antyradek.epikomat.bus.Response;
+import pl.antyradek.epikomat.events.ViewResponseEvent;
 import pl.antyradek.epikomat.exceptions.GameStartException;
-import pl.antyradek.epikomat.gameobjects.Response;
 
 /** Cała wspaniałość aplikacji Trzyma informację o grze
  * 
@@ -11,6 +16,15 @@ public class Model
 {
 	/** Obecnie grana gra */
 	private Game currentGame;
+	/** Most między opisami gier, a rzeczywistymi grami do zagrania */
+	private final Map<Class<? extends AvailableGame>, GameStartStrategy> availableGamesMap;
+
+	/** Model bez uruchomionej gry */
+	public Model()
+	{
+		this.availableGamesMap = new HashMap<Class<? extends AvailableGame>, GameStartStrategy>();
+		this.availableGamesMap.put(AvailableGameWashingMachineAdventure.class, new WashingMachineAdventureGameStartStrategy());
+	}
 
 	/** Foldery odpowiednich gier. Wywołanie odpowiedniego indeksu rozpoczyna grę */
 	// private File[] gameDirs;
@@ -21,52 +35,9 @@ public class Model
 	 * 
 	 * @param gameID Indeks tablicy z grami
 	 * @throws GameStartException Gra nie może być wystartowana */
-	public void startGame(final int gameID) throws GameStartException
+	public void startGame(final AvailableGame game) throws GameStartException
 	{
-		Game newGame = null;
-		switch(gameID)
-		{
-		case 0:
-			newGame = new WashingMachineAdventure();
-			break;
-		}
-		currentGame = newGame;
-
-	}
-
-	/** Weź dostępne nazwy gier, aby uruchomić, startGame() z indeksem odpowiedniej nazwy
-	 * 
-	 * @return */
-	public String[] getAvaliableGameNames()
-	{
-		// Wypisywanie folderów nie ma sensu, gdyż i tak wszystko kończy się na
-		// stworzeniu odpowiedniej klasy gry. Łączenie tekstu z nazwą klasy jest
-		// niebezpieczne, poza tym i tak trzeba to wkompilować w program.
-
-		// ClassLoader classLoader = Resources.class.getClassLoader();
-		// URL url = classLoader.getResource("res/GameData/");
-		// File directory = new File(url.getPath());
-		//
-		// List<File> list = new ArrayList<File>();
-		// List<String> namesList = new ArrayList<String>();
-		// File[] allFiles = directory.listFiles();
-		//
-		// // wyciągnij tylko foldery (nie powinno tam być nic innego, ale
-		// zawsze)
-		// for (File file : allFiles)
-		// {
-		// if (file.isDirectory())
-		// {
-		// list.add(file);
-		// namesList.add(file.getName());
-		// }
-		// }
-		// gameDirs = (File[]) list.toArray();
-		// return (String[]) namesList.toArray();
-
-		String ret[] = new String[1];
-		ret[0] = "Pralkowa Przygoda";
-		return ret;
+		availableGamesMap.get(game.getClass()).runGame();
 	}
 
 	/** Początkowy stan gry
@@ -81,8 +52,29 @@ public class Model
 	 * 
 	 * @param action Akcja z Widoku niosą ca informację o indeksach akcji i przedmiotu
 	 * @return Odpowiedź na to wywołanie */
-	public Response executeAction(final ViewResponseAction action)
+	public Response executeAction(final ViewResponseEvent action)
 	{
 		return currentGame.executeAction(action);
+	}
+
+	/** Strategia uruchomienia gry. Run uruchamia grę
+	 * @author Radosław Świątkiewicz
+	 * @throws GameStartException Gry nie można uruchomić gry */
+	private abstract class GameStartStrategy
+	{
+		public abstract void runGame() throws GameStartException;
+	}
+
+	/** Ooh, jaka długa nazwa. Strategia uruchomienia Pralkowej przygody.
+	 * @author Radosław Świątkiewicz */
+	private class WashingMachineAdventureGameStartStrategy extends GameStartStrategy
+	{
+		/** Uruchom grę
+		 * @throws GameStartException Gdy nie można uruchomić gry */
+		@Override
+		public void runGame() throws GameStartException
+		{
+			currentGame = new WashingMachineAdventure();
+		}
 	}
 }

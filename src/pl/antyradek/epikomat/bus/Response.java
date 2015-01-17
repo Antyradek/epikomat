@@ -10,15 +10,12 @@ public class Response
 {
 	/** Dane do dopisania do logu */
 	private String logAppend;
-
 	/** Czy czyści log przed dodaniem nowego tekstu? */
 	private boolean clearsLog;
-
 	/** Czy ostatnio wykonana akcja się powiodła? */
 	private final boolean actionSuccessful;
-
 	/** Tablica nazw przedmuotów do wyświetlenia w widoku */
-	private List<ResponseGameObject> gameObjects;
+	private List<GameObjectId> gameObjects;
 
 	/** Zostanie coś dopisane do logu. Brak informacji o przedmiotach w pokoju. Akcja się udała.
 	 * 
@@ -35,18 +32,18 @@ public class Response
 	public Response(final String logAppend, final boolean actionSuccessful)
 	{
 		this.logAppend = logAppend;
-		clearsLog = false;
-		gameObjects = new ArrayList<ResponseGameObject>();
+		this.clearsLog = false;
+		this.gameObjects = new ArrayList<GameObjectId>();
 		this.actionSuccessful = actionSuccessful;
 	}
 
 	/** Dodaj przedmiot do listy wyświetlanych. Kolejność jest ważna, jednoznacznie identyfikuje przedmiot.
 	 * 
 	 * @param name Nazwa przedmiotu
-	 * @param actions Tablica nazw akcji dla tego przedmiotu */
-	public void addGameObject(final String name, final String[] actions)
+	 * @param gameObjectId Id tego przedmiotu */
+	public void addGameObject(final GameObjectId gameObjectId)
 	{
-		gameObjects.add(new ResponseGameObject(name, actions));
+		gameObjects.add(gameObjectId);
 	}
 
 	/** Zwróć ilość przedmiotów do wyświetlenia
@@ -65,22 +62,11 @@ public class Response
 		return actionSuccessful;
 	}
 
-	/** Zwróć tablicę akcji dla tego przedmiotu
-	 * 
-	 * @param index Indeks przedmiotu
-	 * @return Tablica akcji do wyświetlenia */
-	public String[] getActionsOfGameObject(final int index)
+	/** Zwróć tablicę ID przedmiotów
+	 * @return Tablica przedmiotów */
+	public List<GameObjectId> getGameObjectsIds()
 	{
-		return gameObjects.get(index).getActions();
-	}
-
-	/** Zwróć nazwę tego przedmiotu
-	 * 
-	 * @param index Jednoznaczne określenie przedmiotu
-	 * @return Nazwa przedmiotu */
-	public String getNameOfGameObject(final int index)
-	{
-		return gameObjects.get(index).getName();
+		return gameObjects;
 	}
 
 	/** Ustawia, czy nadpisać dane w logu. Domyślnie nie.

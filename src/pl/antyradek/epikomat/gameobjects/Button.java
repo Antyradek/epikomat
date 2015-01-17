@@ -18,7 +18,7 @@ public class Button extends GameObject
 	/** Przycisk do naciskania
 	 * 
 	 * @param room Katalog zasobów
-	 * @param washingMachine Pralka, która spróbuje być otwarta
+	 * @param gameObjectToOpen Pralka, która spróbuje być otwarta
 	 * @throws FileNotFoundException Gdy nie wczytano zasobów */
 	public Button(final Room room, final GameObject gameObjectToOpen) throws FileNotFoundException
 	{
@@ -55,18 +55,6 @@ public class Button extends GameObject
 
 	}
 
-	@Override
-	public Response examine()
-	{
-		if(isWorking)
-		{
-			return new Response(getResource("DescriptionWorking"));
-		}else
-		{
-			return new Response(getResource("DescriptionBroken"));
-		}
-	}
-
 	/** Dla tego przedmiotu nazwa zmienia się ze stanem */
 	@Override
 	public String getName()
@@ -77,6 +65,18 @@ public class Button extends GameObject
 		}else
 		{
 			return getResource("BrokenName");
+		}
+	}
+
+	@Override
+	public Response examine()
+	{
+		if(isWorking)
+		{
+			return new Response(getResource("DescriptionWorking"));
+		}else
+		{
+			return new Response(getResource("DescriptionBroken"));
 		}
 	}
 

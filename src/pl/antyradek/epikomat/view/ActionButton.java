@@ -2,67 +2,31 @@ package pl.antyradek.epikomat.view;
 
 import javax.swing.JButton;
 
-/**
- * Przycisk akcji posiadający informację o indeksie akcji i indeksie przedmiotu.
+import pl.antyradek.epikomat.bus.GameObjectActionId;
+
+/** Przycisk akcji posiadający informację o indeksie akcji i indeksie przedmiotu.
  * 
- * @author Radosław Świątkiewicz
- *
- */
-public class ActionButton extends JButton
+ * @author Radosław Świątkiewicz */
+class ActionButton extends JButton
 {
-
-	/**
-	 * Zaspokojenie Eclipsa (i zdaje się bezpieczeństwo jednoznacznego
-	 * odwołania)
-	 */
+	/** Zaspokojenie Eclipsa (i zdaje się bezpieczeństwo jednoznacznego odwołania) */
 	private static final long serialVersionUID = 12345L;
+	/** Id akcji do wykonania */
+	private final GameObjectActionId gameObjectActionId;
 
-	/**
-	 * Indeks przedmiotu
-	 */
-	private final int gameObjectIndex;
-
-	/**
-	 * Indeks akcji
-	 */
-	private final int actionIndex;
-
-	/**
-	 * Przycisk akcji
-	 * 
-	 * @param name
-	 *            O tej nazwie
-	 * @param gameObjectIndex
-	 *            O tym indeksie przedmiotu
-	 * @param actionIndex
-	 *            O tym indeksie akcji
-	 */
-	public ActionButton(final String name, final int gameObjectIndex,
-			final int actionIndex)
+	/** Przycisk akcji
+	 * @param gameObjectId O tym Id przedmiotu
+	 * @param gameObjectActionId O tym Id akcji */
+	ActionButton(final GameObjectActionId gameObjectActionId)
 	{
-		super(name);
-		this.gameObjectIndex = gameObjectIndex;
-		this.actionIndex = actionIndex;
+		super(gameObjectActionId.getName());
+		this.gameObjectActionId = gameObjectActionId;
 	}
 
-	/**
-	 * Indeks przedmiotu, jednoznacznie określa przedmiot w modelu
-	 * 
-	 * @return Indeks przedmiotu
-	 */
-	public int getGameObjectIndex()
+	/** Id akcji przedmiotu
+	 * @return Id akcji przedmiotu, określające akcji przedmiotu w Modelu */
+	GameObjectActionId getGameObjectActionId()
 	{
-		return gameObjectIndex;
+		return gameObjectActionId;
 	}
-
-	/**
-	 * Indeks akcji na przedmiocie, jednoznacznie określa akcję
-	 * 
-	 * @return Indeks akcji
-	 */
-	public int getActionIndex()
-	{
-		return actionIndex;
-	}
-
 }

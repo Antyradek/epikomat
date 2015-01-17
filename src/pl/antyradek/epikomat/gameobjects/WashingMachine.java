@@ -13,7 +13,6 @@ public class WashingMachine extends GameObject
 {
 	/** Stan pralki */
 	private State state;
-
 	/** Portal zostanie uruchomiony, gdy otworzymy pralkę */
 	private final GameObject portal;
 
@@ -28,6 +27,10 @@ public class WashingMachine extends GameObject
 		this.state = new Off();
 		this.portal = portal;
 		this.portal.setVisible(false);
+		addAction(new OpenAction());
+		addAction(new CloseAction());
+		addAction(new TurnOnAction());
+		addAction(new TurnOffAction());
 	}
 
 	@Override

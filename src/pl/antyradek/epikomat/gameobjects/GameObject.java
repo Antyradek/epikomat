@@ -14,7 +14,7 @@ import pl.antyradek.epikomat.resources.GameResources;
 /** Baza dla każdego przedmiotu w grze, implementacja wewnętrzna przedmiotów jest dowolna, co pozwala na zwiększoną funkcjonalność kosztem obszerności kodu niestey.
  * 
  * @author Radosław Świątkiewicz */
-abstract class GameObject
+public abstract class GameObject
 {
 	/** Pokój w którym znajduje się ten przedmiot */
 	private final Room room;
@@ -24,6 +24,8 @@ abstract class GameObject
 	private boolean isVisible;
 	/** Łączy id z odpowiednią metodą */
 	private final Map<GameObjectActionId, GameObjectAction> actionsMap;
+	/** Id tego przedmiotu */
+	private final GameObjectId gameObjectId;
 
 	/** Przedmiot wczyta odpowiednie zasoby. Domyślnie jest widoczny i pokaże się na liście przedmiotow.
 	 * @param room Katalog zasobów pokoju
@@ -43,26 +45,24 @@ abstract class GameObject
 		}
 		this.isVisible = true;
 		this.actionsMap = new HashMap<GameObjectActionId, GameObjectAction>();
+		this.gameObjectId = new GameObjectId(getName());
 	}
 
 	/** Dodaj możliwą do wykonania akcję do przedmiotu. Powinna ona być nadpisana przez dziedziczącego. Dodana tutaj akcja będzie widoczna w widoku.
-	 * @param action Podane tu akcje zostały nadpisane przez dziedziczący przedmiot i będą widoczne w Widoku */
-	protected void addAction(GameObjectAction action)
+	 * @param gameObjectAction Podane tu akcje zostały nadpisane przez dziedziczący przedmiot i będą widoczne w Widoku */
+	protected void addAction(final GameObjectAction gameObjectAction)
 	{
 		// chciałem to wykonać w konstruktorze za pomocą listy argumetów, ale to zdaje się działa tylko dla typów prostych
-		actionsMap.put(new GameObjectActionId(action.getName()), action);
+		GameObjectActionId newGameObjectActionId = new GameObjectActionId(gameObjectAction.getName(), getId());
+		actionsMap.put(newGameObjectActionId, gameObjectAction);
+		gameObjectId.addAction(newGameObjectActionId);
 	}
 
-	/** Id tego przedmiotu zawierające jego akcje i nazwę
+	/** Id tego przedmiotu zawierające jego akcje i nazwę. Tworzone jest na nowo
 	 * @return Id przesyłane do Widoku */
 	public GameObjectId getId()
 	{
-		GameObjectId gameObjectId = new GameObjectId(getName());
-		// dodajemy akcje do Id
-		for(GameObjectActionId actionId : actionsMap.keySet())
-		{
-			gameObjectId.addAction(actionId);
-		}
+		gameObjectId.setName(getName());
 		return gameObjectId;
 	}
 
@@ -91,7 +91,7 @@ abstract class GameObject
 
 	/** Pokój tego przedmiotu, dla jakiego został stworzony, nie koniecznie w jakim się znajduje.
 	 * @return Pokój dla którego został stworzony */
-	protected Room getRoom()
+	public Room getRoom()
 	{
 		return room;
 	}
@@ -170,7 +170,7 @@ abstract class GameObject
 
 		/** Akcja przedmiotu z określoną nazwą
 		 * @param resourceActionNameKey Klucz nazwy akcji w pliku zasobów */
-		public GameObjectAction(String resourceActionNameKey)
+		public GameObjectAction(final String resourceActionNameKey)
 		{
 			this.resourceActionNameKey = resourceActionNameKey;
 		}
