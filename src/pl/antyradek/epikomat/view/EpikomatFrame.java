@@ -51,12 +51,11 @@ class EpikomatFrame extends JFrame
 		// zamykaniem zajmujemy się w osobno poprzez wysłanie akcji do kolejki
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-		// stworzenie logu w TextArea najlepiej się sprawuje w kwestii zawijania
-		// wierszy w tym przypadku
-		logArea = new JTextArea();
-		logArea.setLineWrap(true);
-		logArea.setWrapStyleWord(true); // zawijenie wierszy na słowach
-		logArea.setEditable(false);
+		// stworzenie logu w TextArea najlepiej się sprawuje w kwestii zawijania wierszy w tym przypadku
+		this.logArea = new JTextArea();
+		this.logArea.setLineWrap(true);
+		this.logArea.setWrapStyleWord(true); // zawijenie wierszy na słowach
+		this.logArea.setEditable(false);
 		JScrollPane logScrollPane = new JScrollPane(logArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		// stworzenie ekwipunku (potem będzie działać, na czas oddania projektu
@@ -66,9 +65,9 @@ class EpikomatFrame extends JFrame
 		// inventory.setBackground(Color.ORANGE); // test na pokazanie
 
 		// stworzenie przedmiotów z pokoju
-		gameObjectsList = new JPanel();
-		gameObjectsList.setLayout(new BoxLayout(gameObjectsList, BoxLayout.Y_AXIS));
-		gameObjectsListScrollPane = new JScrollPane(gameObjectsList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		this.gameObjectsList = new JPanel();
+		this.gameObjectsList.setLayout(new BoxLayout(gameObjectsList, BoxLayout.Y_AXIS));
+		this.gameObjectsListScrollPane = new JScrollPane(gameObjectsList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		resetGameObjectList();
 
 		// stworzenie menu
@@ -120,7 +119,7 @@ class EpikomatFrame extends JFrame
 		helpMenuItem.addActionListener(new ActionListener()
 		{
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e)
+			public void actionPerformed(ActionEvent e)
 			{
 				showHelp();
 			}
@@ -206,13 +205,11 @@ class EpikomatFrame extends JFrame
 	/** Wyczyść listę przedmiotów */
 	void resetGameObjectList()
 	{
-		// jeśli to jest, to blokuje się interfejs
-		// O wiele dziwniejsze jest to, że działa bez tego
+		// jeśli to jest, to blokuje się interfejs. O wiele dziwniejsze jest to, że działa bez tego.
 		// gameObjectsList.removeAll();
 		// gameObjectsList.validate();
 
-		// słyszałem, że w C# może wyciekać pamięć, ciekawe, czy pozbywa się
-		// starego.
+		// słyszałem, że w C# może wyciekać pamięć, ciekawe, czy pozbywa się starego.
 		gameObjectsList = new JPanel();
 		gameObjectsList.setLayout(new BoxLayout(gameObjectsList, BoxLayout.Y_AXIS));
 		gameObjectsListScrollPane.setViewportView(gameObjectsList);

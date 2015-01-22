@@ -30,7 +30,7 @@ public class Button extends GameObject
 	}
 
 	@Override
-	public Response push()
+	protected Response push()
 	{
 		if(isWorking)
 		{
@@ -55,9 +55,9 @@ public class Button extends GameObject
 
 	}
 
-	/** Dla tego przedmiotu nazwa zmienia się ze stanem */
+	/** Dla tego przedmiotu nazwa zmienia się ze stanem. Jest to WorkingName, lub BrokenName */
 	@Override
-	public String getName()
+	protected String getName()
 	{
 		if(isWorking)
 		{
@@ -69,7 +69,7 @@ public class Button extends GameObject
 	}
 
 	@Override
-	public Response examine()
+	protected Response examine()
 	{
 		if(isWorking)
 		{

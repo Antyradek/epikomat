@@ -14,7 +14,7 @@ import pl.antyradek.epikomat.exceptions.GameStartException;
 import pl.antyradek.epikomat.model.Model;
 import pl.antyradek.epikomat.view.View;
 
-/** Główny kontroler całego programu. Ma najszerszą wiedzę, ale sam mało robi poza przesyłaniem zapytań z prawa na lewo. Tą klasę wywołujemy dla startu programu.
+/** Główny kontroler całego programu. Ma najszerszą wiedzę, ale sam mało robi poza przesyłaniem zapytań z prawa na lewo.
  * @author Radosław Świątkiewicz */
 public class Controller
 {
@@ -29,7 +29,7 @@ public class Controller
 	/** Czy aplikacja jeszcze żyje? */
 	private boolean alive;
 
-	/** Kontroler spróbuje się stworzyć, ale wyjdzie z aplikcjai, jeśli brak zasobów w grze */
+	/** Kontroler spróbuje się stworzyć, ale wyjdzie z aplikcji, jeśli brak zasobów w grze */
 	public Controller()
 	{
 		this.alive = true;
@@ -43,13 +43,13 @@ public class Controller
 		try
 		{
 			this.model.startGame(new AvailableGameWashingMachineAdventure());
+			this.view.setState(model.getInitialState());
 		}catch(GameStartException e)
 		{
 			Debug.logErr("Błąd wystartowania gry 0");
 			stopRunning();
 			System.exit(-2);
 		}
-		this.view.setState(model.getInitialState());
 	}
 
 	/** Wywołuje aplikację do ciągłego działania */
@@ -90,11 +90,10 @@ public class Controller
 	}
 
 	/** Wywołuje akcję na modelu. Najczęstsza metoda.
-	 * 
-	 * @param action */
-	private void executeAction(final ViewResponseEvent action)
+	 * @param event Event do wykonania na modelu */
+	private void executeEvent(final ViewResponseEvent event)
 	{
-		view.setState(model.executeAction(action));
+		view.setState(model.executeEvent(event));
 	}
 
 	/** Strategia aplikacji, czyli co ma robić w jakim momencie. Inaczej mówiąc, jakie metody na wywołać na Kontrolerze.
@@ -145,7 +144,6 @@ public class Controller
 	 * @author Radosław Świątkiewicz */
 	private class ViewResponseStrategy extends Strategy
 	{
-
 		/** Model tego Kontrolera użyjemy
 		 * 
 		 * @param controller Tego Kontrolera użyjemy */
@@ -155,9 +153,9 @@ public class Controller
 		}
 
 		@Override
-		void doWithViewEvent(final ViewEvent appAction)
+		void doWithViewEvent(final ViewEvent event)
 		{
-			controller.executeAction((ViewResponseEvent) appAction);
+			controller.executeEvent((ViewResponseEvent) event);
 		}
 
 	}

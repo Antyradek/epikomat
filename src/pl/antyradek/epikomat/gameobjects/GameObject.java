@@ -11,8 +11,7 @@ import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.model.Room;
 import pl.antyradek.epikomat.resources.GameResources;
 
-/** Baza dla każdego przedmiotu w grze, implementacja wewnętrzna przedmiotów jest dowolna, co pozwala na zwiększoną funkcjonalność kosztem obszerności kodu niestey.
- * 
+/** Baza dla każdego przedmiotu w grze, implementacja wewnętrzna przedmiotów jest dowolna, mogą nadpisywać odpowiednie metody i zadeklarować widoczne w Widoku
  * @author Radosław Świątkiewicz */
 public abstract class GameObject
 {
@@ -58,7 +57,7 @@ public abstract class GameObject
 		gameObjectId.addAction(newGameObjectActionId);
 	}
 
-	/** Id tego przedmiotu zawierające jego akcje i nazwę. Tworzone jest na nowo
+	/** Id tego przedmiotu zawierające jego akcje i nazwę. Tworzone jest na nowo za każdym wywołaniem
 	 * @return Id przesyłane do Widoku */
 	public GameObjectId getId()
 	{
@@ -113,50 +112,50 @@ public abstract class GameObject
 	}
 
 	/** Spróbuj zamknąć ten przedmiot
-	 * @return Dopisanie do logu dla zamknięcia i powodzenie */
-	public Response close()
+	 * @return Dopisanie do logu dla zamknięcia i powodzenie, <code>null</code>, jeśli nie nadpisano. */
+	protected Response close()
 	{
 		return null;
 	}
 
 	/** Spróbuj otworzyć ten przedmiot
-	 * @return Dopisanie do logu i informacja o sukcesie */
-	public Response open()
+	 * @return Dopisanie do logu i informacja o sukcesie, <code>null</code>, jesli nie nadpisano. */
+	protected Response open()
 	{
 		return null;
 	}
 
 	/** Wciśnij ten przedmiot/wykonaj inaczej nazwaną akcję
-	 * @return Dopisanie do logu po wykonaniu i sukces */
-	public Response push()
+	 * @return Dopisanie do logu po wykonaniu i sukces, <code>null</code>, jesli nie nadpisano. */
+	protected Response push()
 	{
 		return null;
 	}
 
 	/** Przyjrzyj się z bliska
-	 * @return Dopisanie do logu z dokładnym opisem, zawsze powodzenie */
-	public Response examine()
+	 * @return Dopisanie do logu z dokładnym opisem, zawsze powodzenie, <code>null</code>, jesli nie nadpisano. */
+	protected Response examine()
 	{
 		return null;
 	}
 
 	/** Spróbuj wyłączyć
-	 * @return Dopisanie do logu, i informacja o sukcesie */
-	public Response turnOff()
+	 * @return Dopisanie do logu, i informacja o sukcesie, <code>null</code>, jesli nie nadpisano. */
+	protected Response turnOff()
 	{
 		return null;
 	}
 
 	/** Spróbuj włączyć
-	 * @return Dopsanie do logu i informacja o sukcesie */
-	public Response turnOn()
+	 * @return Dopsanie do logu i informacja o sukcesie, <code>null</code>, jesli nie nadpisano. */
+	protected Response turnOn()
 	{
 		return null;
 	}
 
-	/** Przejdź przez ten przedmiot, w efekcie zmieni się pokój. To się zawsze uda.
-	 * @return Dopisanie do logu i pozytywna informacja o sukcesie */
-	public Response walk()
+	/** Przejdź przez ten przedmiot, w efekcie zmieni się pokój.
+	 * @return Dopisanie do logu i informacja o sukcesie, <code>null</code>, jesli nie nadpisano. */
+	protected Response walk()
 	{
 		return null;
 	}

@@ -74,8 +74,7 @@ public abstract class Game
 	}
 
 	/** Wykonuje akcję na obecnym pokoju. Zwracana informacja jest zmieniana, jeśli zmieniono pokój, dopisywany jest opis pokoju. Ustawiane jest też czyszcenie logu. To wygląda źle, ale zwalnia z odpowiedzialności każdy z przedmiotów osobno do dopisywania opisu pokoju i ustawiania czyszczenia logu.
-	 * 
-	 * @param action Dane właściwie wygenerowane jescze w widkou zawierające indeks przedmotu i akcji
+	 * @param action Dane właściwie wygenerowane jescze w widoku zawierające indeks przedmotu i akcji
 	 * @return Gotowe dane zawierające informacje z przedmiotu i przedmioty z pokoju */
 	Response executeAction(final ViewResponseEvent action)
 	{

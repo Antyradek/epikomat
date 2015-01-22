@@ -27,13 +27,13 @@ public class Portal extends GameObject
 	}
 
 	@Override
-	public Response examine()
+	protected Response examine()
 	{
 		return new Response(getResource("Description"));
 	}
 
 	@Override
-	public Response walk()
+	protected Response walk()
 	{
 		getRoom().getGame().setCurrentRoom(otherRoom);
 		return new Response(getResource("Walk"));

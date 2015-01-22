@@ -34,25 +34,25 @@ public class WashingMachine extends GameObject
 	}
 
 	@Override
-	public Response open()
+	protected Response open()
 	{
 		return state.open();
 	}
 
 	@Override
-	public Response close()
+	protected Response close()
 	{
 		return state.close();
 	}
 
 	@Override
-	public Response turnOn()
+	protected Response turnOn()
 	{
 		return state.turnOn();
 	}
 
 	@Override
-	public Response turnOff()
+	protected Response turnOff()
 	{
 		return state.turnOff();
 	}

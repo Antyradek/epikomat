@@ -16,20 +16,15 @@ import pl.antyradek.epikomat.debug.Debug;
  * @author Radosław Świątkiewicz */
 public class GameResources
 {
-
 	/** Czy całe urządzenie działa? */
 	private boolean successful;
-
 	/** Nazwa pliku zawierającego wszystkie dane */
 	private final String resourceBundleFilename;
 	// FIXME: Na wiele języków
-
 	/** Gdy inicjalizajca zasobów się nie powiodła, zwracamy to */
 	private final String defaultStringWhenUnsuccessful = "GAME_RESOURCES_ERROR!";
-
 	/** Gdy nie może znaleźć klucza, zwraca to */
 	private final String defaultStringWhenMissingKey = "MISSING_KEY ";
-
 	/** Cały zasób */
 	private ResourceBundle bundle;
 
@@ -55,12 +50,10 @@ public class GameResources
 			Debug.logErr("Błąd czytnika zasobów!");
 			successful = false;
 		}
-
 	}
 
-	/** Pobierz Zasób w formie String
-	 * 
-	 * @param resource Klucz do zasobu
+	/** Pobierz Zasób w formie {@link String}
+	 * @param key Klucz do zasobu
 	 * @return Odpowiadający tekst, lub informacja, że nie znaleziono */
 	public String getResource(final String key)
 	{
@@ -86,8 +79,8 @@ public class GameResources
 	}
 
 	/** Znajdź plik zasobów relatywnie do uruchomionego programu. To ręczne podejście potrzebne jest, aby zamiast domyślnego czytnika użyć Reader, który obsługuje UTF-8.
-	 * 
-	 * @return Bezwzględna ścieżka do pliku zasobów */
+	 * @return Bezwzględna ścieżka do pliku zasobów
+	 * @throws FileNotFoundException Nie znaleziono pliku */
 	private String getResourcesFilePath() throws FileNotFoundException
 	{
 		ClassLoader classLoader = Resources.class.getClassLoader();

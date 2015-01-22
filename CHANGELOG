@@ -17,4 +17,8 @@ ALPHA 1.1
 Przerobiona komunikacja i dodane mapy zamiast indeksów tablic.
 Przekopiowano dużo kodu do GameObject, zatem dziedziczące dodają bardzo mało. 
 Zrezygnowano z interfejsów akcji, teraz GameObject wykonuje wszystko, co możliwe, a dziedziczące
-ustalają listę używanych.  
+ustalają listę używanych.
+
+ALPHA 1.1.1
+2015-01-22
+Kilka naprawionych komentarzy i odpublicznionych metod.  

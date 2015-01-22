@@ -20,7 +20,7 @@ public class Mirror extends GameObject
 	}
 
 	@Override
-	public Response examine()
+	protected Response examine()
 	{
 		return new Response(getResource("Description"));
 	}

@@ -28,9 +28,9 @@ public class GameObjectId
 		return name;
 	}
 
-	/** Zaktualizuj nazwę przedmiotu. Ponieważ ten Id jest jedyny na przedmiot, potrzeba zaktualizować nazwę (a nie tworzyć nowy pzedmiot).
+	/** Zaktualizuj nazwę przedmiotu. Ponieważ ten Id jest jedyny na przedmiot, potrzeba zaktualizować nazwę (a nie tworzyć nowy przedmiot).
 	 * @param name Nowa nazwa do ustawienia */
-	public void setName(String name)
+	public void setName(final String name)
 	{
 		this.name = name;
 	}
@@ -42,9 +42,9 @@ public class GameObjectId
 		return actionIdList;
 	}
 
-	/** Dodaj możiwą akcję do tego przedmiotu
+	/** Dodaj możliwą akcję do tego przedmiotu
 	 * @param actionId ID akcji, którą można wykonać na przedmiocie */
-	public void addAction(GameObjectActionId actionId)
+	public void addAction(final GameObjectActionId actionId)
 	{
 		actionIdList.add(actionId);
 	}

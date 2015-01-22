@@ -5,8 +5,7 @@ import java.io.FileNotFoundException;
 import pl.antyradek.epikomat.bus.Response;
 import pl.antyradek.epikomat.model.Room;
 
-/** Zegar z kukułką. Miał domyślnie wywoływać na czas, ale zabrakło czasu. Zamiast tego są javadoc nad każdą metodą... Początkowo nie działa.
- * 
+/** Zegar z kukułką. Miał domyślnie wywoływać na czas, ale zabrakło czasu. Zamiast tego są javadoc nad każdą metodą...
  * @author Radosław Świątkiewicz */
 public class Clock extends GameObject
 {
@@ -24,7 +23,7 @@ public class Clock extends GameObject
 	}
 
 	@Override
-	public Response examine()
+	protected Response examine()
 	{
 		if(isWorking)
 		{

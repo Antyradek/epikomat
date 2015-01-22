@@ -15,7 +15,6 @@ class ActionButton extends JButton
 	private final GameObjectActionId gameObjectActionId;
 
 	/** Przycisk akcji
-	 * @param gameObjectId O tym Id przedmiotu
 	 * @param gameObjectActionId O tym Id akcji */
 	ActionButton(final GameObjectActionId gameObjectActionId)
 	{

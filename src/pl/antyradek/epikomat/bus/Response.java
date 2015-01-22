@@ -37,8 +37,7 @@ public class Response
 		this.actionSuccessful = actionSuccessful;
 	}
 
-	/** Dodaj przedmiot do listy wyświetlanych. Kolejność jest ważna, jednoznacznie identyfikuje przedmiot.
-	 * 
+	/** Dodaj przedmiot do listy wyświetlanych.
 	 * @param name Nazwa przedmiotu
 	 * @param gameObjectId Id tego przedmiotu */
 	public void addGameObject(final GameObjectId gameObjectId)
@@ -62,8 +61,8 @@ public class Response
 		return actionSuccessful;
 	}
 
-	/** Zwróć tablicę ID przedmiotów
-	 * @return Tablica przedmiotów */
+	/** Zwróć listę ID przedmiotów
+	 * @return Lista przedmiotów */
 	public List<GameObjectId> getGameObjectsIds()
 	{
 		return gameObjects;
@@ -94,8 +93,7 @@ public class Response
 	}
 
 	/** Dodaj kolejny tekst do logu, zostanie dopisany po spacji.
-	 * 
-	 * @param log Tekt do dopisania po spacji. */
+	 * @param log Tekst do dopisania po spacji. */
 	public void appendLog(final String log)
 	{
 		logAppend += " " + log;

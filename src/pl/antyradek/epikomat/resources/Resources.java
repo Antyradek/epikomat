@@ -21,20 +21,15 @@ public final class Resources
 {
 	/** Czy zasoby są poprawne? */
 	private static boolean successful;
-
 	/** Nazwa pliku zawierającego wszystkie dane, bez rozszerzenia .properties w stosunku do root projektu (folder bin, lub src) */
 	private static final String resourceBundleFilename = "res/GUI";
 	// FIXME: Na wiele języków
-
 	/** Nazwa pliku ikony */
 	private static final String iconFilename = "res/icon.png";
-
 	/** Wczytana ikona */
 	private static Image icon;
-
 	/** Gdy inicjalizajca zasobów się nie powiodła, zwracamy to */
 	private static final String defaultStringWhenUnsuccessful = "RESOURCES_ERROR!";
-
 	/** Cały zasób jako podstawowa implementacja od Javy */
 	private static ResourceBundle bundle;
 

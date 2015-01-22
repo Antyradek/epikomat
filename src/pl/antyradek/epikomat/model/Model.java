@@ -48,13 +48,13 @@ public class Model
 		return currentGame.getInitialState();
 	}
 
-	/** Wykonaj akcję na działającej grze
+	/** Wykonaj event na działającej grze
 	 * 
-	 * @param action Akcja z Widoku niosą ca informację o indeksach akcji i przedmiotu
+	 * @param event Event z Widoku niosą ca informację o indeksach akcji i przedmiotu
 	 * @return Odpowiedź na to wywołanie */
-	public Response executeAction(final ViewResponseEvent action)
+	public Response executeEvent(final ViewResponseEvent event)
 	{
-		return currentGame.executeAction(action);
+		return currentGame.executeAction(event);
 	}
 
 	/** Strategia uruchomienia gry. Run uruchamia grę
