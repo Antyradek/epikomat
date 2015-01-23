@@ -5,9 +5,11 @@ import java.io.FileNotFoundException;
 import pl.antyradek.epikomat.bus.Response;
 import pl.antyradek.epikomat.model.Room;
 
-/** Guzik do otwierania pralki zdalnie. Jeśli pralka nie może być otwarta, guzik ulega uszkodzeniu. Brak maszyny stanów, a prosta wartość bool. Nazwa przedmiotu zmienia się ze stanem.
+/**
+ * Guzik do otwierania pralki zdalnie. Jeśli pralka nie może być otwarta, guzik ulega uszkodzeniu. Brak maszyny stanów, a prosta wartość bool. Nazwa przedmiotu zmienia się ze stanem.
  * 
- * @author Radosław Świątkiewicz */
+ * @author Radosław Świątkiewicz
+ */
 public class Button extends GameObject
 {
 	/** Przedmiot do otwarcia */
@@ -15,11 +17,13 @@ public class Button extends GameObject
 	/** Czy guzik pracuje, czy jeszcze się nie zepsuł */
 	private boolean isWorking;
 
-	/** Przycisk do naciskania
+	/**
+	 * Przycisk do naciskania
 	 * 
 	 * @param room Katalog zasobów
 	 * @param gameObjectToOpen Pralka, która spróbuje być otwarta
-	 * @throws FileNotFoundException Gdy nie wczytano zasobów */
+	 * @throws FileNotFoundException Gdy nie wczytano zasobów
+	 */
 	public Button(final Room room, final GameObject gameObjectToOpen) throws FileNotFoundException
 	{
 		super(room, "Button");
@@ -39,14 +43,16 @@ public class Button extends GameObject
 			{
 				// przycisk działa i właśnie otworzył pralkę
 				return new Response(getResource("WorkingPush"), true);
-			}else
+			}
+			else
 			{
 				// przycisk działał do puki nie próbowałeś otworzyć nim pralki,
 				// teraz się zepsuł
 				isWorking = false;
 				return new Response(getResource("BreakingPush"), false);
 			}
-		}else
+		}
+		else
 		{
 			// nawet, jeśli da się teraz otworzyć pralkę, to i tak guzik nie
 			// działa i kopie cię prądem
@@ -55,14 +61,17 @@ public class Button extends GameObject
 
 	}
 
-	/** Dla tego przedmiotu nazwa zmienia się ze stanem. Jest to WorkingName, lub BrokenName */
+	/**
+	 * Dla tego przedmiotu nazwa zmienia się ze stanem. Jest to WorkingName, lub BrokenName
+	 */
 	@Override
 	protected String getName()
 	{
 		if(isWorking)
 		{
 			return getResource("WorkingName");
-		}else
+		}
+		else
 		{
 			return getResource("BrokenName");
 		}
@@ -74,7 +83,8 @@ public class Button extends GameObject
 		if(isWorking)
 		{
 			return new Response(getResource("DescriptionWorking"));
-		}else
+		}
+		else
 		{
 			return new Response(getResource("DescriptionBroken"));
 		}

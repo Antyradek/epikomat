@@ -11,9 +11,11 @@ import java.util.ResourceBundle;
 
 import pl.antyradek.epikomat.debug.Debug;
 
-/** Zasób dla tekstu gry. Ze względu na gigantyczną ilość kluczy i tekstu, nie opłaca się stosować wyliczenia, jak dla GUI. Ten zasób jest podawany dla każdego przedmiotu. Każdy może poprosić o dane dla siebie.
+/**
+ * Zasób dla tekstu gry. Ze względu na gigantyczną ilość kluczy i tekstu, nie opłaca się stosować wyliczenia, jak dla GUI. Ten zasób jest podawany dla każdego przedmiotu. Każdy może poprosić o dane dla siebie.
  * 
- * @author Radosław Świątkiewicz */
+ * @author Radosław Świątkiewicz
+ */
 public class GameResources
 {
 	/** Czy całe urządzenie działa? */
@@ -28,11 +30,13 @@ public class GameResources
 	/** Cały zasób */
 	private ResourceBundle bundle;
 
-	/** Stwórz obiekt zasobów dla przedmiotu
+	/**
+	 * Stwórz obiekt zasobów dla przedmiotu
 	 * 
 	 * @param gameName Nazwa gry, a także folderu zasobów
 	 * @param roomName Nazwa pokoju, a także folderu zasobów
-	 * @param gameObjectName Nazwa Przedmiotu, a także pliku zasobów - bez rozszerzenia ".properties" */
+	 * @param gameObjectName Nazwa Przedmiotu, a także pliku zasobów - bez rozszerzenia ".properties"
+	 */
 	public GameResources(final String gameName, final String roomName, final String gameObjectName)
 	{
 		resourceBundleFilename = "res/GameData/" + gameName + "/" + roomName + "/" + gameObjectName + ".properties";
@@ -41,20 +45,25 @@ public class GameResources
 		{
 			// UTF-8 Tego bardzo potrzebujemy
 			bundle = new PropertyResourceBundle(new FileReader(getResourcesFilePath()));
-		}catch(FileNotFoundException e)
+		}
+		catch(FileNotFoundException e)
 		{
 			Debug.logErr("Brak pliku zasobów " + gameName + " " + roomName + " " + gameObjectName);
 			successful = false;
-		}catch(IOException e)
+		}
+		catch(IOException e)
 		{
 			Debug.logErr("Błąd czytnika zasobów!");
 			successful = false;
 		}
 	}
 
-	/** Pobierz Zasób w formie {@link String}
+	/**
+	 * Pobierz Zasób w formie {@link String}
+	 * 
 	 * @param key Klucz do zasobu
-	 * @return Odpowiadający tekst, lub informacja, że nie znaleziono */
+	 * @return Odpowiadający tekst, lub informacja, że nie znaleziono
+	 */
 	public String getResource(final String key)
 	{
 		if(!successful)
@@ -63,24 +72,30 @@ public class GameResources
 		try
 		{
 			val = bundle.getString(key);
-		}catch(MissingResourceException e)
+		}
+		catch(MissingResourceException e)
 		{
 			val = defaultStringWhenMissingKey + key + " in bundle " + resourceBundleFilename;
 		}
 		return val;
 	}
 
-	/** Czy cały system działa? To powinno być sprawdzone zanim rozpoczniemy używać zasobów na poważnie.
+	/**
+	 * Czy cały system działa? To powinno być sprawdzone zanim rozpoczniemy używać zasobów na poważnie.
 	 * 
-	 * @return Czy wczytano plik zasobów */
+	 * @return Czy wczytano plik zasobów
+	 */
 	public boolean isGood()
 	{
 		return successful;
 	}
 
-	/** Znajdź plik zasobów relatywnie do uruchomionego programu. To ręczne podejście potrzebne jest, aby zamiast domyślnego czytnika użyć Reader, który obsługuje UTF-8.
+	/**
+	 * Znajdź plik zasobów relatywnie do uruchomionego programu. To ręczne podejście potrzebne jest, aby zamiast domyślnego czytnika użyć Reader, który obsługuje UTF-8.
+	 * 
 	 * @return Bezwzględna ścieżka do pliku zasobów
-	 * @throws FileNotFoundException Nie znaleziono pliku */
+	 * @throws FileNotFoundException Nie znaleziono pliku
+	 */
 	private String getResourcesFilePath() throws FileNotFoundException
 	{
 		ClassLoader classLoader = Resources.class.getClassLoader();

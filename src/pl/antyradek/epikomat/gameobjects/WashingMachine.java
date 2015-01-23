@@ -6,9 +6,11 @@ import pl.antyradek.epikomat.bus.Response;
 import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.model.Room;
 
-/** Pralka jest dobrym przykładem maszyny stanów. Różne stany mogą, lub nie mogą przechodzić między sobą. Takie rozwiązanie jest długie i nieelastyczne. Pozwala jedynie na łatwą rozbudowę. Sam nie wiem, dlaczego pralka.
+/**
+ * Pralka jest dobrym przykładem maszyny stanów. Różne stany mogą, lub nie mogą przechodzić między sobą. Takie rozwiązanie jest długie i nieelastyczne. Pozwala jedynie na łatwą rozbudowę. Sam nie wiem, dlaczego pralka.
  * 
- * @author Radosław Świątkiewicz */
+ * @author Radosław Świątkiewicz
+ */
 public class WashingMachine extends GameObject
 {
 	/** Stan pralki */
@@ -16,11 +18,13 @@ public class WashingMachine extends GameObject
 	/** Portal zostanie uruchomiony, gdy otworzymy pralkę */
 	private final GameObject portal;
 
-	/** Pralka jest zamknięta i wyłączona. W środku pralki jest portal.
+	/**
+	 * Pralka jest zamknięta i wyłączona. W środku pralki jest portal.
 	 * 
 	 * @param room Dla jakiego pokoju pralka?
 	 * @param portal Portal w pralce
-	 * @throws FileNotFoundException Zasoby zrzarł wybielacz */
+	 * @throws FileNotFoundException Zasoby zrzarł wybielacz
+	 */
 	public WashingMachine(final Room room, final GameObject portal) throws FileNotFoundException
 	{
 		super(room, "WashingMachine");
@@ -57,40 +61,58 @@ public class WashingMachine extends GameObject
 		return state.turnOff();
 	}
 
-	/** Zamień stan
+	/**
+	 * Zamień stan
 	 * 
-	 * @param newState Na ten */
+	 * @param newState Na ten
+	 */
 	private void changeState(final State newState)
 	{
 		Debug.log("Zmieniono stan Pralki na " + newState.getClass().toString());
 		this.state = newState;
 	}
 
-	/** Baza dla stanu pralki
+	/**
+	 * Baza dla stanu pralki
 	 * 
-	 * @author Radosław Świątkiewicz */
+	 * @author Radosław Świątkiewicz
+	 */
 	private abstract class State
 	{
-		/** Otwórz pralkę
-		 * @return Dopisanie do logu i czy się udało */
+		/**
+		 * Otwórz pralkę
+		 * 
+		 * @return Dopisanie do logu i czy się udało
+		 */
 		public abstract Response open();
 
-		/** Zamknij pralkę
-		 * @return Dopisanie do logu i czy się udało */
+		/**
+		 * Zamknij pralkę
+		 * 
+		 * @return Dopisanie do logu i czy się udało
+		 */
 		public abstract Response close();
 
-		/** Wyłącz pralkę
-		 * @return Dopisanie do logu i czy się udało */
+		/**
+		 * Wyłącz pralkę
+		 * 
+		 * @return Dopisanie do logu i czy się udało
+		 */
 		public abstract Response turnOff();
 
-		/** Włącz pralkę
-		 * @return Dopisanie do logu i czy się udało */
+		/**
+		 * Włącz pralkę
+		 * 
+		 * @return Dopisanie do logu i czy się udało
+		 */
 		public abstract Response turnOn();
 	}
 
-	/** Włączona pralka może być jedynie wyłączona, Nie da się otworzyć.
+	/**
+	 * Włączona pralka może być jedynie wyłączona, Nie da się otworzyć.
 	 * 
-	 * @author Radosław Świątkiewicz */
+	 * @author Radosław Świątkiewicz
+	 */
 	private class On extends State
 	{
 
@@ -121,9 +143,11 @@ public class WashingMachine extends GameObject
 
 	}
 
-	/** Wyłączona może być włączona, lub otwarta
+	/**
+	 * Wyłączona może być włączona, lub otwarta
 	 * 
-	 * @author Radosław Świątkiewicz */
+	 * @author Radosław Świątkiewicz
+	 */
 	private class Off extends State
 	{
 		@Override
@@ -154,9 +178,11 @@ public class WashingMachine extends GameObject
 		}
 	}
 
-	/** Otwarta pralka nie może być włączona
+	/**
+	 * Otwarta pralka nie może być włączona
 	 * 
-	 * @author Radosław Świątkiewicz */
+	 * @author Radosław Świątkiewicz
+	 */
 	private class Opened extends State
 	{
 

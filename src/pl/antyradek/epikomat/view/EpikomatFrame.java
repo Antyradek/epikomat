@@ -24,9 +24,11 @@ import pl.antyradek.epikomat.bus.GameObjectId;
 import pl.antyradek.epikomat.resources.Resource;
 import pl.antyradek.epikomat.resources.Resources;
 
-/** Główna ramka, komunikuje się bezpośrednio z View.
+/**
+ * Główna ramka, komunikuje się bezpośrednio z View.
  * 
- * @author Radosław Świątkiewicz */
+ * @author Radosław Świątkiewicz
+ */
 class EpikomatFrame extends JFrame
 {
 	/** To zabezpiecza przed odwołaniami do różnych klas, czy jakoś tak. Żeby nie rzucał {@link InvalidClassException}. */
@@ -40,9 +42,11 @@ class EpikomatFrame extends JFrame
 	/** Komponent przewijacza */
 	private JScrollPane gameObjectsListScrollPane;
 
-	/** Ramka aplikacji
+	/**
+	 * Ramka aplikacji
 	 * 
-	 * @param view To jej interfejs, przez niego jest komunikacja z resztą */
+	 * @param view To jej interfejs, przez niego jest komunikacja z resztą
+	 */
 	EpikomatFrame(final View view)
 	{
 		// stworzenie okna
@@ -107,7 +111,9 @@ class EpikomatFrame extends JFrame
 		setVisible(true);
 	}
 
-	/** Zbuduj całe menu i dodaj */
+	/**
+	 * Zbuduj całe menu i dodaj
+	 */
 	private void buildMenuBar()
 	{
 		JMenuBar menuBar = new JMenuBar();
@@ -143,37 +149,48 @@ class EpikomatFrame extends JFrame
 		setJMenuBar(menuBar);
 	}
 
-	/** Pokaż okno dialogowe pomocy. Nie ma sensu wysyłać tego do modelu. Nie zmieni w żaden sposób stanu aplikacji. */
+	/**
+	 * Pokaż okno dialogowe pomocy. Nie ma sensu wysyłać tego do modelu. Nie zmieni w żaden sposób stanu aplikacji.
+	 */
 	private void showHelp()
 	{
 		// Nazwa na belce okna jest taka sama, jak przycisk menu
 		JOptionPane.showMessageDialog(this, Resources.getString(Resource.HELP_TEXT), Resources.getString(Resource.HELP_MENU_ITEM_TEXT), JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	/** Pokaż informację o autorze (zostawiłem liczbę mnogą na przyszłość... ) */
+	/**
+	 * Pokaż informację o autorze (zostawiłem liczbę mnogą na przyszłość... )
+	 */
 	private void showAuthors()
 	{
 		JOptionPane.showMessageDialog(this, Resources.getString(Resource.AUTHORS_TEXT), Resources.getString(Resource.AUTHORS_MENU_ITEM_TEXT), JOptionPane.PLAIN_MESSAGE);
 	}
 
-	/** Dodaj dane do logu nie czyszcząc
+	/**
+	 * Dodaj dane do logu nie czyszcząc
 	 * 
-	 * @param appendText Tekst do dopisania */
+	 * @param appendText Tekst do dopisania
+	 */
 	void appendLog(final String appendText)
 	{
 		logArea.setText(logArea.getText() + "\n\n" + appendText);
 	}
 
-	/** Ustaw log zupełnie na nowo usuwając poprzednią wartość
+	/**
+	 * Ustaw log zupełnie na nowo usuwając poprzednią wartość
 	 * 
-	 * @param newtext Ustaw tekst, a nie dopisuj */
+	 * @param newtext Ustaw tekst, a nie dopisuj
+	 */
 	void setLog(final String newtext)
 	{
 		logArea.setText(newtext);
 	}
 
-	/** Dodaj do panelu przedmiotów przedmiot
-	 * @param gameObjectId o tym Id */
+	/**
+	 * Dodaj do panelu przedmiotów przedmiot
+	 * 
+	 * @param gameObjectId o tym Id
+	 */
 	void addGameObject(GameObjectId gameObjectId)
 	{
 		JPanel newJpanel = new JPanel();
@@ -202,7 +219,9 @@ class EpikomatFrame extends JFrame
 		gameObjectsList.add(newJpanel);
 	}
 
-	/** Wyczyść listę przedmiotów */
+	/**
+	 * Wyczyść listę przedmiotów
+	 */
 	void resetGameObjectList()
 	{
 		// jeśli to jest, to blokuje się interfejs. O wiele dziwniejsze jest to, że działa bez tego.

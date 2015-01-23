@@ -11,8 +11,11 @@ import pl.antyradek.epikomat.debug.Debug;
 import pl.antyradek.epikomat.model.Room;
 import pl.antyradek.epikomat.resources.GameResources;
 
-/** Baza dla każdego przedmiotu w grze, implementacja wewnętrzna przedmiotów jest dowolna, mogą nadpisywać odpowiednie metody i zadeklarować widoczne w Widoku
- * @author Radosław Świątkiewicz */
+/**
+ * Baza dla każdego przedmiotu w grze, implementacja wewnętrzna przedmiotów jest dowolna, mogą nadpisywać odpowiednie metody i zadeklarować widoczne w Widoku
+ * 
+ * @author Radosław Świątkiewicz
+ */
 public abstract class GameObject
 {
 	/** Pokój w którym znajduje się ten przedmiot */
@@ -26,10 +29,13 @@ public abstract class GameObject
 	/** Id tego przedmiotu */
 	private final GameObjectId gameObjectId;
 
-	/** Przedmiot wczyta odpowiednie zasoby. Domyślnie jest widoczny i pokaże się na liście przedmiotow.
+	/**
+	 * Przedmiot wczyta odpowiednie zasoby. Domyślnie jest widoczny i pokaże się na liście przedmiotow.
+	 * 
 	 * @param room Katalog zasobów pokoju
 	 * @param resourcesFolder Plik zasobów dla tego przedmiotu
-	 * @throws FileNotFoundException Gdy nie uda się wczytać zasobów */
+	 * @throws FileNotFoundException Gdy nie uda się wczytać zasobów
+	 */
 	public GameObject(final Room room, final String resourcesFolder) throws FileNotFoundException
 	{
 		this.room = room;
@@ -37,7 +43,8 @@ public abstract class GameObject
 		if(this.resources.isGood())
 		{
 			Debug.logSuccess("Wczytano zasoby przedmiotu " + resourcesFolder);
-		}else
+		}
+		else
 		{
 			Debug.logErr("Błąd zasobów przedmiotu " + resourcesFolder);
 			throw new FileNotFoundException(resourcesFolder);
@@ -47,8 +54,11 @@ public abstract class GameObject
 		this.gameObjectId = new GameObjectId(getName());
 	}
 
-	/** Dodaj możliwą do wykonania akcję do przedmiotu. Powinna ona być nadpisana przez dziedziczącego. Dodana tutaj akcja będzie widoczna w widoku.
-	 * @param gameObjectAction Podane tu akcje zostały nadpisane przez dziedziczący przedmiot i będą widoczne w Widoku */
+	/**
+	 * Dodaj możliwą do wykonania akcję do przedmiotu. Powinna ona być nadpisana przez dziedziczącego. Dodana tutaj akcja będzie widoczna w widoku.
+	 * 
+	 * @param gameObjectAction Podane tu akcje zostały nadpisane przez dziedziczący przedmiot i będą widoczne w Widoku
+	 */
 	protected void addAction(final GameObjectAction gameObjectAction)
 	{
 		// chciałem to wykonać w konstruktorze za pomocą listy argumetów, ale to zdaje się działa tylko dla typów prostych
@@ -57,137 +67,192 @@ public abstract class GameObject
 		gameObjectId.addAction(newGameObjectActionId);
 	}
 
-	/** Id tego przedmiotu zawierające jego akcje i nazwę. Tworzone jest na nowo za każdym wywołaniem
-	 * @return Id przesyłane do Widoku */
+	/**
+	 * Id tego przedmiotu zawierające jego akcje i nazwę. Tworzone jest na nowo za każdym wywołaniem
+	 * 
+	 * @return Id przesyłane do Widoku
+	 */
 	public GameObjectId getId()
 	{
 		gameObjectId.setName(getName());
 		return gameObjectId;
 	}
 
-	/** Zwraca nazwę przedmiotu zdefiniowaną pod kluczem "Name". Przedmioty dziedziczące mogą nadpisać tę metodę i wprowadzić zmienne nazwy.
-	 * @return Nazwa przedmiotu domyślna pod "Name", lub nadpisana */
+	/**
+	 * Zwraca nazwę przedmiotu zdefiniowaną pod kluczem "Name". Przedmioty dziedziczące mogą nadpisać tę metodę i wprowadzić zmienne nazwy.
+	 * 
+	 * @return Nazwa przedmiotu domyślna pod "Name", lub nadpisana
+	 */
 	protected String getName()
 	{
 		return getResource("Name");
 	}
 
-	/** Wykonuje akcję o podanym Id
+	/**
+	 * Wykonuje akcję o podanym Id
+	 * 
 	 * @param id Id akcji zawarte w {@link GameObjectId}
-	 * @return Dopisanie do logu, gdy wykonana została akcja, lub null, jeśli takiej akcji nie dało się wykonać */
+	 * @return Dopisanie do logu, gdy wykonana została akcja, lub null, jeśli takiej akcji nie dało się wykonać
+	 */
 	public Response executeAction(final GameObjectActionId id)
 	{
 		return actionsMap.get(id).execute();
 	}
 
-	/** Weź zasób dla przedmiotu o podanym kluczu.
+	/**
+	 * Weź zasób dla przedmiotu o podanym kluczu.
+	 * 
 	 * @param key Klucz to tekstu w odpowiednim pliku
-	 * @return Dane po kluczu, lub odpowiednia informacja, jak podano w {@link GameResources} */
+	 * @return Dane po kluczu, lub odpowiednia informacja, jak podano w {@link GameResources}
+	 */
 	protected String getResource(final String key)
 	{
 		return resources.getResource(key);
 	}
 
-	/** Pokój tego przedmiotu, dla jakiego został stworzony, nie koniecznie w jakim się znajduje.
-	 * @return Pokój dla którego został stworzony */
+	/**
+	 * Pokój tego przedmiotu, dla jakiego został stworzony, nie koniecznie w jakim się znajduje.
+	 * 
+	 * @return Pokój dla którego został stworzony
+	 */
 	public Room getRoom()
 	{
 		return room;
 	}
 
-	/** Ustaw widoczność przedmiotu
+	/**
+	 * Ustaw widoczność przedmiotu
 	 * 
-	 * @param visible Widoczność ma być taka, jesli jest <code>false</code>, przedmiot się nie wyświetli na liście */
+	 * @param visible Widoczność ma być taka, jesli jest <code>false</code>, przedmiot się nie wyświetli na liście
+	 */
 	public void setVisible(final boolean visible)
 	{
 		isVisible = visible;
 	}
 
-	/** Czy ten przedmiot jest widoczny?
+	/**
+	 * Czy ten przedmiot jest widoczny?
 	 * 
-	 * @return Widoczność przedmiotu */
+	 * @return Widoczność przedmiotu
+	 */
 	public boolean isVisible()
 	{
 		return isVisible;
 	}
 
-	/** Spróbuj zamknąć ten przedmiot
-	 * @return Dopisanie do logu dla zamknięcia i powodzenie, <code>null</code>, jeśli nie nadpisano. */
+	/**
+	 * Spróbuj zamknąć ten przedmiot
+	 * 
+	 * @return Dopisanie do logu dla zamknięcia i powodzenie, <code>null</code>, jeśli nie nadpisano.
+	 */
 	protected Response close()
 	{
 		return null;
 	}
 
-	/** Spróbuj otworzyć ten przedmiot
-	 * @return Dopisanie do logu i informacja o sukcesie, <code>null</code>, jesli nie nadpisano. */
+	/**
+	 * Spróbuj otworzyć ten przedmiot
+	 * 
+	 * @return Dopisanie do logu i informacja o sukcesie, <code>null</code>, jesli nie nadpisano.
+	 */
 	protected Response open()
 	{
 		return null;
 	}
 
-	/** Wciśnij ten przedmiot/wykonaj inaczej nazwaną akcję
-	 * @return Dopisanie do logu po wykonaniu i sukces, <code>null</code>, jesli nie nadpisano. */
+	/**
+	 * Wciśnij ten przedmiot/wykonaj inaczej nazwaną akcję
+	 * 
+	 * @return Dopisanie do logu po wykonaniu i sukces, <code>null</code>, jesli nie nadpisano.
+	 */
 	protected Response push()
 	{
 		return null;
 	}
 
-	/** Przyjrzyj się z bliska
-	 * @return Dopisanie do logu z dokładnym opisem, zawsze powodzenie, <code>null</code>, jesli nie nadpisano. */
+	/**
+	 * Przyjrzyj się z bliska
+	 * 
+	 * @return Dopisanie do logu z dokładnym opisem, zawsze powodzenie, <code>null</code>, jesli nie nadpisano.
+	 */
 	protected Response examine()
 	{
 		return null;
 	}
 
-	/** Spróbuj wyłączyć
-	 * @return Dopisanie do logu, i informacja o sukcesie, <code>null</code>, jesli nie nadpisano. */
+	/**
+	 * Spróbuj wyłączyć
+	 * 
+	 * @return Dopisanie do logu, i informacja o sukcesie, <code>null</code>, jesli nie nadpisano.
+	 */
 	protected Response turnOff()
 	{
 		return null;
 	}
 
-	/** Spróbuj włączyć
-	 * @return Dopsanie do logu i informacja o sukcesie, <code>null</code>, jesli nie nadpisano. */
+	/**
+	 * Spróbuj włączyć
+	 * 
+	 * @return Dopsanie do logu i informacja o sukcesie, <code>null</code>, jesli nie nadpisano.
+	 */
 	protected Response turnOn()
 	{
 		return null;
 	}
 
-	/** Przejdź przez ten przedmiot, w efekcie zmieni się pokój.
-	 * @return Dopisanie do logu i informacja o sukcesie, <code>null</code>, jesli nie nadpisano. */
+	/**
+	 * Przejdź przez ten przedmiot, w efekcie zmieni się pokój.
+	 * 
+	 * @return Dopisanie do logu i informacja o sukcesie, <code>null</code>, jesli nie nadpisano.
+	 */
 	protected Response walk()
 	{
 		return null;
 	}
 
-	/** Baza dla klas definiujących możliwe akcje na przedmiocie. Wywołanie Run() wywołuje odpowiednią metodę.
-	 * @author Radosław Świątkiewicz */
+	/**
+	 * Baza dla klas definiujących możliwe akcje na przedmiocie. Wywołanie Run() wywołuje odpowiednią metodę.
+	 * 
+	 * @author Radosław Świątkiewicz
+	 */
 	protected abstract class GameObjectAction
 	{
 		/** Klucz przy nazwie tej akcji w pliku zasobów przedmiotu */
 		private final String resourceActionNameKey;
 
-		/** Akcja przedmiotu z określoną nazwą
-		 * @param resourceActionNameKey Klucz nazwy akcji w pliku zasobów */
+		/**
+		 * Akcja przedmiotu z określoną nazwą
+		 * 
+		 * @param resourceActionNameKey Klucz nazwy akcji w pliku zasobów
+		 */
 		public GameObjectAction(final String resourceActionNameKey)
 		{
 			this.resourceActionNameKey = resourceActionNameKey;
 		}
 
-		/** Zwraca nazwę akcji
-		 * @return Nazwa akcji, jaka jest zdefiniowana w pliku zasobów */
+		/**
+		 * Zwraca nazwę akcji
+		 * 
+		 * @return Nazwa akcji, jaka jest zdefiniowana w pliku zasobów
+		 */
 		public String getName()
 		{
 			return getResource(resourceActionNameKey);
 		}
 
-		/** Wywołaj metodę odpowiedniej akcji
-		 * @return Dopisanie do logu i sukces */
+		/**
+		 * Wywołaj metodę odpowiedniej akcji
+		 * 
+		 * @return Dopisanie do logu i sukces
+		 */
 		public abstract Response execute();
 	}
 
-	/** Akcja Naciśnięcia
-	 * @author Radosław Świątkiewicz */
+	/**
+	 * Akcja Naciśnięcia
+	 * 
+	 * @author Radosław Świątkiewicz
+	 */
 	protected class PushAction extends GameObjectAction
 	{
 		/** Zwyczjny konstruktor */
@@ -203,8 +268,11 @@ public abstract class GameObject
 		}
 	}
 
-	/** Akcja Otwarcia
-	 * @author Radosław Świątkiewicz */
+	/**
+	 * Akcja Otwarcia
+	 * 
+	 * @author Radosław Świątkiewicz
+	 */
 	protected class OpenAction extends GameObjectAction
 	{
 		public OpenAction()
@@ -219,8 +287,11 @@ public abstract class GameObject
 		}
 	}
 
-	/** Akcja Zamykania
-	 * @author Radosław Świątkiewicz */
+	/**
+	 * Akcja Zamykania
+	 * 
+	 * @author Radosław Świątkiewicz
+	 */
 	protected class CloseAction extends GameObjectAction
 	{
 		public CloseAction()
@@ -235,8 +306,11 @@ public abstract class GameObject
 		}
 	}
 
-	/** Akcja Przypatrywania się
-	 * @author Radosław Świątkiewicz */
+	/**
+	 * Akcja Przypatrywania się
+	 * 
+	 * @author Radosław Świątkiewicz
+	 */
 	protected class ExamineAction extends GameObjectAction
 	{
 		public ExamineAction()
@@ -251,8 +325,11 @@ public abstract class GameObject
 		}
 	}
 
-	/** Akcja Włączania
-	 * @author Radosław Świątkiewicz */
+	/**
+	 * Akcja Włączania
+	 * 
+	 * @author Radosław Świątkiewicz
+	 */
 	protected class TurnOnAction extends GameObjectAction
 	{
 		public TurnOnAction()
@@ -267,8 +344,11 @@ public abstract class GameObject
 		}
 	}
 
-	/** Akcja Wyłączania
-	 * @author Radosław Świątkiewicz */
+	/**
+	 * Akcja Wyłączania
+	 * 
+	 * @author Radosław Świątkiewicz
+	 */
 	protected class TurnOffAction extends GameObjectAction
 	{
 		public TurnOffAction()
@@ -283,8 +363,11 @@ public abstract class GameObject
 		}
 	}
 
-	/** Akcja przejścia przez
-	 * @author Radosław Świątkewicz */
+	/**
+	 * Akcja przejścia przez
+	 * 
+	 * @author Radosław Świątkewicz
+	 */
 	protected class WalkAction extends GameObjectAction
 	{
 		public WalkAction()

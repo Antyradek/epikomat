@@ -16,9 +16,11 @@ import pl.antyradek.epikomat.events.ViewEvent;
 import pl.antyradek.epikomat.events.ViewResponseEvent;
 import pl.antyradek.epikomat.resources.Resources;
 
-/** Całkowity Widok. Zawiera referencje do okna i innych widokowych badziewi. Tym komunikuje się aplikacja z oknem. Ten odpowiada za rozdzielenie wątków.
+/**
+ * Całkowity Widok. Zawiera referencje do okna i innych widokowych badziewi. Tym komunikuje się aplikacja z oknem. Ten odpowiada za rozdzielenie wątków.
  * 
- * @author Radosław Świątkiewicz */
+ * @author Radosław Świątkiewicz
+ */
 public class View
 {
 	/** Ramka JFrame, czyli GUI */
@@ -26,9 +28,11 @@ public class View
 	/** Kolejka do której wkładamy polecenia z widoku. Kontroler je odbiera. */
 	private final BlockingQueue<ViewEvent> queue;
 
-	/** Widok
+	/**
+	 * Widok
 	 * 
-	 * @param queue Kolejka do której wsadza dane */
+	 * @param queue Kolejka do której wsadza dane
+	 */
 	public View(final BlockingQueue<ViewEvent> queue)
 	{
 		this.queue = queue;
@@ -36,7 +40,8 @@ public class View
 		try
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}catch(Exception e)
+		}
+		catch(Exception e)
 		{
 			// Domyślnie spada na Metal
 			Debug.logErr("Nie może ustawić odpowiedzniego L&F dla systemu");
@@ -54,7 +59,9 @@ public class View
 
 	}
 
-	/** Stwórz nową ramkę w tym samym wątku. Ta metoda powinna być wywołana przez {@link SwingUtilities}.invokeLater() */
+	/**
+	 * Stwórz nową ramkę w tym samym wątku. Ta metoda powinna być wywołana przez {@link SwingUtilities}.invokeLater()
+	 */
 	private void buildFrame()
 	{
 		frame = new EpikomatFrame(this);
@@ -70,9 +77,11 @@ public class View
 		frame.setIconImage(Resources.getAppIcon());
 	}
 
-	/** Usaw nowy stan widoku
+	/**
+	 * Usaw nowy stan widoku
 	 * 
-	 * @param newState Zwrot Modelu z bezpiecznymi informacjami */
+	 * @param newState Zwrot Modelu z bezpiecznymi informacjami
+	 */
 	public void setState(final Response newState)
 	{
 		SwingUtilities.invokeLater(new Runnable()
@@ -90,21 +99,26 @@ public class View
 		});
 	}
 
-	/** Zamknij okno. Ta metoda działa, gdy naciśniemy 'X'. */
+	/**
+	 * Zamknij okno. Ta metoda działa, gdy naciśniemy 'X'.
+	 */
 	private void closeWindow()
 	{
 		Debug.log("Zamykamy okno");
 		try
 		{
 			queue.put(new AppCloseEvent());
-		}catch(InterruptedException e)
+		}
+		catch(InterruptedException e)
 		{
 			Debug.logErr("Błąd wkładania polecenia zamknięcia do kolejki! Będziesz zdaje się musiał ukatrupić proces...");
 			e.printStackTrace();
 		}
 	}
 
-	/** Wyłącz wszystkie okna */
+	/**
+	 * Wyłącz wszystkie okna
+	 */
 	public void dispose()
 	{
 		if(frame != null)
@@ -113,10 +127,12 @@ public class View
 		}
 	}
 
-	/** Dodaj dane do logu w bezpieczny wątkowo sposób
+	/**
+	 * Dodaj dane do logu w bezpieczny wątkowo sposób
 	 * 
 	 * @param textToAppend Tekst do dodania
-	 * @param clear Czy usunąć cały log przedtem? */
+	 * @param clear Czy usunąć cały log przedtem?
+	 */
 	private void addLog(final String textToAppend, final boolean clear)
 	{
 		SwingUtilities.invokeLater(new Runnable()
@@ -127,7 +143,8 @@ public class View
 				if(clear)
 				{
 					frame.setLog(textToAppend);
-				}else
+				}
+				else
 				{
 					frame.appendLog(textToAppend);
 				}
@@ -136,15 +153,18 @@ public class View
 		});
 	}
 
-	/** Dodaj do kolejki informację o akcji
+	/**
+	 * Dodaj do kolejki informację o akcji
 	 * 
-	 * @param gameObjectActionId Id klikniętej akcji */
+	 * @param gameObjectActionId Id klikniętej akcji
+	 */
 	void sendActionToQueue(final GameObjectActionId gameObjectActionId)
 	{
 		try
 		{
 			queue.put(new ViewResponseEvent(gameObjectActionId));
-		}catch(InterruptedException e)
+		}
+		catch(InterruptedException e)
 		{
 			Debug.logErr("Błąd wkładania akcji do kolejki. Wyobrażasz sobie dalszą grę, bo ja nie.");
 			e.printStackTrace();

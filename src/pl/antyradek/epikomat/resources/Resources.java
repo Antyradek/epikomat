@@ -14,9 +14,11 @@ import javax.swing.ImageIcon;
 
 import pl.antyradek.epikomat.debug.Debug;
 
-/** Zasoby językowe, wszystkich GUI. Będą pobierane z pliku. Na podobnej zasadzie działa Android. Wszystkie klucze są zdefiniowane w kodzie w {@link Resource}. Przed użyciem są sprawdzane.
+/**
+ * Zasoby językowe, wszystkich GUI. Będą pobierane z pliku. Na podobnej zasadzie działa Android. Wszystkie klucze są zdefiniowane w kodzie w {@link Resource}. Przed użyciem są sprawdzane.
  * 
- * @author Radosław Świątkiwicz */
+ * @author Radosław Świątkiwicz
+ */
 public final class Resources
 {
 	/** Czy zasoby są poprawne? */
@@ -33,7 +35,9 @@ public final class Resources
 	/** Cały zasób jako podstawowa implementacja od Javy */
 	private static ResourceBundle bundle;
 
-	/** Czytanie z pliku zasobów */
+	/**
+	 * Czytanie z pliku zasobów
+	 */
 	static
 	{
 		successful = true;
@@ -71,15 +75,18 @@ public final class Resources
 				}
 			}
 			Debug.logSuccess("Zasoby są poprawne");
-		}catch(MissingResourceException e)
+		}
+		catch(MissingResourceException e)
 		{
 			Debug.logErr("Błąd klucza!");
 			successful = false;
-		}catch(FileNotFoundException e)
+		}
+		catch(FileNotFoundException e)
 		{
 			Debug.logErr("Plik zasobów nie znaleziony!");
 			successful = false;
-		}catch(IOException e)
+		}
+		catch(IOException e)
 		{
 			Debug.logErr("Błąd Wejścia-Wyjścia przy czytaniu zasobów!");
 			successful = false;
@@ -87,10 +94,12 @@ public final class Resources
 
 	}
 
-	/** Pobierz Resource w formie tekstowej dając enumerator jako argument. Jeśli zasoby są poprawne, to się zawsze uda.
+	/**
+	 * Pobierz Resource w formie tekstowej dając enumerator jako argument. Jeśli zasoby są poprawne, to się zawsze uda.
 	 * 
 	 * @param resource Enumerator zasobu o jaki prosimy
-	 * @return Tekst odpowiadający kluczowi odpowiadającemu podanemu enumeratorowi, lub tekst, że zasoby nie są poprawne. */
+	 * @return Tekst odpowiadający kluczowi odpowiadającemu podanemu enumeratorowi, lub tekst, że zasoby nie są poprawne.
+	 */
 	public static String getString(final Resource resource)
 	{
 		if(!successful)
@@ -98,26 +107,32 @@ public final class Resources
 		return bundle.getString(resource.getKey());
 	}
 
-	/** Czy cały system działa? To powinno być sprawdzone zanim rozpoczniemy używać zasobów na poważnie.
+	/**
+	 * Czy cały system działa? To powinno być sprawdzone zanim rozpoczniemy używać zasobów na poważnie.
 	 * 
-	 * @return Informacja, czy zasoby są poprawne i można użyć każdego enumeratora */
+	 * @return Informacja, czy zasoby są poprawne i można użyć każdego enumeratora
+	 */
 	public static boolean isGood()
 	{
 		return successful;
 	}
 
-	/** Zwraca ikonkę aplikacji
+	/**
+	 * Zwraca ikonkę aplikacji
 	 * 
-	 * @return Ikona aplikacji, lub null, jeśli nie jest poprawnie */
+	 * @return Ikona aplikacji, lub null, jeśli nie jest poprawnie
+	 */
 	public static Image getAppIcon()
 	{
 		// FIXME: Jeśli nie znalazł. zwraca domyślną
 		return icon;
 	}
 
-	/** Znajdź plik zasobów relatywnie do uruchomionego programu. To ręczne podejście potrzebne jest, aby zamiast domyślnego czytnika użyć Reader, który obsługuje UTF-8.
+	/**
+	 * Znajdź plik zasobów relatywnie do uruchomionego programu. To ręczne podejście potrzebne jest, aby zamiast domyślnego czytnika użyć Reader, który obsługuje UTF-8.
 	 * 
-	 * @return Bezwzględna ścieżka do pliku zasobów GUI.properties */
+	 * @return Bezwzględna ścieżka do pliku zasobów GUI.properties
+	 */
 	private static String getResourcesFilePath()
 	{
 		ClassLoader classLoader = Resources.class.getClassLoader();

@@ -1,8 +1,10 @@
 package pl.antyradek.epikomat.resources;
 
-/** Enumerator wykorzystywany do pobierania zasobów GUI
+/**
+ * Enumerator wykorzystywany do pobierania zasobów GUI
  * 
- * @author Radosław Świątkiewicz */
+ * @author Radosław Świątkiewicz
+ */
 public enum Resource
 {
 	WINDOW_TITLE("WindowTitle"), // Nazwa okna na belce
@@ -15,16 +17,21 @@ public enum Resource
 	/** Wewnętrzny klucz, jaki ma być podany dla {@link Resources} */
 	private String key;
 
-	/** Ustawia klucz zdefiniowany przy każdej wartości enumeratora
-	 * @param key Klucz zdefiniowany w pliku zasobów */
+	/**
+	 * Ustawia klucz zdefiniowany przy każdej wartości enumeratora
+	 * 
+	 * @param key Klucz zdefiniowany w pliku zasobów
+	 */
 	private Resource(final String key)
 	{
 		this.key = key;
 	}
 
-	/** Zwróć klucz
+	/**
+	 * Zwróć klucz
 	 * 
-	 * @return Tekstowy klucz odpowiadający określonej wartości */
+	 * @return Tekstowy klucz odpowiadający określonej wartości
+	 */
 	String getKey()
 	{
 		return key;

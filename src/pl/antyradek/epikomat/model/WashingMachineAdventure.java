@@ -12,21 +12,23 @@ import pl.antyradek.epikomat.gameobjects.Painting;
 import pl.antyradek.epikomat.gameobjects.Portal;
 import pl.antyradek.epikomat.gameobjects.WashingMachine;
 
-/** Niezwykła przygoda z udziałem pralki. Prezentuje różne aspekty silnika. W pokoju jest przycisk, pralka i obraz. Przycik otwiera pralkę i psuje się, gdy tego nie może zrobić. Pralka zawiera w środku portal. Prowadzi do pokoju z lustrem i zegarem.
+/**
+ * Niezwykła przygoda z udziałem pralki. Prezentuje różne aspekty silnika. W pokoju jest przycisk, pralka i obraz. Przycik otwiera pralkę i psuje się, gdy tego nie może zrobić. Pralka zawiera w środku portal. Prowadzi do pokoju z lustrem i zegarem.
  * 
- * @author Radosław Świątkiewicz */
+ * @author Radosław Świątkiewicz
+ */
 class WashingMachineAdventure extends Game
 {
-
 	/** Pokój z którego startujemy (ten z pralką) */
 	private Room pillowRoom;
-
 	/** Pokój z zegarem */
 	private Room clockRoom;
 
-	/** Cała gra
+	/**
+	 * Cała gra
 	 * 
-	 * @throws GameStartException Gdy zasoby gdzieś wcięło */
+	 * @throws GameStartException Gdy zasoby gdzieś wcięło
+	 */
 	WashingMachineAdventure() throws GameStartException
 	{
 		super("WashingMachineAdventure");
@@ -60,7 +62,8 @@ class WashingMachineAdventure extends Game
 			clockRoom.add(clockRoomPortal);
 			clockRoom.add(clock);
 			clockRoom.add(mirror);
-		}catch(FileNotFoundException e)
+		}
+		catch(FileNotFoundException e)
 		{
 			Debug.logErr("Błąd budowy poziomu - brakuje zasobów: " + e.getMessage());
 			throw new GameStartException("Błąd zasobu przedmiotu: " + e.getMessage());

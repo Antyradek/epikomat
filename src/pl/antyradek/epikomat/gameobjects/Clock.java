@@ -5,16 +5,22 @@ import java.io.FileNotFoundException;
 import pl.antyradek.epikomat.bus.Response;
 import pl.antyradek.epikomat.model.Room;
 
-/** Zegar z kukułką. Miał domyślnie wywoływać na czas, ale zabrakło czasu. Zamiast tego są javadoc nad każdą metodą...
- * @author Radosław Świątkiewicz */
+/**
+ * Zegar z kukułką. Miał domyślnie wywoływać na czas, ale zabrakło czasu. Zamiast tego są javadoc nad każdą metodą...
+ * 
+ * @author Radosław Świątkiewicz
+ */
 public class Clock extends GameObject
 {
 	/** Czy zegar działa? */
 	private boolean isWorking;
 
-	/** Zegar nienakręcony
+	/**
+	 * Zegar nienakręcony
+	 * 
 	 * @param room Katalog zasobów
-	 * @throws FileNotFoundException Gdy nie wczytano zasobów */
+	 * @throws FileNotFoundException Gdy nie wczytano zasobów
+	 */
 	public Clock(final Room room) throws FileNotFoundException
 	{
 		super(room, "Clock");
@@ -28,7 +34,8 @@ public class Clock extends GameObject
 		if(isWorking)
 		{
 			return new Response(getResource("ONDescription"));
-		}else
+		}
+		else
 		{
 			return new Response(getResource("OFFDescription"));
 		}
